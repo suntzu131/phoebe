@@ -1,0 +1,3738 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#a85f3f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Phoebe Dashboard</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/idb-keyval@6/dist/umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<style>
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  CSS VARIABLES — Johnny's Design DNA                                      */
+/* ══════════════════════════════════════════════════════════════════════════ */
+:root {
+    --bg: #f6f1ea;
+    --paper: #fffdf9;
+    --ink: #1f2937;
+    --ink-secondary: #5b6573;
+    --line: #ddd3c7;
+    --accent: #a85f3f;
+    --accent-light: rgba(168,95,63,0.08);
+    --accent-2: #d8b58a;
+    --sea: #5f7f8f;
+    --sky: #cfdde6;
+    --green: #16a34a;
+    --green-bg: #dcfce7;
+    --amber: #d97706;
+    --amber-bg: #fef3c7;
+    --red: #dc2626;
+    --red-bg: #fee2e2;
+    --blue: #2563eb;
+    --blue-bg: #dbeafe;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 3px rgba(40,36,30,0.06), 0 4px 16px rgba(40,36,30,0.06);
+    --shadow-lg: 0 4px 12px rgba(40,36,30,0.08), 0 16px 40px rgba(40,36,30,0.10);
+    --shadow-card: 0 1px 2px rgba(40,36,30,0.04), 0 4px 12px rgba(40,36,30,0.06);
+    --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --sidebar-w: 240px;
+    --sidebar-collapsed-w: 56px;
+    --sidebar-bg: #1c1810;
+    --sidebar-ink: #d4c8b8;
+    --sidebar-ink-active: #ffffff;
+    --sidebar-hover: rgba(255,255,255,0.06);
+    --sidebar-active-bg: rgba(168,95,63,0.20);
+}
+[data-theme="dark"] {
+    --bg: #111111;
+    --paper: #1c1c1c;
+    --ink: #e5e5e5;
+    --ink-secondary: #a0a0a0;
+    --line: #2e2e2e;
+    --accent: #d4845a;
+    --accent-light: rgba(212,132,90,0.12);
+    --accent-2: #e8c99a;
+    --sea: #7fa0b0;
+    --sky: #1e2a32;
+    --green: #22c55e;
+    --green-bg: #14291e;
+    --amber: #f59e0b;
+    --amber-bg: #2e2510;
+    --red: #ef4444;
+    --red-bg: #2e1515;
+    --blue: #60a5fa;
+    --blue-bg: #172040;
+    --shadow: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.3);
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.15);
+    --sidebar-bg: #0d0d0d;
+    --sidebar-ink: #a0a0a0;
+    --sidebar-ink-active: #e5e5e5;
+    --sidebar-hover: rgba(255,255,255,0.04);
+    --sidebar-active-bg: rgba(212,132,90,0.18);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RESET & BASE                                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    min-height: 100dvh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  APP SHELL — SIDEBAR + MAIN CONTENT                                      */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* ── SIDEBAR ──────────────────────────────────────────────────────────── */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--sidebar-bg);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.25s ease, transform 0.25s ease;
+    overflow: hidden;
+    box-shadow: 2px 0 16px rgba(0,0,0,0.15);
+}
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+}
+.sidebar-brand-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+}
+.sidebar-brand-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.sidebar-brand-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.3px;
+}
+.sidebar-brand-sub {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--sidebar-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 8px 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.sidebar-nav::-webkit-scrollbar { display: none; }
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 16px;
+    margin: 2px 8px;
+    border-radius: 10px;
+    border: none;
+    background: none;
+    width: calc(100% - 16px);
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sidebar-ink);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    min-height: 44px;
+    position: relative;
+}
+.sidebar-item:hover {
+    background: var(--sidebar-hover);
+    color: var(--sidebar-ink-active);
+}
+.sidebar-item.active {
+    background: var(--sidebar-active-bg);
+    color: var(--sidebar-ink-active);
+}
+.sidebar-item.active::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--accent);
+}
+.sidebar-item-icon {
+    font-size: 18px;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+}
+.sidebar-item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sidebar-item-badge {
+    margin-left: auto;
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    padding: 1px 7px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.sidebar-footer {
+    padding: 12px 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.sidebar-footer-text {
+    font-size: 10px;
+    color: var(--sidebar-ink);
+    opacity: 0.6;
+}
+.sidebar-theme-btn {
+    background: rgba(255,255,255,0.08);
+    border: none;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    color: var(--sidebar-ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+.sidebar-theme-btn:hover { background: rgba(255,255,255,0.15); }
+
+/* ── MAIN CONTENT ─────────────────────────────────────────────────────── */
+.main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+    min-height: 100dvh;
+    transition: margin-left 0.25s ease;
+    position: relative;
+}
+
+/* ── MOBILE HEADER (visible on mobile only) ──────────────────────────── */
+.mobile-header {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: linear-gradient(135deg, #2c1810 0%, var(--accent) 60%, #c47a55 100%);
+    padding: 10px 14px;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(44,24,16,0.25);
+}
+.mobile-header h1 { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+.mobile-header-right { display: flex; align-items: center; gap: 8px; }
+.hamburger-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── SIDEBAR OVERLAY (mobile) ─────────────────────────────────────────── */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 199;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+.sidebar-overlay.open { display: block; }
+
+/* ── PANELS — one visible at a time ───────────────────────────────────── */
+.panel {
+    display: none;
+    padding: 32px;
+    max-width: 960px;
+    animation: panelFadeIn 0.2s ease;
+}
+.panel.active {
+    display: block;
+}
+@keyframes panelFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.panel-header {
+    margin-bottom: 24px;
+}
+.panel-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+}
+.panel-subtitle {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    margin-top: 2px;
+}
+
+/* ── Section Titles (within panels) ───────────────────────────────────── */
+.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent);
+    margin: 24px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    min-height: 44px;
+    padding: 4px 0;
+}
+.section-title .count-badge {
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    padding: 1px 8px;
+    border-radius: 10px;
+}
+.section-title .section-chevron {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+    color: var(--ink-secondary);
+    margin-left: auto;
+}
+.section-title.collapsed .section-chevron {
+    transform: rotate(-90deg);
+}
+.section-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+    max-height: 5000px;
+    opacity: 1;
+}
+.section-content.collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Cards ─────────────────────────────────────────────────────────────── */
+.card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+.card-body {
+    padding: 16px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  QUICK ACTIONS                                                            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.action-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    border-left: 4px solid var(--line);
+    background: var(--paper);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 8px;
+    cursor: default;
+    transition: transform 0.1s;
+    flex-wrap: wrap;
+}
+.action-card:active { transform: scale(0.99); }
+.action-card.urgent { border-left-color: var(--red); background: var(--red-bg); }
+.action-card.high { border-left-color: var(--amber); background: var(--amber-bg); }
+.action-card.medium { border-left-color: var(--blue); background: var(--blue-bg); }
+.action-badge {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.action-card.urgent .action-badge { background: var(--red); color: #fff; }
+.action-card.high .action-badge { background: var(--amber); color: #fff; }
+.action-card.medium .action-badge { background: var(--blue); color: #fff; }
+.action-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+}
+.action-meta {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    width: 100%;
+    padding-left: 50px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  METRIC CARDS                                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.metric-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 14px 16px;
+    text-align: center;
+}
+.metric-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink-secondary);
+    display: block;
+    margin-bottom: 4px;
+}
+.metric-value {
+    font-size: 22px;
+    font-weight: 800;
+    display: block;
+    line-height: 1.2;
+}
+.metric-value.positive { color: var(--green); }
+.metric-value.negative { color: var(--red); }
+.metric-value.warning { color: var(--amber); }
+.metric-detail {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    display: block;
+    margin-top: 2px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FAMILY CARDS                                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.family-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0 12px;
+    scrollbar-width: none;
+}
+.family-scroll::-webkit-scrollbar { display: none; }
+.family-card {
+    flex: 0 0 160px;
+    scroll-snap-align: start;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.family-card:active { transform: scale(0.97); }
+.family-card.has-alert { border: 1px solid var(--amber); }
+.family-card strong {
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.family-age {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+.family-notes {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    line-height: 1.4;
+}
+.family-detail {
+    display: none;
+    padding: 8px 0 0;
+    margin-top: 8px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--ink-secondary);
+    line-height: 1.5;
+}
+.family-card.expanded { flex: 0 0 220px; }
+.family-card.expanded .family-detail { display: block; }
+.family-detail-row { padding: 2px 0; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RISK CLUSTERS                                                            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.cluster-row {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+}
+.cluster-row:last-child { border-bottom: none; }
+.cluster-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.cluster-name { font-size: 12px; font-weight: 700; color: var(--ink); }
+.cluster-score { font-size: 12px; font-weight: 800; color: var(--ink-secondary); }
+.cluster-bar-track {
+    height: 8px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.cluster-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+.bar-critical { background: linear-gradient(90deg, var(--red), #ef4444); }
+.bar-warning { background: linear-gradient(90deg, var(--amber), #f59e0b); }
+.bar-info { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+.cluster-meta {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    margin-top: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  ANOMALIES                                                                */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.anomalies-list { max-height: 600px; overflow-y: auto; }
+.anomaly-item {
+    display: grid;
+    grid-template-columns: 70px 70px 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+}
+.anomaly-item:last-child { border-bottom: none; }
+.anomaly-severity {
+    font-size: 10px; font-weight: 800; text-transform: uppercase; align-self: center;
+}
+.anomaly-item.critical .anomaly-severity { color: var(--red); }
+.anomaly-item.warning .anomaly-severity { color: var(--amber); }
+.anomaly-item.info .anomaly-severity { color: var(--blue); }
+.anomaly-domain {
+    font-size: 10px; font-weight: 600; color: var(--ink-secondary); text-transform: uppercase; align-self: center;
+}
+.anomaly-title { font-weight: 600; color: var(--ink); grid-column: 1 / -1; }
+.anomaly-action { font-size: 11px; color: var(--ink-secondary); grid-column: 1 / -1; }
+.anomaly-item.swiping { transition: none; }
+.anomaly-item.swipe-dismiss {
+    transform: translateX(-120%); opacity: 0; max-height: 0; padding: 0; margin: 0; border: none; overflow: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease, max-height 0.3s ease 0.1s, padding 0.3s ease 0.1s;
+}
+.anomaly-item.swipe-snooze {
+    transform: translateX(120%); opacity: 0; max-height: 0; padding: 0; margin: 0; border: none; overflow: hidden;
+    transition: transform 0.3s ease, opacity 0.3s ease, max-height 0.3s ease 0.1s, padding 0.3s ease 0.1s;
+}
+.anomaly-swipe-counter {
+    font-size: 11px; color: var(--ink-secondary); padding: 6px 0 2px; text-align: center;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  TIMELINE (Compliance + Calendar)                                         */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+}
+.timeline-item:last-child { border-bottom: none; }
+.timeline-date {
+    font-size: 11px; font-weight: 700; color: var(--ink-secondary); min-width: 100px; flex-shrink: 0;
+}
+.timeline-content {
+    display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
+}
+.timeline-title { font-size: 12px; font-weight: 600; color: var(--ink); flex: 1; min-width: 0; }
+.timeline-days {
+    font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 8px; flex-shrink: 0;
+}
+.timeline-item.critical .timeline-days { background: var(--red-bg); color: var(--red); }
+.timeline-item.warning .timeline-days { background: var(--amber-bg); color: var(--amber); }
+.timeline-item.info .timeline-days { background: var(--blue-bg); color: var(--blue); }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  GOALS                                                                    */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+.goal-card {
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
+    padding: 12px 14px;
+    border-left: 3px solid var(--sea);
+}
+.goal-card.active { border-left-color: var(--green); }
+.goal-card.planning { border-left-color: var(--accent-2); }
+.goal-label { font-size: 13px; font-weight: 700; color: var(--ink); display: block; }
+.goal-target { font-size: 11px; color: var(--ink-secondary); display: block; margin-top: 2px; }
+.goal-status { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--sea); display: block; margin-top: 4px; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  ACTIVE TASKS                                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 14px;
+    border-left: 4px solid var(--line);
+    background: var(--paper);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 6px;
+    min-height: 44px;
+}
+.task-item.critical { border-left-color: var(--red); background: var(--red-bg); }
+.task-item.warning  { border-left-color: var(--amber); background: var(--amber-bg); }
+.task-item.info     { border-left-color: var(--blue); background: var(--blue-bg); }
+.task-id {
+    font-size: 10px; font-weight: 700; color: var(--ink-secondary);
+    background: var(--bg); padding: 1px 6px; border-radius: 6px; flex-shrink: 0; align-self: center;
+}
+.task-text { font-size: 13px; font-weight: 500; color: var(--ink); flex: 1; min-width: 0; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RCFE STATUS                                                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.rcfe-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 14px 16px;
+    border-left: 4px solid var(--sea);
+}
+.rcfe-row { display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.rcfe-row:last-child { border-bottom: none; }
+.rcfe-label { font-weight: 700; color: var(--ink-secondary); min-width: 90px; flex-shrink: 0; font-size: 12px; }
+.rcfe-value { color: var(--ink); flex: 1; }
+.rcfe-value.rcfe-active { color: var(--amber); font-weight: 700; }
+.rcfe-card a { color: var(--accent); text-decoration: none; }
+.rcfe-card a:hover { text-decoration: underline; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  SYSTEM STATS                                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.sysstat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 14px;
+}
+.sysstat-item { text-align: center; padding: 8px 4px; }
+.sysstat-item.sysstat-wide { grid-column: span 2; border-top: 1px solid var(--line); padding-top: 10px; margin-top: 2px; }
+.sysstat-val { display: block; font-size: 18px; font-weight: 800; color: var(--accent); line-height: 1.2; }
+.sysstat-lbl { display: block; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink-secondary); margin-top: 2px; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  SHOW MORE / COLLAPSIBLE                                                  */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.show-more-btn {
+    display: block; width: 100%; padding: 8px; font-size: 12px; font-weight: 600;
+    font-family: var(--font); color: var(--accent); background: var(--accent-light);
+    border: 1px solid var(--accent); border-radius: var(--radius-sm); cursor: pointer;
+    margin-top: 6px; min-height: 44px; transition: background 0.15s;
+}
+.show-more-btn:hover { background: var(--accent); color: #fff; }
+.collapsible-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; background: none; border: none; padding: 12px 16px;
+    cursor: pointer; font-family: var(--font); color: var(--ink);
+}
+.collapsible-toggle .chevron { transition: transform 0.2s; font-size: 12px; color: var(--ink-secondary); }
+.collapsible-toggle[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+.collapsible-body { display: none; padding: 0 16px 16px; }
+.collapsible-body.open { display: block; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  CHARTS                                                                   */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.chart-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.chart-card:active { transform: scale(0.98); }
+.chart-card.expanded { grid-column: 1 / -1; padding: 20px; }
+.chart-card.expanded canvas { max-height: 350px; }
+.chart-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+canvas { max-width: 100%; }
+.chart-expand-hint {
+    font-size: 10px; color: var(--ink-secondary); text-align: center;
+    margin-top: 6px; opacity: 0; transition: opacity 0.2s;
+}
+.chart-card:hover .chart-expand-hint { opacity: 1; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  TAB NAVIGATION (deadlines/calendar)                                      */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.tab-bar {
+    display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; padding: 4px 0;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+    flex-shrink: 0; padding: 7px 14px; font-size: 12px; font-weight: 600;
+    font-family: var(--font); border: 1px solid var(--line); border-radius: 20px;
+    background: var(--paper); color: var(--ink-secondary); cursor: pointer;
+    transition: all 0.15s; white-space: nowrap;
+}
+.tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  TASK CHECKBOXES                                                         */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.task-checkbox {
+    appearance: none; -webkit-appearance: none;
+    width: 22px; height: 22px; border: 2px solid var(--line); border-radius: 6px;
+    flex-shrink: 0; cursor: pointer; position: relative; background: var(--paper);
+    transition: all 0.2s ease; align-self: center; min-width: 22px; min-height: 22px;
+}
+.task-checkbox:checked { background: var(--accent); border-color: var(--accent); }
+.task-checkbox:checked::after {
+    content: ""; position: absolute; left: 6px; top: 2px;
+    width: 6px; height: 12px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.action-card.checked, .task-item.checked {
+    text-decoration: line-through; opacity: 0.5; transition: opacity 0.2s ease;
+}
+.clear-completed-btn {
+    display: none; margin: 8px 0; padding: 8px 16px; font-size: 12px; font-weight: 600;
+    font-family: var(--font); color: var(--ink-secondary); background: var(--paper);
+    border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer;
+    min-height: 44px; transition: all 0.15s;
+}
+.clear-completed-btn.visible { display: inline-block; }
+.clear-completed-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  PROGRESS RINGS                                                          */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.metric-ring-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.metric-ring-wrap svg { display: block; }
+.metric-ring-wrap .metric-ring-value {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; line-height: 1.1; text-align: center; pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  TIME-OF-DAY BANNER                                                      */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.tod-banner {
+    padding: 0 0 4px;
+    font-size: 14px; font-weight: 600; color: var(--ink);
+    display: flex; align-items: center; gap: 8px;
+}
+.tod-banner .tod-icon { font-size: 20px; }
+.tod-banner .tod-text { opacity: 0.85; }
+.tod-emphasis { display: none; }
+.tod-emphasis.active {
+    display: block; padding: 0 0 16px; font-size: 12px; color: var(--ink-secondary); font-style: italic;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  BOTTOM NAV BAR (mobile only)                                            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    display: none;
+    align-items: center; justify-content: space-around;
+    height: 56px; background: var(--paper); border-top: 1px solid var(--line);
+    box-shadow: 0 -2px 12px rgba(40,36,30,0.08);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+[data-theme="dark"] .bottom-nav { background: rgba(28,28,28,0.92); box-shadow: 0 -2px 12px rgba(0,0,0,0.3); }
+.nav-tab {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 6px 8px; min-width: 44px; min-height: 48px;
+    border: none; background: none; cursor: pointer; font-family: var(--font);
+    color: var(--ink-secondary); font-size: 10px; font-weight: 600;
+    text-decoration: none; transition: color 0.15s; justify-content: center; border-radius: 8px;
+}
+.nav-tab:hover, .nav-tab.active { color: var(--accent); }
+.nav-tab.active { background: var(--accent-light); }
+.nav-tab-icon { font-size: 18px; line-height: 1; }
+.nav-tab-label { font-size: 9px; line-height: 1; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FLOATING ACTION BUTTON + COMMAND BAR                                    */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.fab {
+    position: fixed; bottom: 24px; right: 24px; z-index: 110;
+    width: 52px; height: 52px; border-radius: 50%; border: none;
+    background: var(--accent); color: #fff; font-size: 24px; font-weight: 700;
+    cursor: pointer; box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.15s, background 0.15s;
+}
+.fab:hover { transform: scale(1.08); }
+.fab:active { transform: scale(0.95); }
+.fab.open { background: var(--red); transform: rotate(45deg); }
+
+.command-overlay {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; top: 0;
+    z-index: 105; background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+}
+.command-overlay.open { display: flex; align-items: flex-end; }
+.command-panel {
+    width: 100%; max-width: 500px; margin: 0 auto;
+    background: var(--paper); border-radius: var(--radius) var(--radius) 0 0;
+    box-shadow: var(--shadow-lg); padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0));
+}
+.command-input-wrap { display: flex; gap: 8px; align-items: center; }
+.command-input {
+    flex: 1; padding: 12px 14px; font-size: 15px; font-family: var(--font);
+    border: 2px solid var(--line); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--ink); outline: none; min-height: 48px;
+}
+.command-input:focus { border-color: var(--accent); }
+.command-input::placeholder { color: var(--ink-secondary); }
+.command-hints { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.command-hint {
+    font-size: 11px; padding: 4px 10px; border-radius: 12px;
+    background: var(--accent-light); color: var(--accent);
+    border: 1px solid transparent; cursor: pointer; font-family: var(--font);
+    min-height: 32px; display: flex; align-items: center;
+}
+.command-hint:hover { border-color: var(--accent); }
+.quick-notes { margin-top: 10px; max-height: 150px; overflow-y: auto; font-size: 12px; }
+.quick-note-item {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 6px 0; border-bottom: 1px solid var(--line); gap: 8px;
+}
+.quick-note-item:last-child { border-bottom: none; }
+.quick-note-text { color: var(--ink); flex: 1; }
+.quick-note-time { color: var(--ink-secondary); font-size: 10px; flex-shrink: 0; white-space: nowrap; }
+.quick-note-del {
+    background: none; border: none; color: var(--red); cursor: pointer;
+    font-size: 14px; padding: 0 4px; min-width: 28px; min-height: 28px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* Text highlight from find command */
+.cmd-highlight {
+    background: var(--amber-bg); color: var(--ink);
+    outline: 2px solid var(--amber); border-radius: 2px;
+    animation: highlight-pulse 0.6s ease-out;
+}
+@keyframes highlight-pulse { 0% { outline-width: 4px; } 100% { outline-width: 2px; } }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  UNDO TOAST                                                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.undo-toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(100px); z-index: 120;
+    background: var(--ink); color: var(--paper); padding: 10px 18px;
+    border-radius: 24px; font-size: 13px; font-weight: 600;
+    font-family: var(--font); box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none; white-space: nowrap;
+}
+.undo-toast.visible { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+.undo-toast-btn {
+    background: var(--accent); color: #fff; border: none; border-radius: 14px;
+    padding: 4px 14px; font-size: 12px; font-weight: 700; font-family: var(--font);
+    cursor: pointer; min-height: 32px; display: flex; align-items: center; gap: 6px;
+    transition: background 0.15s;
+}
+.undo-toast-btn:hover { background: var(--red); }
+.undo-toast-countdown { display: inline-block; min-width: 16px; text-align: center; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RESPONSIVE — Tablet (481-768px): sidebar icon-only                      */
+/* ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) and (min-width: 481px) {
+    .sidebar {
+        width: var(--sidebar-collapsed-w);
+    }
+    .sidebar-brand-text { display: none; }
+    .sidebar-item-label { display: none; }
+    .sidebar-item-badge { display: none; }
+    .sidebar-item { justify-content: center; padding: 10px 0; margin: 2px 4px; width: calc(100% - 8px); }
+    .sidebar-item.active::before { left: -4px; }
+    .sidebar-item-icon { width: auto; }
+    .sidebar-footer-text { display: none; }
+    .sidebar-footer { justify-content: center; padding: 12px 8px; }
+    .main-content { margin-left: var(--sidebar-collapsed-w); }
+    .panel { padding: 24px; }
+    /* Tooltip on hover */
+    .sidebar-item { position: relative; }
+    .sidebar-item::after {
+        content: attr(data-label);
+        position: absolute;
+        left: calc(100% + 8px);
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--ink);
+        color: var(--paper);
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s;
+        z-index: 210;
+    }
+    .sidebar-item:hover::after { opacity: 1; }
+    .charts-grid { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  RESPONSIVE — Phone (<=480px): sidebar hidden, bottom nav + hamburger    */
+/* ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    .main-content {
+        margin-left: 0;
+    }
+    .mobile-header {
+        display: flex;
+    }
+    .bottom-nav {
+        display: flex;
+    }
+    .panel {
+        padding: 16px 12px 100px;
+    }
+    .fab { bottom: 68px; right: 12px; width: 48px; height: 48px; font-size: 22px; }
+    .undo-toast { bottom: 68px; font-size: 12px; padding: 8px 14px; }
+
+    .metrics-grid { grid-template-columns: 1fr; gap: 8px; }
+    .metric-card {
+        display: grid; grid-template-columns: 56px 1fr; grid-template-rows: auto auto;
+        gap: 2px 14px; align-items: center; text-align: left; padding: 12px 14px;
+    }
+    .metric-card .metric-label { grid-column: 2; grid-row: 1; margin-bottom: 0; font-size: 11px; align-self: end; }
+    .metric-card .metric-ring-wrap { grid-column: 1; grid-row: 1 / 3; justify-self: center; }
+    .metric-card .metric-detail { grid-column: 2; grid-row: 2; font-size: 11px; align-self: start; }
+    .metric-value { font-size: 18px; }
+    .metric-ring-wrap svg { width: 56px; height: 56px; }
+    .metric-ring-wrap .metric-ring-value { font-size: 12px; }
+
+    .charts-grid { grid-template-columns: 1fr; }
+    .action-meta { padding-left: 0; }
+
+    .anomaly-item { grid-template-columns: 1fr; }
+    .anomaly-severity, .anomaly-domain { display: inline; }
+
+    .family-card { flex: 0 0 120px; padding: 10px; }
+    .family-card strong { font-size: 13px; }
+    .family-card.expanded { flex: 0 0 200px; }
+
+    .goals-grid { grid-template-columns: 1fr; }
+    .timeline-date { min-width: 65px; font-size: 10px; }
+    .timeline-title { font-size: 11px; }
+    .section-title { font-size: 12px; margin: 16px 0 8px; }
+
+    .sysstat-grid { grid-template-columns: repeat(2, 1fr); padding: 10px; }
+    .sysstat-val { font-size: 15px; }
+    .rcfe-label { min-width: 72px; font-size: 11px; }
+    .rcfe-row { font-size: 12px; }
+    .command-panel { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+    /* Chat panel: override panel padding and size for full-height chat */
+    #panel-chat { padding: 0 0 56px; }
+    #panel-chat .chat-container { height: calc(100dvh - 56px - 44px); max-height: none; border-radius: 0; box-shadow: none; }
+    .chat-input-area { padding: 8px; }
+    .chat-input-area input { padding: 8px 12px; font-size: 16px; }
+    .chat-input-area button { padding: 8px 16px; }
+    .chat-status { font-size: 10px; }
+    .thread-tabs { padding: 6px 8px; }
+    .thread-tab { padding: 5px 10px; font-size: 11px; min-height: 28px; }
+    .msg-avatar { width: 28px; height: 28px; font-size: 11px; }
+    .chat-msg { max-width: 90%; }
+    .report-card { padding: 14px; }
+    .report-section-title { font-size: 12px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  CHAT PANEL                                                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    max-height: 700px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+}
+.chat-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+}
+.chat-status {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    font-weight: 600;
+}
+.chat-status.connected { color: var(--green); }
+.chat-status.error { color: var(--red); }
+
+/* ── Thread Tabs ──────────────────────────────────────────────────────── */
+.chat-threads {
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+}
+.thread-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.thread-tabs::-webkit-scrollbar { display: none; }
+.thread-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font);
+    cursor: pointer;
+    white-space: nowrap;
+    min-height: 32px;
+    transition: all 0.15s;
+}
+.thread-tab:hover { border-color: var(--accent); color: var(--ink); }
+.thread-tab.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+.thread-tab .unread-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: var(--red);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+}
+.thread-tab.active .unread-badge { background: rgba(255,255,255,0.3); }
+.thread-tab-new {
+    border-style: dashed;
+    opacity: 0.7;
+}
+.thread-tab-new:hover { opacity: 1; }
+
+/* ── Messages ─────────────────────────────────────────────────────────── */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+.chat-msg {
+    display: flex;
+    gap: 8px;
+    max-width: 85%;
+    animation: chatMsgIn 0.2s ease;
+}
+@keyframes chatMsgIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.chat-msg.phoebe { align-self: flex-start; }
+.chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.chat-msg.thinking { align-self: flex-start; }
+
+/* Avatars */
+.msg-avatar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 2px;
+}
+.msg-avatar.av-phoebe { background: var(--accent); }
+.msg-avatar.av-dan { background: var(--sea, #5f7f8f); }
+.msg-avatar.av-minako { background: #c47a9e; }
+.msg-avatar.av-default { background: var(--ink-secondary); }
+
+/* Bubble */
+.msg-bubble {
+    padding: 10px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+.chat-msg.phoebe .msg-bubble,
+.chat-msg.thinking .msg-bubble {
+    background: var(--bg);
+    border-bottom-left-radius: 4px;
+    color: var(--ink);
+}
+.chat-msg.user .msg-bubble {
+    background: var(--accent);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+.msg-bubble .msg-time {
+    font-size: 10px;
+    opacity: 0.6;
+    margin-top: 4px;
+    display: block;
+}
+.msg-bubble .msg-sender {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: block;
+    opacity: 0.8;
+}
+.chat-msg.phoebe .msg-sender { color: var(--accent); }
+
+/* Thinking dots animation */
+.thinking-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 0;
+}
+.thinking-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--ink-secondary);
+    border-radius: 50%;
+    animation: thinkingBounce 1.4s infinite ease-in-out;
+}
+.thinking-dot:nth-child(1) { animation-delay: 0s; }
+.thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes thinkingBounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+
+/* ── Empty state ──────────────────────────────────────────────────────── */
+.chat-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--ink-secondary);
+    gap: 12px;
+}
+.chat-empty-icon { font-size: 48px; opacity: 0.3; }
+.chat-empty-text { font-size: 14px; line-height: 1.6; }
+.chat-empty-sub { font-size: 12px; opacity: 0.7; }
+
+/* ── Input area ───────────────────────────────────────────────────────── */
+.chat-input-area {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--line);
+    flex-shrink: 0;
+    background: var(--paper);
+}
+.chat-input-area input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    font-family: var(--font);
+    outline: none;
+    min-height: 44px;
+    transition: border-color 0.15s;
+}
+.chat-input-area input:focus {
+    border-color: var(--accent);
+}
+.chat-input-area input::placeholder { color: var(--ink-secondary); }
+.chat-input-area button {
+    padding: 10px 20px;
+    border-radius: 24px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    font-family: var(--font);
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 60px;
+    min-height: 44px;
+    transition: background 0.15s, transform 0.1s;
+}
+.chat-input-area button:hover { background: #8b4e33; }
+.chat-input-area button:active { transform: scale(0.95); }
+.chat-input-area button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  REPORTS PANEL                                                           */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.report-card {
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 20px;
+    border-left: 4px solid var(--accent);
+}
+.report-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+.report-meta {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    margin-bottom: 14px;
+}
+.report-content {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.6;
+}
+.report-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    margin: 16px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+}
+.report-section-title:first-child { margin-top: 0; }
+.report-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 13px;
+}
+.report-item-bullet {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 6px;
+}
+.report-item-bullet.critical { background: var(--red); }
+.report-item-bullet.warning { background: var(--amber); }
+.report-item-bullet.info { background: var(--blue); }
+.report-item-bullet.good { background: var(--green); }
+.report-item-text { flex: 1; min-width: 0; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  LOGIN SCREEN                                                            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.login-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    z-index: 9999;
+}
+.login-card {
+    text-align: center;
+    padding: 40px;
+    background: var(--paper);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    max-width: 320px;
+    width: 90%;
+}
+.login-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+.login-card h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 4px;
+    letter-spacing: -0.5px;
+}
+.login-card > p {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    margin: 0;
+}
+.google-signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 24px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 15px;
+    font-weight: 500;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    margin: 24px 0 8px;
+    min-height: 48px;
+}
+.google-signin-btn:hover {
+    background: var(--bg);
+    box-shadow: var(--shadow);
+}
+.google-signin-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.login-hint {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    margin-top: 8px;
+}
+.login-hint.error {
+    color: var(--red);
+}
+
+/* ── User Profile in Sidebar ─────────────────────────────────────────── */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    overflow: hidden;
+}
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+.user-avatar-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.user-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--sidebar-ink-active);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.signout-btn {
+    margin-left: auto;
+    background: rgba(255,255,255,0.08);
+    border: none;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    color: var(--sidebar-ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: background 0.15s;
+    flex-shrink: 0;
+}
+.signout-btn:hover { background: rgba(255,255,255,0.15); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN SCREEN ══════════════ -->
+<!--
+    Firebase Auth Setup Instructions:
+    1. Go to https://console.firebase.google.com/project/han-personal-project/authentication
+    2. Click "Get started" if not already enabled
+    3. Under "Sign-in method" tab, click "Google"
+    4. Toggle "Enable" and set a support email
+    5. Click "Save"
+    6. Add your GitHub Pages domain to Authorized Domains:
+       suntzu131.github.io
+    That is all — the code below handles everything else.
+-->
+<div id="login-screen" class="login-screen">
+    <div class="login-card">
+        <div class="login-icon">P</div>
+        <h2>Phoebe</h2>
+        <p>Family Intelligence Dashboard</p>
+        <button id="google-signin-btn" class="google-signin-btn" onclick="signInWithGoogle()">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" height="20" alt="">
+            Sign in with Google
+        </button>
+        <p class="login-hint" id="login-hint">Use your family Google account</p>
+    </div>
+</div>
+
+<div class="app-shell" style="display:none">
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">P</div>
+        <div class="sidebar-brand-text">
+            <span class="sidebar-brand-name">Phoebe</span>
+            <span class="sidebar-brand-sub">Life Intelligence</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        <button class="sidebar-item active" data-panel="panel-home" data-label="Home" onclick="showPanel('panel-home', this)">
+            <span class="sidebar-item-icon">&#127968;</span>
+            <span class="sidebar-item-label">Home</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-chat" data-label="Chat" onclick="showPanel('panel-chat', this)">
+            <span class="sidebar-item-icon">&#128172;</span>
+            <span class="sidebar-item-label">Chat</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-tasks" data-label="Tasks" onclick="showPanel('panel-tasks', this)">
+            <span class="sidebar-item-icon">&#9989;</span>
+            <span class="sidebar-item-label">Tasks</span>
+            <span class="sidebar-item-badge">12</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-calendar" data-label="Calendar" onclick="showPanel('panel-calendar', this)">
+            <span class="sidebar-item-icon">&#128197;</span>
+            <span class="sidebar-item-label">Calendar</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-family" data-label="Family" onclick="showPanel('panel-family', this)">
+            <span class="sidebar-item-icon">&#128106;</span>
+            <span class="sidebar-item-label">Family</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-intel" data-label="Intelligence" onclick="showPanel('panel-intel', this)">
+            <span class="sidebar-item-icon">&#128202;</span>
+            <span class="sidebar-item-label">Intelligence</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-risks" data-label="Risks" onclick="showPanel('panel-risks', this)">
+            <span class="sidebar-item-icon">&#9888;&#65039;</span>
+            <span class="sidebar-item-label">Risks</span>
+            <span class="sidebar-item-badge">6</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-rcfe" data-label="RCFE" onclick="showPanel('panel-rcfe', this)">
+            <span class="sidebar-item-icon">&#127973;</span>
+            <span class="sidebar-item-label">RCFE</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-goals" data-label="Goals" onclick="showPanel('panel-goals', this)">
+            <span class="sidebar-item-icon">&#127919;</span>
+            <span class="sidebar-item-label">Goals</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-reports" data-label="Reports" onclick="showPanel('panel-reports', this)">
+            <span class="sidebar-item-icon">&#128196;</span>
+            <span class="sidebar-item-label">Reports</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-system" data-label="System" onclick="showPanel('panel-system', this)">
+            <span class="sidebar-item-icon">&#9881;&#65039;</span>
+            <span class="sidebar-item-label">System</span>
+        </button>
+    </nav>
+    <div class="sidebar-footer">
+        <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 10:03</span>
+    </div>
+</aside>
+
+<!-- ══════════════ SIDEBAR OVERLAY (mobile) ══════════════ -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+
+<!-- ══════════════ MAIN CONTENT ══════════════ -->
+<div class="main-content" id="mainContent">
+
+    <!-- ═══ MOBILE HEADER ═══ -->
+    <header class="mobile-header">
+        <div style="display:flex;align-items:center;gap:10px">
+            <button class="hamburger-btn" onclick="openMobileSidebar()" aria-label="Open menu">&#9776;</button>
+            <h1>Phoebe</h1>
+        </div>
+        <div class="mobile-header-right">
+            <span class="stress-pill warning" style="font-size:11px;padding:3px 8px;background:rgba(255,255,255,0.18);border-radius:20px;font-weight:700">
+                54.8
+            </span>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: HOME                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel active" id="panel-home">
+        <div class="panel-header">
+            <div class="tod-banner" id="tod-banner">
+                <span class="tod-icon" id="tod-icon"></span>
+                <span class="tod-text" id="tod-text"></span>
+            </div>
+            <div class="tod-emphasis" id="tod-emphasis"></div>
+        </div>
+
+        <div class="section-title" id="sec-metrics" onclick="toggleSectionCollapse(this)">Key Metrics <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content" data-section="sec-metrics">
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <span class="metric-label">Cash Flow</span>
+                <div class="metric-ring-wrap">
+            <svg width="64" height="64" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="4"/>
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--green)" stroke-width="4"
+                    stroke-dasharray="175.93" stroke-dashoffset="88.3"
+                    stroke-linecap="round" transform="rotate(-90 32 32)"/>
+            </svg>
+            <span class="metric-ring-value"><span class="metric-value positive" style="font-size:inherit">+$6,502</span></span>
+        </div>
+                <span class="metric-detail">Income $13,059</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Care Stage</span>
+                <div class="metric-ring-wrap">
+            <svg width="64" height="64" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="4"/>
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--amber)" stroke-width="4"
+                    stroke-dasharray="175.93" stroke-dashoffset="124.9"
+                    stroke-linecap="round" transform="rotate(-90 32 32)"/>
+            </svg>
+            <span class="metric-ring-value"><span class="metric-value warning" style="font-size:inherit">2/7</span></span>
+        </div>
+                <span class="metric-detail">FAST 6e &middot; RCFE 29%</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Runway</span>
+                <div class="metric-ring-wrap">
+            <svg width="64" height="64" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="4"/>
+                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--green)" stroke-width="4"
+                    stroke-dasharray="175.93" stroke-dashoffset="65.1"
+                    stroke-linecap="round" transform="rotate(-90 32 32)"/>
+            </svg>
+            <span class="metric-ring-value"><span class="metric-value positive" style="font-size:inherit">38mo</span></span>
+        </div>
+                <span class="metric-detail">of 60 month target</span>
+            </div>
+        </div>
+        </div>
+
+        <div class="section-title" id="sec-home-priorities" onclick="toggleSectionCollapse(this)">Today's Priorities <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content" data-section="sec-home-priorities">
+        <div class="action-card urgent" data-index="action-0" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">URGENT</span>
+            <span class="action-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
+            <span class="action-meta">CPA fees ~$1K-$3K &middot; 1 phone call</span>
+        </div>
+<div class="action-card high" data-index="action-1" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Pause distributions via Security Benefit</span>
+            <span class="action-meta">Free &middot; 1 phone call</span>
+        </div>
+<div class="action-card high" data-index="action-2" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Schedule Minako appointment via Kaiser</span>
+            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+        </div>
+<div class="action-card high" data-index="action-3" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Schedule Minako pelvic ultrasound via Kaiser</span>
+            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+        </div>
+<div class="action-card high" data-index="action-4" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Submit bond for mother's assets</span>
+            <span class="action-meta">Bond premium ~$500-$1K &middot; 1-2 weeks</span>
+        </div>
+<div class="action-card high" data-index="action-5" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Provide 7 expense amounts + 4 balances</span>
+            <span class="action-meta">Free &middot; 20 min of Dan's time</span>
+        </div>
+<div class="action-card high" data-index="action-6" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Pause IRA (requires conservatorship)</span>
+            <span class="action-meta">Free &middot; Blocked</span>
+        </div>
+<div class="action-card high" data-index="action-7" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Install ramp + DME wheelchair</span>
+            <span class="action-meta">$2K-$5K &middot; 2-4 weeks</span>
+        </div>
+
+        <button class="clear-completed-btn" id="clearCompleted" onclick="clearChecked()">Clear completed</button>
+        </div>
+
+        <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
+            Generated March 24, 2026 at 10:03 AM &middot;
+            Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: CHAT                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-chat">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3>Phoebe Chat</h3>
+                <span class="chat-status" id="chat-status">Connecting...</span>
+            </div>
+            <div class="chat-threads">
+                <div class="thread-tabs" id="thread-tabs">
+                    <button class="thread-tab active" data-thread="phoebe-family" onclick="switchThread('phoebe-family', this)">Family</button>
+                    <button class="thread-tab thread-tab-new" onclick="createNewThread()">+ New</button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="chat-empty" id="chat-empty">
+                    <div class="chat-empty-icon">&#128172;</div>
+                    <div class="chat-empty-text">Phoebe Family Chat</div>
+                    <div class="chat-empty-sub">Messages sync in real-time across all family devices</div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Message Phoebe..." autocomplete="off">
+                <button id="chat-send" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: TASKS                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-tasks">
+        <div class="panel-header">
+            <div class="panel-title">Tasks</div>
+            <div class="panel-subtitle">Active tasks and priority actions</div>
+        </div>
+
+        <div class="section-title" id="sec-tasks-priorities" onclick="toggleSectionCollapse(this)">Priority Actions <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content" data-section="sec-tasks-priorities">
+        <div class="action-card urgent" data-index="action-0" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">URGENT</span>
+            <span class="action-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
+            <span class="action-meta">CPA fees ~$1K-$3K &middot; 1 phone call</span>
+        </div>
+<div class="action-card high" data-index="action-1" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Pause distributions via Security Benefit</span>
+            <span class="action-meta">Free &middot; 1 phone call</span>
+        </div>
+<div class="action-card high" data-index="action-2" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Schedule Minako appointment via Kaiser</span>
+            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+        </div>
+<div class="action-card high" data-index="action-3" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Schedule Minako pelvic ultrasound via Kaiser</span>
+            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+        </div>
+<div class="action-card high" data-index="action-4" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Submit bond for mother's assets</span>
+            <span class="action-meta">Bond premium ~$500-$1K &middot; 1-2 weeks</span>
+        </div>
+<div class="action-card high" data-index="action-5" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Provide 7 expense amounts + 4 balances</span>
+            <span class="action-meta">Free &middot; 20 min of Dan's time</span>
+        </div>
+<div class="action-card high" data-index="action-6" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Pause IRA (requires conservatorship)</span>
+            <span class="action-meta">Free &middot; Blocked</span>
+        </div>
+<div class="action-card high" data-index="action-7" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="action-text">Install ramp + DME wheelchair</span>
+            <span class="action-meta">$2K-$5K &middot; 2-4 weeks</span>
+        </div>
+
+        <button class="clear-completed-btn" id="clearCompleted2" onclick="clearChecked()">Clear completed</button>
+        </div>
+
+        <div class="section-title" id="sec-tasks-active" onclick="toggleSectionCollapse(this)">Active Tasks <span class="count-badge">4</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content" data-section="sec-tasks-active">
+        <div class="task-item critical" data-index="task-0" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="task-0" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">URGENT</span>
+            <span class="task-id">Bond</span>
+            <span class="task-text">Print form from Danny Lee, BOTH Dan+Thomas sign same page, mail to Han &amp; Park. Conservatorship letters blocked until done.</span>
+        </div>
+<div class="task-item critical" data-index="task-1" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="task-1" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">URGENT</span>
+            <span class="task-id">SNT</span>
+            <span class="task-text">Schedule Mar 27 slot with Yujin Park. RCFE decision made — SNT is next.</span>
+        </div>
+<div class="task-item critical" data-index="task-2" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="task-2" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">URGENT</span>
+            <span class="task-id">Solvang</span>
+            <span class="task-text">Book Goleta Residence Inn + confirm Hannah+Thomas coverage. Trip departs Mar 30.</span>
+        </div>
+<div class="task-item critical" data-index="task-3" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="task-3" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">URGENT</span>
+            <span class="task-id">Form</span>
+            <span class="task-text">Call Osamu Hashizu (714) 258-2819 to confirm engagement. Due April 15 = 23 days.</span>
+        </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: CALENDAR                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-calendar">
+        <div class="panel-header">
+            <div class="panel-title">Calendar</div>
+            <div class="panel-subtitle">Upcoming events and compliance deadlines</div>
+        </div>
+
+        <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab(event, 'tab-calendar-events')">Calendar</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tab-calendar-deadlines')">Deadlines</button>
+        </div>
+        <div class="card">
+            <div class="card-body tab-panel active" id="tab-calendar-events">
+                <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
+            </div>
+            <div class="card-body tab-panel" id="tab-calendar-deadlines">
+                <div class="timeline-item critical">
+            <div class="timeline-date">2023-03-28</div>
+            <div class="timeline-content">
+                <span class="timeline-title">CCW license renewal</span>
+                <span class="timeline-days">-1092d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2023-05-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Nanny status — is the nanny still employed? What's the monthly cost?</span>
+                <span class="timeline-days">-1044d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2024-09-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Dental work — receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?</span>
+                <span class="timeline-days">-555d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2024-10-10</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Lease renewal — Irvine house at $5,745/mo, lease start Oct 2024</span>
+                <span class="timeline-days">-530d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2024-12-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">IHSS back-tracking application (Dan as joint provider)</span>
+                <span class="timeline-days">-464d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-01-03</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Funeral pre-payment reimbursement from mother's account</span>
+                <span class="timeline-days">-445d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-01-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Father's van title transfer to aunt (gomo)</span>
+                <span class="timeline-days">-433d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-05-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Minako echocardiogram (follow-up to CT cardiomegaly finding)</span>
+                <span class="timeline-days">-313d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-05-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~</span>
+                <span class="timeline-days">-313d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-06-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Second vehicle confirmation — vehicles status</span>
+                <span class="timeline-days">-282d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-10-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Anaheim Villa RCFE application — 2-3 month wait after approval</span>
+                <span class="timeline-days">-160d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-12-12</div>
+            <div class="timeline-content">
+                <span class="timeline-title">IRA annuity pause request (Security Benefit, $973.48/mo distributions)</span>
+                <span class="timeline-days">-102d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2025-12-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Minako pelvic ultrasound follow-up (6-12 months post June 2025)</span>
+                <span class="timeline-days">-99d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2026-02-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Insurance broker contact (Tyler Joseph/AJG) — find ~$100/mo premium to reduce mother's income below Medi-Cal threshold</span>
+                <span class="timeline-days">-37d</span>
+            </div>
+        </div>
+<div class="timeline-item critical">
+            <div class="timeline-date">2026-03-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">TKD belt test — red/black to red/black w/ stripe</span>
+                <span class="timeline-days">-9d</span>
+            </div>
+        </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: FAMILY                                                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-family">
+        <div class="panel-header">
+            <div class="panel-title">Family</div>
+            <div class="panel-subtitle">Tap a card for details</div>
+        </div>
+
+        <div class="family-scroll">
+            <div class="family-card" onclick="toggleFamilyDetail(this)">
+            <strong>Dan </strong>
+            <span class="family-notes">Weight: 165 lbs, TKD goal 145 lbs, piriformis syndrome</span>
+            <div class="family-detail"><div class="family-detail-row">Weight: 165 lbs</div><div class="family-detail-row">TKD goal 145 lbs</div><div class="family-detail-row">piriformis syndrome</div></div>
+        </div>
+<div class="family-card has-alert" onclick="toggleFamilyDetail(this)">
+            <strong>Minako </strong>
+            <span class="family-notes">2 overdue Kaiser appts, hand specialist needed</span>
+            <div class="family-detail"><div class="family-detail-row">2 overdue Kaiser appts</div><div class="family-detail-row">hand specialist needed</div></div>
+        </div>
+<div class="family-card" onclick="toggleFamilyDetail(this)">
+            <strong>Koko <span class="family-age">6</span></strong>
+            <span class="family-notes">IEP needed, RCOC: swimming + TKD</span>
+            <div class="family-detail"><div class="family-detail-row">IEP needed</div><div class="family-detail-row">RCOC: swimming + TKD</div></div>
+        </div>
+<div class="family-card" onclick="toggleFamilyDetail(this)">
+            <strong>Issa <span class="family-age">4</span></strong>
+            <span class="family-notes">Preschool at Cadenza</span>
+            <div class="family-detail"><div class="family-detail-row">Preschool at Cadenza</div></div>
+        </div>
+<div class="family-card has-alert" onclick="toggleFamilyDetail(this)">
+            <strong>Mother <span class="family-age">67</span></strong>
+            <span class="family-notes">FAST 6e | 93.8 lbs | RCFE decision made</span>
+            <div class="family-detail"><div class="family-detail-row">FAST 6e</div><div class="family-detail-row">93.8 lbs</div><div class="family-detail-row">RCFE decision made</div></div>
+        </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: INTELLIGENCE                                               -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-intel">
+        <div class="panel-header">
+            <div class="panel-title">Intelligence</div>
+            <div class="panel-subtitle">Stress: 54.8 (MODERATE) &middot; Runway: 38 months</div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card" onclick="toggleChartExpand(this)">
+                <div class="chart-title">Stress Components</div>
+                <canvas id="stressChart" height="200"></canvas>
+                <div class="chart-expand-hint">Tap to expand</div>
+            </div>
+            <div class="chart-card" onclick="toggleChartExpand(this)">
+                <div class="chart-title">Risk Clusters</div>
+                <canvas id="riskChart" height="200"></canvas>
+                <div class="chart-expand-hint">Tap to expand</div>
+            </div>
+            <div class="chart-card" onclick="toggleChartExpand(this)">
+                <div class="chart-title">Income Breakdown</div>
+                <canvas id="incomeChart" height="200"></canvas>
+                <div class="chart-expand-hint">Tap to expand</div>
+            </div>
+            <div class="chart-card" onclick="toggleChartExpand(this)">
+                <div class="chart-title">Risk Cluster Probability</div>
+                <canvas id="probChart" height="200"></canvas>
+                <div class="chart-expand-hint">Tap to expand</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: RISKS                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-risks">
+        <div class="panel-header">
+            <div class="panel-title">Risk Clusters</div>
+            <div class="panel-subtitle">6 clusters &middot; 20 risk factors tracked</div>
+        </div>
+
+        <div class="section-title" id="sec-risk-clusters" onclick="toggleSectionCollapse(this)">Clusters <span class="count-badge">6</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content" data-section="sec-risk-clusters">
+        <div class="card"><div class="card-body"><div class="cluster-row">
+            <div class="cluster-header">
+                <span class="cluster-name">MINAKO HEALTH BACKLOG</span>
+                <span class="cluster-score">88/100</span>
+            </div>
+            <div class="cluster-bar-track">
+                <div class="cluster-bar bar-critical" style="width:88.0%"></div>
+            </div>
+            <div class="cluster-meta">health, family &middot; 100% compound probability</div>
+        </div>
+<div class="cluster-row">
+            <div class="cluster-header">
+                <span class="cluster-name">IMMEDIATE LEGAL DEADLINES</span>
+                <span class="cluster-score">71/100</span>
+            </div>
+            <div class="cluster-bar-track">
+                <div class="cluster-bar bar-critical" style="width:71.3%"></div>
+            </div>
+            <div class="cluster-meta">legal, finances &middot; 98% compound probability</div>
+        </div>
+<div class="cluster-row">
+            <div class="cluster-header">
+                <span class="cluster-name">FINANCIAL VISIBILITY GAP</span>
+                <span class="cluster-score">65/100</span>
+            </div>
+            <div class="cluster-bar-track">
+                <div class="cluster-bar bar-warning" style="width:65.0%"></div>
+            </div>
+            <div class="cluster-meta">finances &middot; 100% compound probability</div>
+        </div>
+<div class="cluster-row">
+            <div class="cluster-header">
+                <span class="cluster-name">MEDI-CAL / IRA CHAIN</span>
+                <span class="cluster-score">63/100</span>
+            </div>
+            <div class="cluster-bar-track">
+                <div class="cluster-bar bar-warning" style="width:62.8%"></div>
+            </div>
+            <div class="cluster-meta">finances, care, legal &middot; 99% compound probability</div>
+        </div>
+<div class="cluster-row">
+            <div class="cluster-header">
+                <span class="cluster-name">CARE CRISIS CLUSTER</span>
+                <span class="cluster-score">58/100</span>
+            </div>
+            <div class="cluster-bar-track">
+                <div class="cluster-bar bar-warning" style="width:58.3%"></div>
+            </div>
+            <div class="cluster-meta">care, health, finances &middot; 99% compound probability</div>
+        </div>
+<div class="cluster-row">
+            <div class="cluster-header">
+                <span class="cluster-name">PERSONAL GUARANTEE EXPOSURE</span>
+                <span class="cluster-score">12/100</span>
+            </div>
+            <div class="cluster-bar-track">
+                <div class="cluster-bar bar-info" style="width:12.4%"></div>
+            </div>
+            <div class="cluster-meta">legal, finances, goals &middot; 24% compound probability</div>
+        </div>
+</div></div>
+        </div>
+
+        <div class="section-title" id="sec-risk-anomalies" onclick="toggleSectionCollapse(this)">Anomalies <span class="count-badge">19</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content" data-section="sec-risk-anomalies">
+        <div class="card">
+            <button class="collapsible-toggle" onclick="event.stopPropagation(); toggleSection(this)" aria-expanded="false">
+                <span style="font-size:12px;font-weight:600;color:var(--ink)">Show details</span>
+                <span class="chevron">&#9660;</span>
+            </button>
+            <div class="collapsible-body anomalies-list">
+                <div class="anomaly-item warning" data-anomaly-id="anomaly-0">
+            <span class="anomaly-severity">WARNING</span>
+            <span class="anomaly-domain">calendar</span>
+            <span class="anomaly-title">TKD Black Belt test ~7 months away — ZERO training events in 30 days</span>
+            <span class="anomaly-action">Schedule TKD classes immediately. Minimum 3x/week to build toward black belt test. Contact dojang.</span>
+        </div>
+<div class="anomaly-item warning" data-anomaly-id="anomaly-1">
+            <span class="anomaly-severity">WARNING</span>
+            <span class="anomaly-domain">care</span>
+            <span class="anomaly-title">Anaheim Villa RCFE application follow-up — due in 22 days (2026-04-15)</span>
+            <span class="anomaly-action">Call Yumi Kim <a href="tel:7143089800">(714) 308-9800</a>. Get current status.</span>
+        </div>
+<div class="anomaly-item warning" data-anomaly-id="anomaly-2">
+            <span class="anomaly-severity">WARNING</span>
+            <span class="anomaly-domain">health</span>
+            <span class="anomaly-title">Missed medication pattern detected</span>
+            <span class="anomaly-action">Review medication adherence pattern. If systemic, discuss with psychiatrist.</span>
+        </div>
+<div class="anomaly-item warning" data-anomaly-id="anomaly-3">
+            <span class="anomaly-severity">WARNING</span>
+            <span class="anomaly-domain">calendar</span>
+            <span class="anomaly-title">Weight Loss: ZERO calendar events in 30 days</span>
+            <span class="anomaly-action">Schedule recurring time blocks for 'Weight Loss'. This goal is invisible in your calendar.</span>
+        </div>
+<div class="anomaly-item warning" data-anomaly-id="anomaly-4">
+            <span class="anomaly-severity">WARNING</span>
+            <span class="anomaly-domain">finances</span>
+            <span class="anomaly-title">Financial balance facts (6 items) last updated 266+ days ago</span>
+            <span class="anomaly-action">Update financial balances — request latest bank/account statements.</span>
+        </div>
+<button class="show-more-btn" onclick="toggleAnomalyExpand(this)">
+            Show all 19 anomalies
+        </button>
+        <div id="anomaly-extra" style="display:none"><div class="anomaly-item warning" data-anomaly-id="anomaly-5">
+            <span class="anomaly-severity">WARNING</span>
+            <span class="anomaly-domain">health</span>
+            <span class="anomaly-title">Dan's weight (165 lbs) — no downward progress toward 145 lb target</span>
+            <span class="anomaly-action">Log current weight. If still 165+, flag as goal deviation. Schedule gym 3x/week minimum.</span>
+        </div>
+<div class="anomaly-item warning" data-anomaly-id="anomaly-6">
+            <span class="anomaly-severity">WARNING</span>
+            <span class="anomaly-domain">relationships</span>
+            <span class="anomaly-title">No recent email contact with Hannah in 30+ days</span>
+            <span class="anomaly-action">Reach out to Hannah. Primary caregiver — should have regular contact.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-7">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">health</span>
+            <span class="anomaly-title">Medical follow-up status unclear: Eustachian tube balloon dilation (Dr. Keschner)</span>
+            <span class="anomaly-action">Check if ET balloon dilation was scheduled and completed. If not, schedule with Dr. Keschner.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-8">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">calendar</span>
+            <span class="anomaly-title">Retire at 55 / Business Exit: ZERO calendar events in 30 days</span>
+            <span class="anomaly-action">Schedule recurring time blocks for 'Retire at 55 / Business Exit'. This goal is invisible in your calendar.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-9">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">care</span>
+            <span class="anomaly-title">Single active caregiver (Hannah) — backup: Angela Seo</span>
+            <span class="anomaly-action">Verify backup availability monthly. Consider recruiting a second backup.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-10">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">health</span>
+            <span class="anomaly-title">Minako pelvic ultrasound — due in 69 days (2026-06-01)</span>
+            <span class="anomaly-action">Schedule Kaiser appointment immediately. GI scheduling: 714-279-4200.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-11">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">health</span>
+            <span class="anomaly-title">Minako echocardiogram — due in 37 days (2026-04-30)</span>
+            <span class="anomaly-action">Schedule Kaiser cardiology appointment. Should have been done 10+ months ago.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-12">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">care</span>
+            <span class="anomaly-title">IHSS reassessment request — mother mobility decline — due in 52 days (2026-05-15)</span>
+            <span class="anomaly-action">Request IHSS reassessment through county social worker.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-13">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">health</span>
+            <span class="anomaly-title">Medical follow-up status unclear: GI follow-up post-colonoscopy (Dr. Niho)</span>
+            <span class="anomaly-action">Confirm if GI follow-up was scheduled and attended after Jan 30, 2026 colonoscopy.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-14">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">health</span>
+            <span class="anomaly-title">Medical follow-up status unclear: Fatty liver weight loss follow-up</span>
+            <span class="anomaly-action">Schedule liver function follow-up if weight loss goal not achieved (165 → target 145 lbs).</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-15">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">relationships</span>
+            <span class="anomaly-title">No recent email contact with Eddie in 30+ days</span>
+            <span class="anomaly-action">Reach out to Eddie. Close friend since 1999.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-16">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">relationships</span>
+            <span class="anomaly-title">No recent email contact with Calvin in 30+ days</span>
+            <span class="anomaly-action">Reach out to Calvin. Close friend, yokly colleague.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-17">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">relationships</span>
+            <span class="anomaly-title">No recent email contact with Angela Seo in 30+ days</span>
+            <span class="anomaly-action">Reach out to Angela Seo. Backup caregiver.</span>
+        </div>
+<div class="anomaly-item info" data-anomaly-id="anomaly-18">
+            <span class="anomaly-severity">INFO</span>
+            <span class="anomaly-domain">relationships</span>
+            <span class="anomaly-title">No recent email contact with Pastor Samuel in 30+ days</span>
+            <span class="anomaly-action">Reach out to Pastor Samuel. Church leadership.</span>
+        </div>
+</div>
+            </div>
+        </div>
+        <div class="anomaly-swipe-counter" id="anomalySwipeCounter" style="display:none"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: RCFE                                                       -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-rcfe">
+        <div class="panel-header">
+            <div class="panel-title">RCFE Transition</div>
+            <div class="panel-subtitle">Residential care facility placement for Mother</div>
+        </div>
+        <div class="rcfe-card">
+        <div class="rcfe-row"><span class="rcfe-label">Facility</span><span class="rcfe-value">Anaheim Villa</span></div>
+        <div class="rcfe-row"><span class="rcfe-label">Status</span><span class="rcfe-value rcfe-active">Application in progress</span></div>
+        <div class="rcfe-row"><span class="rcfe-label">Contact</span><span class="rcfe-value"><a href="tel:7143089800">Yumi Kim (714) 308-9800</a></span></div>
+        <div class="rcfe-row"><span class="rcfe-label">Next Step</span><span class="rcfe-value">Medication list from Dr. Chang</span></div>
+        <div class="rcfe-row"><span class="rcfe-label">Timeline</span><span class="rcfe-value">~3 months (Korean-run, CalOptima)</span></div>
+    </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: GOALS                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-goals">
+        <div class="panel-header">
+            <div class="panel-title">Goals</div>
+            <div class="panel-subtitle">6 goals tracked</div>
+        </div>
+        <div class="goals-grid">
+            <div class="goal-card active">
+            <span class="goal-label">TKD Black Belt</span>
+            <span class="goal-target">Black belt test Nov 2026</span>
+            <span class="goal-status">active</span>
+        </div>
+<div class="goal-card active">
+            <span class="goal-label">Weight Loss (165 → 145 lbs)</span>
+            <span class="goal-target">145 lbs</span>
+            <span class="goal-status">active</span>
+        </div>
+<div class="goal-card planning">
+            <span class="goal-label">Retire at 55 / $15M Exit</span>
+            <span class="goal-target">$15M exit, retire 2038</span>
+            <span class="goal-status">planning</span>
+        </div>
+<div class="goal-card planning">
+            <span class="goal-label">Multi-Country Real Estate (JP/KR/US/PH)</span>
+            <span class="goal-target">Properties in JP/KR/US/PH</span>
+            <span class="goal-status">research</span>
+        </div>
+<div class="goal-card planning">
+            <span class="goal-label">Mother's Care Transition</span>
+            <span class="goal-target">RCFE when needed</span>
+            <span class="goal-status">monitoring</span>
+        </div>
+<div class="goal-card active">
+            <span class="goal-label">Agapay Mission / Faith Growth</span>
+            <span class="goal-target">Active faith mission</span>
+            <span class="goal-status">active</span>
+        </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: REPORTS                                                    -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-reports">
+        <div class="panel-header">
+            <div class="panel-title">Reports</div>
+            <div class="panel-subtitle">Phoebe-generated intelligence reports</div>
+        </div>
+        <div class="reports-list">
+        <div class="report-card">
+            <div class="report-title">Morning Brief</div>
+            <div class="report-meta">Generated March 24, 2026 at 10:03 AM</div>
+            <div class="report-content" id="morning-brief-content">
+                <div class="report-item"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
+<div class="report-item"><span class="report-item-bullet good"></span><span class="report-item-text">Financial runway: 38 months</span></div>
+<div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">CCW license renewal — 2023-03-28</span></div>
+<div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Nanny status — is the nanny still employed? What's the monthly cost? — 2023-05-15</span></div>
+<div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Dental work — receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover? — 2024-09-15</span></div>
+            </div>
+        </div>
+        <div class="report-card">
+            <div class="report-title">Intelligence Report</div>
+            <div class="report-meta">Last updated: March 24, 2026 at 10:03 AM</div>
+            <div class="report-content" id="intel-report-content">
+                <div class="report-section-title">Priority Actions</div>
+<div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Pause distributions via Security Benefit</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Schedule Minako appointment via Kaiser</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Schedule Minako pelvic ultrasound via Kaiser</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Submit bond for mother's assets</span></div>
+<div class="report-section-title">Risk Clusters</div>
+<div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">MINAKO HEALTH BACKLOG — 88/100</span></div>
+<div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">IMMEDIATE LEGAL DEADLINES — 71/100</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">FINANCIAL VISIBILITY GAP — 65/100</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">MEDI-CAL / IRA CHAIN — 63/100</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">CARE CRISIS CLUSTER — 58/100</span></div>
+<div class="report-section-title">Financial Summary</div>
+<div class="report-item"><span class="report-item-bullet info"></span><span class="report-item-text">Income: $13,059/mo</span></div>
+<div class="report-item"><span class="report-item-bullet info"></span><span class="report-item-text">Verified expenses: $6,557/mo</span></div>
+<div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Unknown expenses: $1,100 - $2,400/mo</span></div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!--  PANEL: SYSTEM                                                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="panel" id="panel-system">
+        <div class="panel-header">
+            <div class="panel-title">System</div>
+            <div class="panel-subtitle">Phoebe infrastructure status</div>
+        </div>
+        <div class="sysstat-grid">
+        <div class="sysstat-item"><span class="sysstat-val">36</span><span class="sysstat-lbl">Agents</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">29</span><span class="sysstat-lbl">Skills</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">82</span><span class="sysstat-lbl">Tools</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">44</span><span class="sysstat-lbl">Timers</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 10:03</span><span class="sysstat-lbl">Last render</span></div>
+    </div>
+    </div>
+
+</div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<!-- ══════════════ BOTTOM NAV BAR (mobile) ══════════════ -->
+<nav class="bottom-nav" id="bottomNav">
+    <button class="nav-tab active" data-panel="panel-home" onclick="showPanel('panel-home', null, this)" aria-label="Home">
+        <span class="nav-tab-icon">&#127968;</span>
+        <span class="nav-tab-label">Home</span>
+    </button>
+    <button class="nav-tab" data-panel="panel-chat" onclick="showPanel('panel-chat', null, this)" aria-label="Chat">
+        <span class="nav-tab-icon">&#128172;</span>
+        <span class="nav-tab-label">Chat</span>
+    </button>
+    <button class="nav-tab" data-panel="panel-tasks" onclick="showPanel('panel-tasks', null, this)" aria-label="Tasks">
+        <span class="nav-tab-icon">&#9989;</span>
+        <span class="nav-tab-label">Tasks</span>
+    </button>
+    <button class="nav-tab" data-panel="panel-calendar" onclick="showPanel('panel-calendar', null, this)" aria-label="Calendar">
+        <span class="nav-tab-icon">&#128197;</span>
+        <span class="nav-tab-label">Calendar</span>
+    </button>
+    <button class="nav-tab" data-panel="panel-family" onclick="showPanel('panel-family', null, this)" aria-label="Family">
+        <span class="nav-tab-icon">&#128106;</span>
+        <span class="nav-tab-label">Family</span>
+    </button>
+</nav>
+
+<!-- ══════════════ FAB + COMMAND BAR ══════════════ -->
+<button class="fab" id="fab" onclick="toggleCommandBar()" aria-label="Quick command">&#9889;</button>
+
+<div class="command-overlay" id="commandOverlay" onclick="if(event.target===this) toggleCommandBar()">
+    <div class="command-panel">
+        <div class="command-input-wrap">
+            <input type="text" class="command-input" id="commandInput" placeholder="call, note:, find..." autocomplete="off" onkeydown="handleCommandKey(event)">
+        </div>
+        <div class="command-hints">
+            <button class="command-hint" onclick="setCommand('call ')">call [name]</button>
+            <button class="command-hint" onclick="setCommand('note: ')">note: [text]</button>
+            <button class="command-hint" onclick="setCommand('find ')">find [term]</button>
+        </div>
+        <div class="quick-notes" id="quickNotes"></div>
+    </div>
+</div>
+
+<!-- ══════════════ UNDO TOAST ══════════════ -->
+<div class="undo-toast" id="undoToast">
+    <span id="undoToastText">1 task completed.</span>
+    <button class="undo-toast-btn" onclick="undoLastCheck()">Undo <span class="undo-toast-countdown" id="undoCountdown">5</span></button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<!--  SCRIPTS                                                              -->
+<!-- ══════════════════════════════════════════════════════════════════════ -->
+<script>
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  0. INDEXEDDB STORAGE (idb-keyval with localStorage fallback)            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _idb = (typeof idbKeyval !== "undefined") ? idbKeyval : null;
+
+function storageGet(key, fallback) {
+    if (_idb) {
+        return _idb.get(key).then(function(v) { return v !== undefined ? v : fallback; }).catch(function() {
+            try { var v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : fallback; } catch(e) { return fallback; }
+        });
+    }
+    return Promise.resolve(function() {
+        try { var v = localStorage.getItem(key); return v !== null ? JSON.parse(v) : fallback; } catch(e) { return fallback; }
+    }());
+}
+
+function storageSet(key, value) {
+    if (_idb) {
+        return _idb.set(key, value).catch(function() {
+            try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
+        });
+    }
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
+    return Promise.resolve();
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  1. THEME TOGGLE                                                         */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute("data-theme") === "dark";
+    html.setAttribute("data-theme", isDark ? "" : "dark");
+    storageSet("phoebe-theme", isDark ? "light" : "dark");
+    initCharts();
+}
+(function() {
+    try {
+        var raw = localStorage.getItem("phoebe-theme");
+        if (raw) {
+            var val = raw;
+            try { val = JSON.parse(raw); } catch(e) {}
+            if (val === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        }
+    } catch(e) {}
+    if (_idb) {
+        _idb.get("phoebe-theme").then(function(v) {
+            if (v === "dark") document.documentElement.setAttribute("data-theme", "dark");
+        }).catch(function() {});
+    }
+})();
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  2. PANEL NAVIGATION (sidebar + bottom nav)                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _currentPanel = "panel-home";
+
+function showPanel(panelId, sidebarBtn, bottomBtn) {
+    /* Hide all panels */
+    document.querySelectorAll(".panel").forEach(function(p) { p.classList.remove("active"); });
+    /* Show target */
+    var target = document.getElementById(panelId);
+    if (target) target.classList.add("active");
+    _currentPanel = panelId;
+
+    /* Update sidebar active state */
+    document.querySelectorAll(".sidebar-item").forEach(function(b) { b.classList.remove("active"); });
+    if (sidebarBtn) {
+        sidebarBtn.classList.add("active");
+    } else {
+        /* Find matching sidebar button */
+        var match = document.querySelector('.sidebar-item[data-panel="' + panelId + '"]');
+        if (match) match.classList.add("active");
+    }
+
+    /* Update bottom nav active state */
+    document.querySelectorAll(".nav-tab").forEach(function(b) { b.classList.remove("active"); });
+    if (bottomBtn) {
+        bottomBtn.classList.add("active");
+    } else {
+        var bmatch = document.querySelector('.nav-tab[data-panel="' + panelId + '"]');
+        if (bmatch) bmatch.classList.add("active");
+    }
+
+    /* Close mobile sidebar if open */
+    closeMobileSidebar();
+
+    /* Scroll to top of main content */
+    document.getElementById("mainContent").scrollTo(0, 0);
+    window.scrollTo(0, 0);
+
+    /* Re-init charts if intelligence panel is being shown */
+    if (panelId === "panel-intel") {
+        setTimeout(function() { initCharts(); }, 50);
+    }
+
+    /* Lazy-init Firebase chat when panel is first shown */
+    if (panelId === "panel-chat") {
+        initChat();
+    }
+
+    /* Save to storage */
+    storageSet("phoebe_active_panel", panelId);
+}
+
+/* ── Mobile Sidebar ───────────────────────────────────────────────────── */
+function openMobileSidebar() {
+    document.getElementById("sidebar").classList.add("mobile-open");
+    document.getElementById("sidebarOverlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+}
+function closeMobileSidebar() {
+    document.getElementById("sidebar").classList.remove("mobile-open");
+    document.getElementById("sidebarOverlay").classList.remove("open");
+    document.body.style.overflow = "";
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  3. TASK CHECKBOXES + HAPTIC FEEDBACK + UNDO TOAST                       */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _checkedCache = [];
+var _undoTimer = null;
+var _undoTaskId = null;
+var _undoCard = null;
+var _undoCb = null;
+
+function getCheckedTasks() { return _checkedCache; }
+function saveCheckedTasks(arr) { _checkedCache = arr; storageSet("phoebe_checked_tasks", arr); }
+function handleCheck(cb) {
+    var taskId = cb.getAttribute("data-task-id");
+    var card = cb.closest("[data-checkable]");
+    var checked = getCheckedTasks().slice();
+    if (cb.checked) {
+        card.classList.add("checked");
+        if (checked.indexOf(taskId) === -1) checked.push(taskId);
+        if (navigator.vibrate) navigator.vibrate(50);
+        showUndoToast(taskId, card, cb);
+    } else {
+        card.classList.remove("checked");
+        checked = checked.filter(function(id) { return id !== taskId; });
+    }
+    saveCheckedTasks(checked);
+    updateClearBtn();
+}
+function restoreCheckedTasks() {
+    storageGet("phoebe_checked_tasks", []).then(function(checked) {
+        _checkedCache = checked || [];
+        _checkedCache.forEach(function(taskId) {
+            var cb = document.querySelector('[data-task-id="' + taskId + '"]');
+            if (cb) {
+                cb.checked = true;
+                var card = cb.closest("[data-checkable]");
+                if (card) card.classList.add("checked");
+            }
+        });
+        updateClearBtn();
+    });
+}
+function clearChecked() {
+    saveCheckedTasks([]);
+    document.querySelectorAll(".task-checkbox").forEach(function(cb) {
+        cb.checked = false;
+        var card = cb.closest("[data-checkable]");
+        if (card) card.classList.remove("checked");
+    });
+    updateClearBtn();
+}
+function updateClearBtn() {
+    document.querySelectorAll(".clear-completed-btn").forEach(function(btn) {
+        btn.classList.toggle("visible", getCheckedTasks().length > 0);
+    });
+}
+
+function showUndoToast(taskId, card, cb) {
+    if (_undoTimer) clearInterval(_undoTimer);
+    _undoTaskId = taskId; _undoCard = card; _undoCb = cb;
+    var toast = document.getElementById("undoToast");
+    var textEl = document.getElementById("undoToastText");
+    var countEl = document.getElementById("undoCountdown");
+    if (!toast) return;
+    textEl.textContent = "Task completed.";
+    var seconds = 5;
+    countEl.textContent = seconds;
+    toast.classList.add("visible");
+    _undoTimer = setInterval(function() {
+        seconds--;
+        countEl.textContent = seconds;
+        if (seconds <= 0) {
+            clearInterval(_undoTimer); _undoTimer = null;
+            toast.classList.remove("visible");
+            _undoTaskId = null; _undoCard = null; _undoCb = null;
+        }
+    }, 1000);
+}
+function undoLastCheck() {
+    if (!_undoTaskId) return;
+    if (_undoTimer) { clearInterval(_undoTimer); _undoTimer = null; }
+    if (_undoCb) _undoCb.checked = false;
+    if (_undoCard) _undoCard.classList.remove("checked");
+    var checked = getCheckedTasks().filter(function(id) { return id !== _undoTaskId; });
+    saveCheckedTasks(checked);
+    updateClearBtn();
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+    var toast = document.getElementById("undoToast");
+    if (toast) toast.classList.remove("visible");
+    _undoTaskId = null; _undoCard = null; _undoCb = null;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  4. COLLAPSIBLE SECTION TITLES                                           */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _collapsedCache = [];
+function getCollapsedSections() { return _collapsedCache; }
+function saveCollapsedSections(arr) { _collapsedCache = arr; storageSet("phoebe_collapsed_sections", arr); }
+function toggleSectionCollapse(titleEl) {
+    var sectionId = titleEl.id;
+    var contentEl = document.querySelector('[data-section="' + sectionId + '"]');
+    if (!contentEl) return;
+    var isCollapsed = titleEl.classList.contains("collapsed");
+    var collapsed = getCollapsedSections().slice();
+    if (isCollapsed) {
+        titleEl.classList.remove("collapsed");
+        contentEl.classList.remove("collapsed");
+        collapsed = collapsed.filter(function(id) { return id !== sectionId; });
+    } else {
+        titleEl.classList.add("collapsed");
+        contentEl.classList.add("collapsed");
+        if (collapsed.indexOf(sectionId) === -1) collapsed.push(sectionId);
+    }
+    saveCollapsedSections(collapsed);
+}
+function restoreCollapsedSections() {
+    storageGet("phoebe_collapsed_sections", []).then(function(collapsed) {
+        _collapsedCache = collapsed || [];
+        _collapsedCache.forEach(function(sectionId) {
+            var titleEl = document.getElementById(sectionId);
+            var contentEl = document.querySelector('[data-section="' + sectionId + '"]');
+            if (titleEl && contentEl) {
+                titleEl.classList.add("collapsed");
+                contentEl.classList.add("collapsed");
+            }
+        });
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  5. FAMILY DETAIL VIEW                                                   */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function toggleFamilyDetail(card) { card.classList.toggle("expanded"); }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  6. COLLAPSIBLE CARD SECTIONS (anomalies)                                */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function toggleSection(btn) {
+    var body = btn.nextElementSibling;
+    var expanded = btn.getAttribute("aria-expanded") === "true";
+    btn.setAttribute("aria-expanded", !expanded);
+    body.classList.toggle("open");
+}
+function toggleAnomalyExpand(btn) {
+    var extra = document.getElementById("anomaly-extra");
+    if (!extra) return;
+    var visible = extra.style.display !== "none";
+    extra.style.display = visible ? "none" : "block";
+    btn.textContent = visible ? btn.getAttribute("data-show") || btn.textContent : "Show fewer anomalies";
+    if (!btn.getAttribute("data-show")) btn.setAttribute("data-show", btn.textContent);
+}
+
+/* ── Tabs ──────────────────────────────────────────────────────────────── */
+function switchTab(e, id) {
+    var btns = e.target.parentElement.querySelectorAll(".tab-btn");
+    btns.forEach(function(b) { b.classList.remove("active"); });
+    e.target.classList.add("active");
+    var panels = e.target.parentElement.nextElementSibling.querySelectorAll(".tab-panel");
+    panels.forEach(function(p) { p.classList.remove("active"); });
+    document.getElementById(id).classList.add("active");
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  7. COMMAND BAR (FAB)                                                    */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function toggleCommandBar() {
+    var overlay = document.getElementById("commandOverlay");
+    var fab = document.getElementById("fab");
+    var isOpen = overlay.classList.contains("open");
+    overlay.classList.toggle("open");
+    fab.classList.toggle("open");
+    if (!isOpen) {
+        var input = document.getElementById("commandInput");
+        setTimeout(function() { input.focus(); }, 100);
+        renderQuickNotes();
+    }
+}
+function setCommand(text) { var input = document.getElementById("commandInput"); input.value = text; input.focus(); }
+function handleCommandKey(e) {
+    if (e.key === "Enter") { executeCommand(e.target.value.trim()); e.target.value = ""; }
+    else if (e.key === "Escape") { toggleCommandBar(); }
+}
+function executeCommand(cmd) {
+    if (!cmd) return;
+    var lower = cmd.toLowerCase();
+    if (lower.startsWith("call ")) {
+        var name = cmd.substring(5).trim();
+        var links = document.querySelectorAll('a[href^="tel:"]');
+        var found = false;
+        links.forEach(function(a) {
+            if (a.textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+                a.closest(".family-card, .rcfe-card, .action-card, .anomaly-item") &&
+                a.closest(".family-card, .rcfe-card, .action-card, .anomaly-item").textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1) {
+                if (!found) { window.location.href = a.href; found = true; }
+            }
+        });
+        if (!found) alert("No phone number found for: " + name);
+        toggleCommandBar();
+        return;
+    }
+    if (lower.startsWith("note:") || lower.startsWith("note ")) {
+        var noteText = cmd.replace(/^note[: ]*/i, "").trim();
+        if (noteText) {
+            var notes = getQuickNotes();
+            notes.unshift({ text: noteText, time: new Date().toISOString() });
+            if (notes.length > 50) notes = notes.slice(0, 50);
+            saveQuickNotes(notes);
+            renderQuickNotes();
+        }
+        return;
+    }
+    if (lower.startsWith("find ")) {
+        var term = cmd.substring(5).trim();
+        clearHighlights();
+        if (term.length < 2) return;
+        highlightText(document.getElementById("mainContent"), term);
+        toggleCommandBar();
+        var first = document.querySelector(".cmd-highlight");
+        if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+    }
+    alert("Commands: call [name], note: [text], find [term]");
+}
+
+var _notesCache = [];
+function getQuickNotes() { return _notesCache; }
+function saveQuickNotes(arr) { _notesCache = arr; storageSet("phoebe_quick_notes", arr); }
+function renderQuickNotes() {
+    var container = document.getElementById("quickNotes");
+    if (!container) return;
+    storageGet("phoebe_quick_notes", []).then(function(notes) {
+        _notesCache = notes || [];
+        if (_notesCache.length === 0) { container.innerHTML = ""; return; }
+        var html = "";
+        _notesCache.slice(0, 10).forEach(function(n, i) {
+            var d = new Date(n.time);
+            var timeStr = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+            html += '<div class="quick-note-item">' +
+                '<span class="quick-note-text">' + escHtml(n.text) + '</span>' +
+                '<span class="quick-note-time">' + timeStr + '</span>' +
+                '<button class="quick-note-del" onclick="deleteNote(' + i + ')" aria-label="Delete note">&times;</button>' +
+                '</div>';
+        });
+        container.innerHTML = html;
+    });
+}
+function deleteNote(idx) { var notes = getQuickNotes(); notes.splice(idx, 1); saveQuickNotes(notes); renderQuickNotes(); }
+function escHtml(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+function highlightText(root, term) {
+    if (!root) return;
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    var matches = [];
+    while (walker.nextNode()) {
+        var node = walker.currentNode;
+        var idx = node.textContent.toLowerCase().indexOf(term.toLowerCase());
+        if (idx !== -1) matches.push({ node: node, index: idx, length: term.length });
+    }
+    matches.reverse().forEach(function(m) {
+        var range = document.createRange();
+        range.setStart(m.node, m.index);
+        range.setEnd(m.node, m.index + m.length);
+        var span = document.createElement("span");
+        span.className = "cmd-highlight";
+        range.surroundContents(span);
+    });
+}
+function clearHighlights() {
+    document.querySelectorAll(".cmd-highlight").forEach(function(el) {
+        var parent = el.parentNode;
+        parent.replaceChild(document.createTextNode(el.textContent), el);
+        parent.normalize();
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  8. TIME-OF-DAY CONTEXT                                                  */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function setTimeOfDay() {
+    var hour = new Date().getHours();
+    var banner = document.getElementById("tod-banner");
+    var icon = document.getElementById("tod-icon");
+    var text = document.getElementById("tod-text");
+    var emphasis = document.getElementById("tod-emphasis");
+    if (!banner || !icon || !text) return;
+
+    if (hour >= 5 && hour < 11) {
+        icon.textContent = "\u2600\uFE0F";
+        text.textContent = "Good morning, Dan";
+        if (emphasis) { emphasis.textContent = "Review today's priorities and action items"; emphasis.classList.add("active"); }
+    } else if (hour >= 11 && hour < 17) {
+        icon.textContent = "\u26C5";
+        text.textContent = "Good afternoon, Dan";
+        if (emphasis) { emphasis.textContent = "Focus on tasks and upcoming calendar"; emphasis.classList.add("active"); }
+    } else if (hour >= 17 && hour < 22) {
+        icon.textContent = "\uD83C\uDF05";
+        text.textContent = "Good evening, Dan";
+        if (emphasis) { emphasis.textContent = "Check in on family and personal goals"; emphasis.classList.add("active"); }
+    } else {
+        icon.textContent = "\uD83C\uDF19";
+        text.textContent = "Goodnight, Dan";
+        if (emphasis) { emphasis.textContent = "Review tomorrow's calendar"; emphasis.classList.add("active"); }
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  9. CHART DRILL-DOWN                                                     */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function toggleChartExpand(card) {
+    var wasExpanded = card.classList.contains("expanded");
+    document.querySelectorAll(".chart-card.expanded").forEach(function(c) { c.classList.remove("expanded"); });
+    if (!wasExpanded) {
+        card.classList.add("expanded");
+        card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    setTimeout(function() { initCharts(); }, 100);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  10. CHARTS                                                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+// Register datalabels plugin
+if (typeof ChartDataLabels !== "undefined") {
+    Chart.register(ChartDataLabels);
+}
+
+var charts = {};
+function initCharts() {
+    var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    var textColor = isDark ? "#a0a0a0" : "#5b6573";
+    var gridColor = isDark ? "#2e2e2e" : "#ddd3c7";
+    var anyExpanded = document.querySelector(".chart-card.expanded") !== null;
+
+    // Destroy existing
+    Object.values(charts).forEach(function(c) { if (c) c.destroy(); });
+
+    // Datalabels config — only show when chart is expanded
+    var dlOff = { datalabels: { display: false } };
+    var dlOn = { datalabels: {
+        display: true,
+        color: textColor,
+        font: { size: 11, weight: "bold" },
+        formatter: function(value) { return Math.round(value); }
+    } };
+    function dlForCard(canvasId) {
+        if (!anyExpanded) return dlOff;
+        var card = document.getElementById(canvasId).closest(".chart-card");
+        return card && card.classList.contains("expanded") ? dlOn : dlOff;
+    }
+
+    // Stress Components — Radar
+    var ctx1 = document.getElementById("stressChart").getContext("2d");
+    charts.stress = new Chart(ctx1, {
+        type: "radar",
+        data: {
+            labels: ["income_gap", "pg_exposure", "care_trajectory", "runway", "budget_unknowns"],
+            datasets: [{
+                label: "Stress Score",
+                data: [0, 100, 80.5, 68.3, 50.0],
+                borderColor: isDark ? "#d4845a" : "#a85f3f",
+                backgroundColor: isDark ? "rgba(212,132,90,0.15)" : "rgba(168,95,63,0.12)",
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: isDark ? "#d4845a" : "#a85f3f",
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: Object.assign({ legend: { display: false } }, dlForCard("stressChart")),
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: { color: textColor, font: { size: 10 }, stepSize: 25 },
+                    grid: { color: gridColor },
+                    pointLabels: { color: textColor, font: { size: 10 } },
+                    angleLines: { color: gridColor },
+                }
+            }
+        }
+    });
+
+    // Risk Clusters — Horizontal Bar
+    var ctx2 = document.getElementById("riskChart").getContext("2d");
+    charts.risk = new Chart(ctx2, {
+        type: "bar",
+        data: {
+            labels: ["MINAKO HEALTH BACKLOG", "IMMEDIATE LEGAL DEADLINES", "FINANCIAL VISIBILITY GAP", "MEDI-CAL / IRA CHAIN", "CARE CRISIS CLUSTER", "PERSONAL GUARANTEE EXPOSU"],
+            datasets: [{
+                data: [88.0, 71.3, 65.0, 62.8, 58.3, 12.4],
+                backgroundColor: ["rgba(220,38,38,0.7)", "rgba(220,38,38,0.7)", "rgba(217,119,6,0.7)", "rgba(217,119,6,0.7)", "rgba(217,119,6,0.7)", "rgba(37,99,235,0.7)"],
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: Object.assign({ legend: { display: false } }, dlForCard("riskChart")),
+            scales: {
+                x: { beginAtZero: true, max: 100, ticks: { color: textColor }, grid: { color: gridColor } },
+                y: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } },
+            }
+        }
+    });
+
+    // Income Donut
+    var ctx3 = document.getElementById("incomeChart").getContext("2d");
+    var dlIncome = dlForCard("incomeChart");
+    if (dlIncome.datalabels && dlIncome.datalabels.display) {
+        dlIncome.datalabels.formatter = function(value) { return "$" + Math.round(value).toLocaleString(); };
+    }
+    charts.income = new Chart(ctx3, {
+        type: "doughnut",
+        data: {
+            labels: ["Dan Salary (Agape)", "Dan Salary (Yokly/Jireh)", "Dan + Minako IHSS (combined)", "Minako Cadenza", "Mother Room & Board", "Mother SS", "Mother IRA Distribution"],
+            datasets: [{
+                data: [1900, 2900, 5349, 910, 2000, 1985, 876],
+                backgroundColor: [
+                    isDark ? "#d4845a" : "#a85f3f",
+                    isDark ? "#7fa0b0" : "#5f7f8f",
+                    isDark ? "#e8c99a" : "#d8b58a",
+                    isDark ? "#22c55e" : "#16a34a",
+                    isDark ? "#60a5fa" : "#2563eb",
+                    isDark ? "#c084fc" : "#9333ea",
+                    isDark ? "#fb923c" : "#ea580c",
+                ],
+                borderWidth: 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: Object.assign({
+                legend: {
+                    position: "bottom",
+                    labels: { color: textColor, font: { size: 10 }, boxWidth: 10, padding: 8 },
+                },
+            }, dlIncome),
+            cutout: "65%",
+        }
+    });
+
+    // Risk Probability — Polar Area
+    var ctx4 = document.getElementById("probChart").getContext("2d");
+    var dlProb = dlForCard("probChart");
+    if (dlProb.datalabels && dlProb.datalabels.display) {
+        dlProb.datalabels.formatter = function(value) { return value + "%"; };
+    }
+    charts.prob = new Chart(ctx4, {
+        type: "polarArea",
+        data: {
+            labels: ["MINAKO HEALTH BACKLOG", "IMMEDIATE LEGAL DEADLINES", "FINANCIAL VISIBILITY GAP", "MEDI-CAL / IRA CHAIN", "CARE CRISIS CLUSTER", "PERSONAL GUARANTEE EXPOSU"],
+            datasets: [{
+                data: [99.9, 98.5, 100.0, 98.6, 99.4, 23.5],
+                backgroundColor: [
+                    "rgba(220,38,38,0.5)",
+                    "rgba(217,119,6,0.5)",
+                    "rgba(168,95,63,0.5)",
+                    "rgba(37,99,235,0.5)",
+                    "rgba(95,127,143,0.5)",
+                    "rgba(22,163,74,0.5)",
+                ],
+                borderWidth: 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: Object.assign({
+                legend: {
+                    position: "bottom",
+                    labels: { color: textColor, font: { size: 9 }, boxWidth: 10, padding: 6 },
+                },
+            }, dlProb),
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: { display: false },
+                    grid: { color: gridColor },
+                },
+            },
+        }
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  11. SWIPE TO DISMISS / SNOOZE ANOMALY CARDS                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function initAnomalySwipe() {
+    if (typeof Hammer === "undefined") return;
+
+    /* Restore dismissed/snoozed state from IndexedDB */
+    storageGet("phoebe_anomaly_dismissed", []).then(function(dismissed) {
+        storageGet("phoebe_anomaly_snoozed", {}).then(function(snoozed) {
+            dismissed = dismissed || [];
+            snoozed = snoozed || {};
+            var now = Date.now();
+            var activeSnoozed = 0;
+
+            /* Clean expired snoozes */
+            var cleaned = {};
+            Object.keys(snoozed).forEach(function(k) {
+                if (snoozed[k] > now) {
+                    cleaned[k] = snoozed[k];
+                    activeSnoozed++;
+                }
+            });
+            if (Object.keys(cleaned).length !== Object.keys(snoozed).length) {
+                storageSet("phoebe_anomaly_snoozed", cleaned);
+                snoozed = cleaned;
+            }
+
+            /* Hide dismissed and snoozed cards */
+            var items = document.querySelectorAll(".anomaly-item[data-anomaly-id]");
+            items.forEach(function(el) {
+                var aid = el.getAttribute("data-anomaly-id");
+                if (dismissed.indexOf(aid) !== -1) {
+                    el.style.display = "none";
+                } else if (snoozed[aid] && snoozed[aid] > now) {
+                    el.style.display = "none";
+                }
+            });
+
+            updateSwipeCounter(dismissed.length, activeSnoozed);
+
+            /* Attach Hammer.js swipe to each visible anomaly card */
+            items.forEach(function(el) {
+                if (el.style.display === "none") return;
+                var mc = new Hammer(el, { touchAction: "pan-y" });
+                mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 40 });
+
+                mc.on("panleft panright", function(ev) {
+                    el.classList.add("swiping");
+                    el.style.transform = "translateX(" + ev.deltaX + "px)";
+                    el.style.opacity = Math.max(1 - Math.abs(ev.deltaX) / 200, 0.2);
+                });
+
+                mc.on("panend pancancel", function(ev) {
+                    el.classList.remove("swiping");
+                    if (Math.abs(ev.deltaX) > 100) {
+                        if (ev.deltaX < 0) {
+                            /* Swipe LEFT = dismiss */
+                            el.classList.add("swipe-dismiss");
+                            if (navigator.vibrate) navigator.vibrate(50);
+                            var aid = el.getAttribute("data-anomaly-id");
+                            storageGet("phoebe_anomaly_dismissed", []).then(function(d) {
+                                d = d || [];
+                                if (d.indexOf(aid) === -1) d.push(aid);
+                                storageSet("phoebe_anomaly_dismissed", d);
+                                updateSwipeCounter(d.length, null);
+                            });
+                            setTimeout(function() { el.style.display = "none"; }, 350);
+                        } else {
+                            /* Swipe RIGHT = snooze 24h */
+                            el.classList.add("swipe-snooze");
+                            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+                            var aid = el.getAttribute("data-anomaly-id");
+                            var expiry = Date.now() + 24 * 60 * 60 * 1000;
+                            storageGet("phoebe_anomaly_snoozed", {}).then(function(s) {
+                                s = s || {};
+                                s[aid] = expiry;
+                                storageSet("phoebe_anomaly_snoozed", s);
+                                updateSwipeCounter(null, Object.keys(s).length);
+                            });
+                            setTimeout(function() { el.style.display = "none"; }, 350);
+                        }
+                    } else {
+                        /* Snap back */
+                        el.style.transform = "";
+                        el.style.opacity = "";
+                    }
+                });
+            });
+        });
+    });
+}
+
+function updateSwipeCounter(dismissed, snoozed) {
+    var counter = document.getElementById("anomalySwipeCounter");
+    if (!counter) return;
+    /* Use cached values if null passed */
+    if (dismissed === null) dismissed = parseInt(counter.getAttribute("data-dismissed") || "0");
+    if (snoozed === null) snoozed = parseInt(counter.getAttribute("data-snoozed") || "0");
+    counter.setAttribute("data-dismissed", dismissed);
+    counter.setAttribute("data-snoozed", snoozed);
+    if (dismissed + snoozed > 0) {
+        var parts = [];
+        if (dismissed > 0) parts.push(dismissed + " dismissed");
+        if (snoozed > 0) parts.push(snoozed + " snoozed (24h)");
+        counter.textContent = parts.join(", ");
+        counter.style.display = "block";
+    } else {
+        counter.style.display = "none";
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  12. FIREBASE CHAT — multi-thread, thinking indicator, avatars           */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDPBOJbb5U68DKaauYQzIypmVK9rqVxHO0",
+    authDomain: "han-personal-project.firebaseapp.com",
+    databaseURL: "https://han-personal-project-default-rtdb.firebaseio.com",
+    projectId: "han-personal-project",
+    storageBucket: "han-personal-project.firebasestorage.app",
+    messagingSenderId: "938700169686",
+    appId: "1:938700169686:web:8b0bc2aaceee613366c477"
+};
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  12a. FIREBASE AUTH — Google Sign-In + persona whitelist                 */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _currentUser = null;
+var _userPersona = null;
+var _authReady = false;
+
+/* Allowed users whitelist (email -> persona) */
+var ALLOWED_USERS = {
+    "corp1131@gmail.com":          { name: "Dan",    persona: "admin",     role: "owner" },
+    "minanecohime@gmail.com":      { name: "Minako", persona: "partner",   role: "family" },
+    "timmy.wuvs.ooooh@gmail.com":  { name: "Tim",    persona: "housemate", role: "guest" },
+    "phoebe.jhan@gmail.com":       { name: "Phoebe", persona: "system",    role: "system" },
+};
+
+/* Persona-based panel access control */
+var PERSONA_ACCESS = {
+    "admin":     ["home","chat","tasks","calendar","family","intel","risks","rcfe","goals","reports","system"],
+    "partner":   ["home","chat","tasks","calendar","family","rcfe","goals"],
+    "housemate": ["home","chat","calendar"],
+    "guest":     ["home","calendar"],
+    "system":    ["home","chat","tasks","calendar","family","intel","risks","rcfe","goals","reports","system"],
+};
+
+function signInWithGoogle() {
+    if (typeof firebase === "undefined" || !firebase.auth) {
+        var hint = document.getElementById("login-hint");
+        if (hint) { hint.textContent = "Firebase SDK not loaded. Check network connection."; hint.className = "login-hint error"; }
+        return;
+    }
+    var btn = document.getElementById("google-signin-btn");
+    if (btn) btn.disabled = true;
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+        /* Auth state observer handles the rest */
+    }).catch(function(error) {
+        console.error("Sign-in error:", error);
+        var hint = document.getElementById("login-hint");
+        if (hint) {
+            var msg = error.message || "Unknown error";
+            if (error.code === "auth/popup-blocked") msg = "Popup was blocked. Allow popups for this site.";
+            if (error.code === "auth/cancelled-popup-request") msg = "Sign-in cancelled.";
+            hint.textContent = msg;
+            hint.className = "login-hint error";
+        }
+        if (btn) btn.disabled = false;
+    });
+}
+
+function signOut() {
+    if (typeof firebase !== "undefined" && firebase.auth) {
+        firebase.auth().signOut();
+    }
+}
+
+function _initAuthObserver() {
+    if (typeof firebase === "undefined" || !firebase.auth) return;
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        _authReady = true;
+        if (user) {
+            var email = user.email.toLowerCase();
+            var profile = ALLOWED_USERS[email];
+
+            if (!profile) {
+                /* Not in whitelist */
+                var hint = document.getElementById("login-hint");
+                if (hint) {
+                    hint.textContent = "Access denied. This dashboard is private.";
+                    hint.className = "login-hint error";
+                }
+                firebase.auth().signOut();
+                var btn = document.getElementById("google-signin-btn");
+                if (btn) btn.disabled = false;
+                return;
+            }
+
+            _currentUser = {
+                email: email,
+                name: profile.name,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                persona: profile.persona,
+                role: profile.role,
+            };
+            _userPersona = profile.persona;
+
+            /* Hide login, show dashboard */
+            document.getElementById("login-screen").style.display = "none";
+            document.querySelector(".app-shell").style.display = "flex";
+
+            /* Update UI with user info */
+            _updateUserUI();
+
+            /* Set chat sender name */
+            CHAT_USER = profile.name;
+
+            /* Apply persona-based access control */
+            _applyPersonaAccess();
+
+            /* Initialize dashboard (restore panel, charts, etc.) */
+            _initDashboardAfterAuth();
+
+        } else {
+            _currentUser = null;
+            _userPersona = null;
+            CHAT_USER = "Unknown";
+            /* Show login, hide dashboard */
+            document.getElementById("login-screen").style.display = "flex";
+            document.querySelector(".app-shell").style.display = "none";
+            var btn = document.getElementById("google-signin-btn");
+            if (btn) btn.disabled = false;
+        }
+    });
+}
+
+function _updateUserUI() {
+    var sidebarFooter = document.querySelector(".sidebar-footer");
+    if (sidebarFooter && _currentUser) {
+        /* Preserve theme toggle button, add user profile */
+        var themeBtn = sidebarFooter.querySelector(".sidebar-theme-btn");
+        var themeBtnHTML = themeBtn ? themeBtn.outerHTML : "";
+        sidebarFooter.innerHTML =
+            themeBtnHTML +
+            '<div class="user-profile">' +
+            (_currentUser.photoURL ?
+                '<img src="' + escHtml(_currentUser.photoURL) + '" class="user-avatar" alt="" referrerpolicy="no-referrer">' :
+                '<div class="user-avatar-letter">' + escHtml(_currentUser.name.charAt(0)) + '</div>') +
+            '<span class="user-name">' + escHtml(_currentUser.name) + '</span>' +
+            '<button class="signout-btn" onclick="signOut()" title="Sign out">&#8617;</button>' +
+            '</div>';
+    }
+}
+
+function _applyPersonaAccess() {
+    if (!_userPersona) return;
+    var allowed = PERSONA_ACCESS[_userPersona] || ["home"];
+
+    /* Hide sidebar items for inaccessible panels */
+    document.querySelectorAll(".sidebar-item").forEach(function(item) {
+        var panel = item.getAttribute("data-panel");
+        var panelName = panel ? panel.replace("panel-", "") : "";
+        item.style.display = (allowed.indexOf(panelName) === -1) ? "none" : "";
+    });
+
+    /* Same for bottom nav */
+    document.querySelectorAll(".nav-tab").forEach(function(tab) {
+        var panel = tab.getAttribute("data-panel");
+        var panelName = panel ? panel.replace("panel-", "") : "";
+        if (allowed.indexOf(panelName) === -1) {
+            tab.style.display = "none";
+        }
+    });
+}
+
+function _initDashboardAfterAuth() {
+    /* Restore last active panel */
+    storageGet("phoebe_active_panel", "panel-home").then(function(panelId) {
+        if (panelId && document.getElementById(panelId)) {
+            /* Check if user has access to this panel */
+            var allowed = PERSONA_ACCESS[_userPersona] || ["home"];
+            var panelName = panelId.replace("panel-", "");
+            if (allowed.indexOf(panelName) !== -1) {
+                showPanel(panelId);
+            } else {
+                showPanel("panel-home");
+            }
+        }
+    });
+    setTimeout(function() { initCharts(); }, 200);
+    restoreCheckedTasks();
+    restoreCollapsedSections();
+    setTimeOfDay();
+    initAnomalySwipe();
+}
+
+/* ── 12b. FIREBASE CHAT — multi-thread, thinking indicator, avatars ────── */
+var chatDb = null;
+var chatRef = null;
+var CHAT_USER = "Dan";
+var _chatInitialized = false;
+var _chatMsgCount = 0;
+var _currentThread = "phoebe-family";
+var _threadListeners = {};
+
+/* Avatar lookup */
+var AVATAR_MAP = {
+    "Phoebe": { cls: "av-phoebe", letter: "P" },
+    "Dan":    { cls: "av-dan",    letter: "D" },
+    "Minako": { cls: "av-minako", letter: "M" },
+};
+
+function getAvatar(sender) {
+    var a = AVATAR_MAP[sender];
+    if (!a) a = { cls: "av-default", letter: (sender || "?").charAt(0).toUpperCase() };
+    return '<div class="msg-avatar ' + a.cls + '">' + a.letter + '</div>';
+}
+
+function initChat() {
+    if (_chatInitialized) return;
+    _chatInitialized = true;
+
+    var statusEl = document.getElementById("chat-status");
+    var messagesEl = document.getElementById("chat-messages");
+    var emptyEl = document.getElementById("chat-empty");
+    var sendBtn = document.getElementById("chat-send");
+
+    if (!statusEl || !messagesEl) return;
+
+    /* Check if Firebase SDK loaded */
+    if (typeof firebase === "undefined" || typeof firebase.initializeApp !== "function") {
+        statusEl.textContent = "SDK not loaded";
+        statusEl.classList.add("error");
+        if (sendBtn) sendBtn.disabled = true;
+        return;
+    }
+
+    /* Check for placeholder config */
+    if (FIREBASE_CONFIG.apiKey === "PLACEHOLDER" || FIREBASE_CONFIG.appId === "PLACEHOLDER") {
+        statusEl.textContent = "Not configured";
+        statusEl.classList.add("error");
+        if (emptyEl) {
+            emptyEl.innerHTML =
+                '<div class="chat-empty-icon">&#128274;</div>' +
+                '<div class="chat-empty-text">Firebase not configured yet</div>' +
+                '<div class="chat-empty-sub">Replace PLACEHOLDER values in render_dashboard.py with your Firebase project config,<br>or run: <code>python3 ~/.openclaw-phoebe/neo4j/phoebe_firebase_chat.py --test</code></div>';
+        }
+        if (sendBtn) sendBtn.disabled = true;
+        return;
+    }
+
+    try {
+        /* Firebase may already be initialized by auth; only init if needed */
+        if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+        }
+        chatDb = firebase.database();
+
+        /* Load thread list from /threads/ and populate tabs */
+        loadThreadList();
+
+        /* Attach to default thread */
+        attachThread(_currentThread);
+
+        /* Connection state monitoring */
+        var connRef = firebase.database().ref(".info/connected");
+        connRef.on("value", function(snap) {
+            if (snap.val() === true) {
+                statusEl.textContent = "Connected";
+                statusEl.className = "chat-status connected";
+            } else {
+                statusEl.textContent = "Offline";
+                statusEl.className = "chat-status";
+            }
+        });
+
+    } catch(e) {
+        statusEl.textContent = "Error";
+        statusEl.classList.add("error");
+        console.error("Firebase init error:", e);
+        if (sendBtn) sendBtn.disabled = true;
+    }
+}
+
+/* ── Thread management ────────────────────────────────────────────────── */
+function loadThreadList() {
+    if (!chatDb) return;
+    var threadsRef = chatDb.ref("threads");
+    threadsRef.on("value", function(snap) {
+        var threads = snap.val() || {};
+        var tabsEl = document.getElementById("thread-tabs");
+        if (!tabsEl) return;
+
+        /* Keep + New button */
+        var html = "";
+        /* Always show Family first */
+        var threadIds = Object.keys(threads);
+        if (threadIds.indexOf("phoebe-family") === -1) {
+            html += buildThreadTab("phoebe-family", "Family");
+        }
+        for (var tid in threads) {
+            var t = threads[tid];
+            html += buildThreadTab(tid, t.name || tid);
+        }
+        html += '<button class="thread-tab thread-tab-new" onclick="createNewThread()">+ New</button>';
+        tabsEl.innerHTML = html;
+    });
+}
+
+function buildThreadTab(threadId, name) {
+    var active = (threadId === _currentThread) ? " active" : "";
+    return '<button class="thread-tab' + active + '" data-thread="' + threadId + '" onclick="switchThread(\'' + threadId + '\', this)">' +
+        escHtml(name) +
+        '<span class="unread-badge" id="unread-' + threadId + '" style="display:none">0</span>' +
+        '</button>';
+}
+
+function switchThread(threadId, btnEl) {
+    if (threadId === _currentThread) return;
+
+    /* Detach old listener */
+    detachThread(_currentThread);
+
+    _currentThread = threadId;
+    _chatMsgCount = 0;
+
+    /* Update tab active state */
+    var tabs = document.querySelectorAll(".thread-tab");
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
+        if (tabs[i].getAttribute("data-thread") === threadId) tabs[i].classList.add("active");
+    }
+
+    /* Clear messages */
+    var messagesEl = document.getElementById("chat-messages");
+    if (messagesEl) {
+        messagesEl.innerHTML = '<div class="chat-empty" id="chat-empty">' +
+            '<div class="chat-empty-icon">&#128172;</div>' +
+            '<div class="chat-empty-text">Loading...</div></div>';
+    }
+
+    /* Clear unread badge for this thread */
+    var badge = document.getElementById("unread-" + threadId);
+    if (badge) { badge.style.display = "none"; badge.textContent = "0"; }
+
+    /* Attach new thread */
+    attachThread(threadId);
+}
+
+function attachThread(threadId) {
+    if (!chatDb) return;
+    chatRef = chatDb.ref("chat/" + threadId);
+    var emptyEl = document.getElementById("chat-empty");
+    var messagesEl = document.getElementById("chat-messages");
+
+    /* Listen for new messages -- last 50 */
+    var addRef = chatRef.orderByChild("timestamp").limitToLast(50);
+    addRef.on("child_added", function(snapshot) {
+        var msg = snapshot.val();
+        if (!msg) return;
+        _chatMsgCount++;
+        if (emptyEl) emptyEl.style.display = (_chatMsgCount > 0) ? "none" : "";
+        appendChatMessage(snapshot.key, msg.sender, msg.text, msg.timestamp, msg.type || "user");
+    });
+
+    /* Listen for changes -- thinking -> response transitions */
+    chatRef.on("child_changed", function(snapshot) {
+        var msg = snapshot.val();
+        var key = snapshot.key;
+        var el = document.getElementById("msg-" + key);
+        if (el && msg && msg.type !== "thinking") {
+            /* Replace thinking dots with actual response */
+            el.className = "chat-msg phoebe";
+            var bubble = el.querySelector(".msg-bubble");
+            if (bubble) {
+                var time = "";
+                if (msg.responded_at) {
+                    try { time = new Date(msg.responded_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); } catch(e) {}
+                }
+                var safeText = escHtml(msg.text || "").replace(/\n/g, "<br>");
+                bubble.innerHTML =
+                    '<span class="msg-sender">' + escHtml(msg.sender || "Phoebe") + '</span>' +
+                    '<span class="msg-text">' + safeText + '</span>' +
+                    '<span class="msg-time">' + time + '</span>';
+            }
+        }
+    });
+
+    _threadListeners[threadId] = { addRef: addRef, ref: chatRef };
+}
+
+function detachThread(threadId) {
+    var l = _threadListeners[threadId];
+    if (l) {
+        if (l.addRef) l.addRef.off("child_added");
+        if (l.ref) l.ref.off("child_changed");
+        delete _threadListeners[threadId];
+    }
+}
+
+function createNewThread() {
+    var name = prompt("Thread topic (e.g. Solvang Trip, Health, School):");
+    if (!name || !name.trim()) return;
+    name = name.trim();
+    var slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    if (!slug) slug = "thread-" + Date.now();
+
+    /* Write thread metadata to /threads/ */
+    if (chatDb) {
+        var threadMeta = {
+            name: name,
+            created_at: firebase.database.ServerValue.TIMESTAMP,
+            created_by: CHAT_USER
+        };
+        if (_currentUser) threadMeta.created_by_email = _currentUser.email;
+        chatDb.ref("threads/" + slug).set(threadMeta);
+    }
+
+    /* Switch to new thread */
+    switchThread(slug, null);
+}
+
+/* ── Message rendering ────────────────────────────────────────────────── */
+function appendChatMessage(key, sender, text, timestamp, type) {
+    var container = document.getElementById("chat-messages");
+    if (!container) return;
+
+    var div = document.createElement("div");
+    var isPhoebe = (sender === "Phoebe" || type === "phoebe" || type === "thinking");
+    var isThinking = (type === "thinking");
+
+    div.id = "msg-" + key;
+    div.className = "chat-msg " + (isThinking ? "thinking" : (isPhoebe ? "phoebe" : "user"));
+
+    var time = "";
+    if (timestamp && !isThinking) {
+        try {
+            var d = new Date(timestamp);
+            time = d.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+        } catch(e) { time = ""; }
+    }
+
+    var avatarHtml = getAvatar(isPhoebe ? "Phoebe" : sender);
+    var bubbleContent = "";
+
+    if (isThinking) {
+        bubbleContent =
+            '<span class="msg-sender">' + escHtml(sender || "Phoebe") + '</span>' +
+            '<span class="msg-text"><span class="thinking-dots">' +
+            '<span class="thinking-dot"></span><span class="thinking-dot"></span><span class="thinking-dot"></span>' +
+            '</span></span>';
+    } else {
+        var safeText = escHtml(text || "").replace(/\n/g, "<br>");
+        bubbleContent =
+            '<span class="msg-sender">' + escHtml(sender || "Unknown") + '</span>' +
+            '<span class="msg-text">' + safeText + '</span>' +
+            '<span class="msg-time">' + time + '</span>';
+    }
+
+    div.innerHTML = avatarHtml + '<div class="msg-bubble">' + bubbleContent + '</div>';
+
+    /* Context menu -- copy text on right-click / long-press */
+    div.addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+        var txt = (text || "").trim();
+        if (txt && navigator.clipboard) {
+            navigator.clipboard.writeText(txt).then(function() {
+                div.style.opacity = "0.6";
+                setTimeout(function() { div.style.opacity = "1"; }, 300);
+            });
+        }
+    });
+
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function sendChatMessage() {
+    var input = document.getElementById("chat-input");
+    if (!input) return;
+    var text = input.value.trim();
+    if (!text || !chatRef) return;
+
+    var msgData = {
+        sender: CHAT_USER,
+        text: text,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        type: "user"
+    };
+    /* Include auth identity if available */
+    if (_currentUser) {
+        msgData.email = _currentUser.email;
+        msgData.persona = _currentUser.persona;
+    }
+    chatRef.push(msgData);
+
+    /* Update thread metadata with last message */
+    if (chatDb) {
+        chatDb.ref("threads/" + _currentThread + "/last_message").set({
+            text: text.substring(0, 80),
+            sender: CHAT_USER,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+
+    input.value = "";
+    if (navigator.vibrate) navigator.vibrate(30);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  INIT ON DOM READY                                                       */
+/* ══════════════════════════════════════════════════════════════════════════ */
+document.addEventListener("DOMContentLoaded", function() {
+    /* Initialize Firebase and Auth */
+    if (typeof firebase !== "undefined" && typeof firebase.initializeApp === "function") {
+        if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+        }
+        _initAuthObserver();
+    } else {
+        /* Firebase SDK not loaded — show dashboard without auth (fallback) */
+        console.warn("Firebase SDK not available — running without authentication");
+        document.getElementById("login-screen").style.display = "none";
+        document.querySelector(".app-shell").style.display = "flex";
+        /* Standard init without auth */
+        storageGet("phoebe_active_panel", "panel-home").then(function(panelId) {
+            if (panelId && document.getElementById(panelId)) showPanel(panelId);
+        });
+        setTimeout(function() { initCharts(); }, 200);
+        restoreCheckedTasks();
+        restoreCollapsedSections();
+        setTimeOfDay();
+        initAnomalySwipe();
+    }
+
+    /* Chat: Enter key to send + lazy init when panel shown */
+    var chatInput = document.getElementById("chat-input");
+    if (chatInput) {
+        chatInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") sendChatMessage();
+        });
+    }
+});
+
+/* ── PWA Service Worker ────────────────────────────────────────────────── */
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(function() {});
+}
+</script>
+</body>
+</html>
