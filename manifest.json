@@ -1,7 +1,7 @@
 {
-  "name": "Phoebe — Han Family Dashboard",
+  "name": "Phoebe Dashboard",
   "short_name": "Phoebe",
-  "description": "Life intelligence dashboard for the Han family",
+  "description": "Life intelligence dashboard powered by Phoebe AI",
   "start_url": "/phoebe/",
   "scope": "/phoebe/",
   "display": "standalone",

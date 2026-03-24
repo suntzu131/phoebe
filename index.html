@@ -1078,6 +1078,11 @@ canvas { max-width: 100%; }
     .thread-tab { padding: 5px 10px; font-size: 11px; min-height: 28px; }
     .msg-avatar { width: 28px; height: 28px; font-size: 11px; }
     .chat-msg { max-width: 90%; }
+    .msg-reply-btn { display: none !important; }
+    .chat-msg { -webkit-tap-highlight-color: transparent; }
+    .chat-reply-bar { padding: 6px 8px; font-size: 11px; }
+    .mention-dropdown { left: 8px; right: 8px; min-width: auto; }
+    .mention-option { padding: 10px 12px; min-height: 44px; }
     .report-card { padding: 14px; }
     .report-section-title { font-size: 12px; }
 }
@@ -1338,6 +1343,160 @@ canvas { max-width: 100%; }
 .chat-input-area button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* ── Reply quote shown above a replied message ───────────────────────── */
+.reply-quote {
+    font-size: 11px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    border-left: 2px solid var(--accent);
+    color: var(--ink-secondary);
+    cursor: pointer;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.03);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+[data-theme="dark"] .reply-quote { background: rgba(255,255,255,0.05); }
+.reply-quote:hover { background: rgba(0,0,0,0.06); }
+[data-theme="dark"] .reply-quote:hover { background: rgba(255,255,255,0.08); }
+.reply-quote-sender { font-weight: 700; }
+
+/* ── Reply bar above chat input ──────────────────────────────────────── */
+.chat-reply-bar {
+    display: none;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 16px;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    font-size: 12px;
+    color: var(--ink-secondary);
+    flex-shrink: 0;
+    animation: chatMsgIn 0.15s ease;
+}
+.chat-reply-bar.visible { display: flex; }
+.chat-reply-bar-content {
+    flex: 1;
+    min-width: 0;
+    border-left: 2px solid var(--accent);
+    padding-left: 8px;
+}
+.chat-reply-bar-label {
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 2px;
+}
+.chat-reply-bar-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+.chat-reply-bar-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: var(--ink-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    font-family: var(--font);
+    border-radius: 4px;
+    min-width: 28px;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chat-reply-bar-close:hover { background: var(--line); color: var(--ink); }
+
+/* ── Reply action on hover / long-press ──────────────────────────────── */
+.chat-msg .msg-reply-btn {
+    display: none;
+    position: absolute;
+    top: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: var(--ink-secondary);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: var(--font);
+    white-space: nowrap;
+    z-index: 5;
+    line-height: 1.4;
+}
+.chat-msg { position: relative; }
+.chat-msg:hover .msg-reply-btn,
+.chat-msg .msg-reply-btn.visible { display: block; }
+.chat-msg.phoebe .msg-reply-btn,
+.chat-msg.thinking .msg-reply-btn { right: -4px; }
+.chat-msg.user .msg-reply-btn { left: -4px; }
+.msg-reply-btn:hover { background: var(--bg); color: var(--accent); border-color: var(--accent); }
+
+/* ── Highlight when scrolled-to from reply quote ─────────────────────── */
+.chat-msg.highlight-flash .msg-bubble {
+    box-shadow: 0 0 0 2px var(--accent);
+    transition: box-shadow 0.3s ease;
+}
+
+/* ── @mention styling in messages ────────────────────────────────────── */
+.mention {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: default;
+}
+
+/* ── @mention dropdown ───────────────────────────────────────────────── */
+.mention-dropdown {
+    position: absolute;
+    bottom: 100%;
+    left: 16px;
+    background: var(--surface, var(--paper));
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+    padding: 4px;
+    display: none;
+    z-index: 50;
+    min-width: 160px;
+    margin-bottom: 4px;
+}
+.mention-dropdown.visible { display: block; }
+.mention-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: var(--font);
+    color: var(--ink);
+    transition: background 0.1s;
+}
+.mention-option:hover,
+.mention-option.active {
+    background: var(--bg);
+}
+.mention-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
@@ -1630,7 +1789,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 10:03</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 12:13</span>
     </div>
 </aside>
 
@@ -1765,7 +1924,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 24, 2026 at 10:03 AM &middot;
+            Generated March 24, 2026 at 12:13 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -1792,7 +1951,15 @@ canvas { max-width: 100%; }
                     <div class="chat-empty-sub">Messages sync in real-time across all family devices</div>
                 </div>
             </div>
-            <div class="chat-input-area">
+            <div class="chat-reply-bar" id="chat-reply-bar">
+                <div class="chat-reply-bar-content">
+                    <div class="chat-reply-bar-label" id="reply-bar-label"></div>
+                    <div class="chat-reply-bar-text" id="reply-bar-text"></div>
+                </div>
+                <button class="chat-reply-bar-close" onclick="cancelReply()" aria-label="Cancel reply">&times;</button>
+            </div>
+            <div class="chat-input-area" style="position:relative;">
+                <div class="mention-dropdown" id="mention-dropdown"></div>
                 <input type="text" id="chat-input" placeholder="Message Phoebe..." autocomplete="off">
                 <button id="chat-send" onclick="sendChatMessage()">Send</button>
             </div>
@@ -1907,7 +2074,67 @@ canvas { max-width: 100%; }
         </div>
         <div class="card">
             <div class="card-body tab-panel active" id="tab-calendar-events">
-                <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
+                <div class="timeline-item info">
+            <div class="timeline-date">2026-03-28</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Wedding Anniversary</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-03-30</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Mar 31, 01:15 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">leave to go to 2pm appointment with Dr. Chang on Bldg 1 Suite 104?</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 08:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Trim Hair</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 09:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Prepare tithe</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 10, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-11</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Grandpa Han's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-12</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Chris Eun's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 12, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Vacuum all filters for air purifiers</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-21</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Plan for Summer Trip</span>
+            </div>
+        </div>
+
             </div>
             <div class="card-body tab-panel" id="tab-calendar-deadlines">
                 <div class="timeline-item critical">
@@ -2369,7 +2596,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 24, 2026 at 10:03 AM</div>
+            <div class="report-meta">Generated March 24, 2026 at 12:13 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -2381,7 +2608,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 24, 2026 at 10:03 AM</div>
+            <div class="report-meta">Last updated: March 24, 2026 at 12:13 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -2418,7 +2645,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">82</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">44</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 10:03</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 12:13</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -3390,6 +3617,21 @@ var _chatMsgCount = 0;
 var _currentThread = "phoebe-family";
 var _threadListeners = {};
 
+/* ── Reply-to state ─────────────────────────────────────────────────── */
+var _replyTo = null; /* { key: "msg-key", sender: "Dan", text: "first 80 chars" } */
+
+/* ── @mention config ───────────────────────────────────────────────── */
+var MENTION_USERS = [
+    { name: "Phoebe", avatar: "P", color: "var(--accent)" },
+    { name: "Dan",    avatar: "D", color: "#5f7f8f" },
+    { name: "Minako", avatar: "M", color: "#c47a9e" },
+    { name: "Tim",    avatar: "T", color: "#22c55e" }
+];
+var _mentionDropdownVisible = false;
+var _mentionAtPos = -1;
+var _mentionActiveIndex = 0;
+var _mentionFiltered = [];
+
 /* Avatar lookup */
 var AVATAR_MAP = {
     "Phoebe": { cls: "av-phoebe", letter: "P" },
@@ -3547,7 +3789,7 @@ function attachThread(threadId) {
         if (!msg) return;
         _chatMsgCount++;
         if (emptyEl) emptyEl.style.display = (_chatMsgCount > 0) ? "none" : "";
-        appendChatMessage(snapshot.key, msg.sender, msg.text, msg.timestamp, msg.type || "user");
+        appendChatMessage(snapshot.key, msg.sender, msg.text, msg.timestamp, msg.type || "user", msg.replyTo || null);
     });
 
     /* Listen for changes -- thinking -> response transitions */
@@ -3564,8 +3806,15 @@ function attachThread(threadId) {
                 if (msg.responded_at) {
                     try { time = new Date(msg.responded_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); } catch(e) {}
                 }
-                var safeText = escHtml(msg.text || "").replace(/\n/g, "<br>");
-                bubble.innerHTML =
+                var safeText = renderMentions(escHtml(msg.text || "").replace(/\n/g, "<br>"));
+                /* Preserve reply quote if present */
+                var replyQuoteHtml = "";
+                if (msg.replyTo && msg.replyTo.key) {
+                    replyQuoteHtml = '<div class="reply-quote" onclick="scrollToMessage(\'' + escHtml(msg.replyTo.key) + '\')">' +
+                        '<span class="reply-quote-sender">' + escHtml(msg.replyTo.sender || "Unknown") + ':</span> ' +
+                        escHtml(msg.replyTo.text || "") + '</div>';
+                }
+                bubble.innerHTML = replyQuoteHtml +
                     '<span class="msg-sender">' + escHtml(msg.sender || "Phoebe") + '</span>' +
                     '<span class="msg-text">' + safeText + '</span>' +
                     '<span class="msg-time">' + time + '</span>';
@@ -3608,7 +3857,12 @@ function createNewThread() {
 }
 
 /* ── Message rendering ────────────────────────────────────────────────── */
-function appendChatMessage(key, sender, text, timestamp, type) {
+function renderMentions(html) {
+    /* Replace @Name patterns with styled mention spans */
+    return html.replace(/@(Phoebe|Dan|Minako|Tim)/g, '<span class="mention">@$1</span>');
+}
+
+function appendChatMessage(key, sender, text, timestamp, type, replyTo) {
     var container = document.getElementById("chat-messages");
     if (!container) return;
 
@@ -3617,6 +3871,9 @@ function appendChatMessage(key, sender, text, timestamp, type) {
     var isThinking = (type === "thinking");
 
     div.id = "msg-" + key;
+    div.setAttribute("data-msg-key", key);
+    div.setAttribute("data-msg-sender", sender || "");
+    div.setAttribute("data-msg-text", (text || "").substring(0, 80));
     div.className = "chat-msg " + (isThinking ? "thinking" : (isPhoebe ? "phoebe" : "user"));
 
     var time = "";
@@ -3630,21 +3887,48 @@ function appendChatMessage(key, sender, text, timestamp, type) {
     var avatarHtml = getAvatar(isPhoebe ? "Phoebe" : sender);
     var bubbleContent = "";
 
+    /* Reply quote block (if this message is a reply) */
+    var replyHtml = "";
+    if (replyTo && replyTo.key) {
+        replyHtml = '<div class="reply-quote" onclick="scrollToMessage(\'' + escHtml(replyTo.key) + '\')">' +
+            '<span class="reply-quote-sender">' + escHtml(replyTo.sender || "Unknown") + ':</span> ' +
+            escHtml(replyTo.text || "") +
+            '</div>';
+    }
+
     if (isThinking) {
-        bubbleContent =
+        bubbleContent = replyHtml +
             '<span class="msg-sender">' + escHtml(sender || "Phoebe") + '</span>' +
             '<span class="msg-text"><span class="thinking-dots">' +
             '<span class="thinking-dot"></span><span class="thinking-dot"></span><span class="thinking-dot"></span>' +
             '</span></span>';
     } else {
-        var safeText = escHtml(text || "").replace(/\n/g, "<br>");
-        bubbleContent =
+        var safeText = renderMentions(escHtml(text || "").replace(/\n/g, "<br>"));
+        bubbleContent = replyHtml +
             '<span class="msg-sender">' + escHtml(sender || "Unknown") + '</span>' +
             '<span class="msg-text">' + safeText + '</span>' +
             '<span class="msg-time">' + time + '</span>';
     }
 
-    div.innerHTML = avatarHtml + '<div class="msg-bubble">' + bubbleContent + '</div>';
+    /* Reply button (shown on hover / tap) */
+    var replyBtn = '<button class="msg-reply-btn" onclick="startReply(this.parentNode)" aria-label="Reply">Reply</button>';
+
+    div.innerHTML = avatarHtml + '<div class="msg-bubble">' + bubbleContent + '</div>' + replyBtn;
+
+    /* Mobile: tap to show reply button (since no hover) */
+    div.addEventListener("click", function(e) {
+        /* Don't trigger on reply button click or reply-quote click */
+        if (e.target.closest(".msg-reply-btn") || e.target.closest(".reply-quote")) return;
+        var btn = div.querySelector(".msg-reply-btn");
+        if (btn) {
+            /* Toggle visibility */
+            var wasVisible = btn.classList.contains("visible");
+            /* Hide all other visible reply buttons */
+            var allBtns = document.querySelectorAll(".msg-reply-btn.visible");
+            for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.remove("visible");
+            if (!wasVisible) btn.classList.add("visible");
+        }
+    });
 
     /* Context menu -- copy text on right-click / long-press */
     div.addEventListener("contextmenu", function(e) {
@@ -3660,6 +3944,141 @@ function appendChatMessage(key, sender, text, timestamp, type) {
 
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
+}
+
+/* ── Reply-to functions ──────────────────────────────────────────────── */
+function startReply(msgEl) {
+    if (!msgEl) return;
+    var key = msgEl.getAttribute("data-msg-key");
+    var sender = msgEl.getAttribute("data-msg-sender");
+    var text = msgEl.getAttribute("data-msg-text");
+    if (!key) return;
+
+    _replyTo = { key: key, sender: sender, text: text };
+
+    var bar = document.getElementById("chat-reply-bar");
+    var label = document.getElementById("reply-bar-label");
+    var txt = document.getElementById("reply-bar-text");
+    if (bar && label && txt) {
+        label.textContent = "Replying to " + (sender || "Unknown");
+        txt.textContent = text || "";
+        bar.classList.add("visible");
+    }
+
+    /* Focus the input */
+    var input = document.getElementById("chat-input");
+    if (input) input.focus();
+
+    /* Hide the reply button */
+    var allBtns = document.querySelectorAll(".msg-reply-btn.visible");
+    for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.remove("visible");
+}
+
+function cancelReply() {
+    _replyTo = null;
+    var bar = document.getElementById("chat-reply-bar");
+    if (bar) bar.classList.remove("visible");
+}
+
+function scrollToMessage(msgKey) {
+    var el = document.getElementById("msg-" + msgKey);
+    if (!el) return;
+    var container = document.getElementById("chat-messages");
+    if (container) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("highlight-flash");
+        setTimeout(function() { el.classList.remove("highlight-flash"); }, 1500);
+    }
+}
+
+/* ── @mention functions ──────────────────────────────────────────────── */
+function showMentionDropdown(filtered) {
+    var dd = document.getElementById("mention-dropdown");
+    if (!dd) return;
+    _mentionFiltered = filtered;
+    _mentionActiveIndex = 0;
+    if (filtered.length === 0) {
+        hideMentionDropdown();
+        return;
+    }
+    var html = "";
+    for (var i = 0; i < filtered.length; i++) {
+        var u = filtered[i];
+        html += '<div class="mention-option' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" ' +
+            'onmousedown="selectMention(' + i + ')" ' +
+            'onmouseenter="setMentionActive(' + i + ')">' +
+            '<div class="mention-avatar" style="background:' + u.color + '">' + u.avatar + '</div>' +
+            '<span>' + escHtml(u.name) + '</span></div>';
+    }
+    dd.innerHTML = html;
+    dd.classList.add("visible");
+    _mentionDropdownVisible = true;
+}
+
+function hideMentionDropdown() {
+    var dd = document.getElementById("mention-dropdown");
+    if (dd) dd.classList.remove("visible");
+    _mentionDropdownVisible = false;
+    _mentionAtPos = -1;
+    _mentionFiltered = [];
+    _mentionActiveIndex = 0;
+}
+
+function setMentionActive(idx) {
+    _mentionActiveIndex = idx;
+    var opts = document.querySelectorAll("#mention-dropdown .mention-option");
+    for (var i = 0; i < opts.length; i++) {
+        opts[i].classList.toggle("active", i === idx);
+    }
+}
+
+function selectMention(idx) {
+    var user = _mentionFiltered[idx];
+    if (!user) return;
+    var input = document.getElementById("chat-input");
+    if (!input) return;
+
+    var val = input.value;
+    /* Replace from @pos to cursor with @Name */
+    var before = val.substring(0, _mentionAtPos);
+    var after = val.substring(input.selectionStart);
+    input.value = before + "@" + user.name + " " + after;
+    /* Position cursor after the mention */
+    var newPos = _mentionAtPos + user.name.length + 2;
+    input.setSelectionRange(newPos, newPos);
+    input.focus();
+    hideMentionDropdown();
+}
+
+function handleMentionInput(input) {
+    var val = input.value;
+    var cursorPos = input.selectionStart;
+
+    /* Find the last @ before cursor that is either at start or preceded by space */
+    var atPos = -1;
+    for (var i = cursorPos - 1; i >= 0; i--) {
+        if (val[i] === "@") {
+            if (i === 0 || val[i - 1] === " ") {
+                atPos = i;
+                break;
+            } else {
+                break;
+            }
+        }
+        /* If we hit a space before finding @, no active mention */
+        if (val[i] === " ") break;
+    }
+
+    if (atPos >= 0) {
+        _mentionAtPos = atPos;
+        var query = val.substring(atPos + 1, cursorPos).toLowerCase();
+        var filtered = MENTION_USERS.filter(function(u) {
+            return u.name.toLowerCase().indexOf(query) === 0;
+        });
+        showMentionDropdown(filtered);
+    } else {
+        hideMentionDropdown();
+    }
 }
 
 function sendChatMessage() {
@@ -3679,6 +4098,14 @@ function sendChatMessage() {
         msgData.email = _currentUser.email;
         msgData.persona = _currentUser.persona;
     }
+    /* Include reply-to data if replying */
+    if (_replyTo) {
+        msgData.replyTo = {
+            key: _replyTo.key,
+            sender: _replyTo.sender,
+            text: (_replyTo.text || "").substring(0, 80)
+        };
+    }
     chatRef.push(msgData);
 
     /* Update thread metadata with last message */
@@ -3691,6 +4118,8 @@ function sendChatMessage() {
     }
 
     input.value = "";
+    cancelReply();
+    hideMentionDropdown();
     if (navigator.vibrate) navigator.vibrate(30);
 }
 
@@ -3720,11 +4149,39 @@ document.addEventListener("DOMContentLoaded", function() {
         initAnomalySwipe();
     }
 
-    /* Chat: Enter key to send + lazy init when panel shown */
+    /* Chat: Enter key to send, @mention handling, Escape to cancel reply */
     var chatInput = document.getElementById("chat-input");
     if (chatInput) {
         chatInput.addEventListener("keydown", function(e) {
+            /* Mention dropdown keyboard navigation */
+            if (_mentionDropdownVisible) {
+                if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    _mentionActiveIndex = Math.min(_mentionActiveIndex + 1, _mentionFiltered.length - 1);
+                    setMentionActive(_mentionActiveIndex);
+                    return;
+                }
+                if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    _mentionActiveIndex = Math.max(_mentionActiveIndex - 1, 0);
+                    setMentionActive(_mentionActiveIndex);
+                    return;
+                }
+                if (e.key === "Enter" || e.key === "Tab") {
+                    e.preventDefault();
+                    selectMention(_mentionActiveIndex);
+                    return;
+                }
+                if (e.key === "Escape") {
+                    hideMentionDropdown();
+                    return;
+                }
+            }
             if (e.key === "Enter") sendChatMessage();
+            if (e.key === "Escape") cancelReply();
+        });
+        chatInput.addEventListener("input", function() {
+            handleMentionInput(this);
         });
     }
 });
