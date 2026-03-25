@@ -705,6 +705,386 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
+/*  BATCH 5 — SUMMARY CARDS (Item 4)                                         */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.summary-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--paper);
+    box-shadow: var(--shadow-card);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font);
+    text-align: left;
+    transition: transform 0.1s, box-shadow 0.15s;
+    min-height: 70px;
+    overflow: hidden;
+}
+.summary-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+.summary-card:active { transform: scale(0.98); }
+.sc-value {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+.sc-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink-secondary);
+    margin-top: 2px;
+}
+.sc-detail {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    line-height: 1.3;
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.sc-critical .sc-value { color: var(--red); }
+.sc-warning .sc-value { color: var(--amber); }
+.sc-positive .sc-value { color: var(--green); }
+.sc-negative .sc-value { color: var(--red); }
+.sc-info .sc-value { color: var(--sea); }
+[data-theme="dark"] .summary-card { background: var(--surface-2); }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  BATCH 5 — PERSON ACTIVITY TIMELINE (Item 7)                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.person-timeline {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+}
+.person-tl-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 4px 0;
+    position: relative;
+}
+.person-tl-item::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 20px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--line);
+}
+.person-tl-item:last-child::before { display: none; }
+.person-tl-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    z-index: 1;
+}
+.person-tl-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.person-tl-date {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+}
+.person-tl-text {
+    font-size: 11px;
+    color: var(--ink);
+    line-height: 1.3;
+}
+.timeline-empty {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    font-style: italic;
+    padding: 6px 0;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  BATCH 5 — MULTI-VIEW TASKS: KANBAN + CALENDAR (Item 12)                  */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.view-toggle {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+}
+.view-toggle-btn {
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper);
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    cursor: pointer;
+    min-height: 36px;
+    transition: all 0.15s;
+}
+.view-toggle-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+.view-toggle-btn:hover:not(.active) {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+.task-view { display: none; }
+.task-view.active { display: block; }
+
+/* Kanban board */
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    min-height: 200px;
+}
+.kanban-col {
+    background: var(--bg);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    min-height: 120px;
+}
+.kanban-col-header {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.kanban-col-header.critical { background: var(--red-bg); color: var(--red); }
+.kanban-col-header.warning { background: var(--amber-bg); color: var(--amber); }
+.kanban-col-header.info { background: var(--blue-bg); color: var(--blue); }
+.kanban-col-header .count-badge {
+    font-size: 10px; padding: 1px 6px; border-radius: 8px;
+    background: rgba(0,0,0,0.1); color: inherit;
+}
+.kanban-card {
+    background: var(--paper);
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 6px;
+    box-shadow: var(--shadow-card);
+    cursor: grab;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+.kanban-card:active { cursor: grabbing; }
+.kanban-card.dragging {
+    opacity: 0.5;
+    transform: rotate(2deg);
+    box-shadow: var(--shadow-lg);
+}
+.kanban-card-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+}
+.kanban-col-body.drag-over {
+    background: var(--accent-light);
+    border: 2px dashed var(--accent);
+    border-radius: 8px;
+}
+.kanban-empty {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    text-align: center;
+    padding: 16px 8px;
+    font-style: italic;
+}
+[data-theme="dark"] .kanban-col { background: var(--surface-4); }
+[data-theme="dark"] .kanban-card { background: var(--surface-1); }
+
+/* Calendar view */
+.cal-view { padding: 4px 0; }
+.cal-month-name {
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+    color: var(--ink);
+}
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    margin-bottom: 12px;
+}
+.cal-dow {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-secondary);
+    padding: 4px 0;
+    text-transform: uppercase;
+}
+.cal-day {
+    text-align: center;
+    padding: 8px 2px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+.cal-day:hover { background: var(--accent-light); }
+.cal-day.blank { cursor: default; }
+.cal-day.blank:hover { background: none; }
+.cal-day.today {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 50%;
+}
+.cal-day.today:hover { background: var(--accent); }
+.cal-day.selected {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+.cal-dot {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    margin-top: 2px;
+}
+.cal-dot.multi {
+    width: 8px;
+    border-radius: 4px;
+}
+.cal-day-detail {
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    padding: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    max-height: 0;
+}
+.cal-day-detail.open {
+    padding: 10px 12px;
+    max-height: 200px;
+    box-shadow: var(--shadow-card);
+}
+.cal-detail-date {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+}
+.cal-detail-item {
+    font-size: 12px;
+    color: var(--ink);
+    padding: 3px 0;
+    border-bottom: 1px solid var(--line);
+}
+.cal-detail-item:last-child { border-bottom: none; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  BATCH 5 — SWIPE GESTURES (Item 15) — reveal backgrounds                 */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.swipeable-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom: 8px;
+}
+.swipe-reveal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    pointer-events: none;
+    z-index: 0;
+}
+.swipe-reveal-left {
+    left: 0;
+    justify-content: flex-end;
+    padding-right: 20px;
+    background: var(--green);
+}
+.swipe-reveal-right {
+    right: 0;
+    justify-content: flex-start;
+    padding-left: 20px;
+    background: var(--amber);
+}
+.swipeable-wrap .action-card,
+.swipeable-wrap .task-item {
+    position: relative;
+    z-index: 1;
+    background: var(--paper);
+    margin-bottom: 0;
+}
+.swipeable-wrap .action-card.urgent { background: var(--red-bg); }
+.swipeable-wrap .action-card.high { background: var(--amber-bg); }
+.swipeable-wrap .action-card.medium { background: var(--blue-bg); }
+.swipeable-wrap .action-card.swipe-dismiss,
+.swipeable-wrap .task-item.swipe-dismiss {
+    transform: translateX(-120%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.swipeable-wrap .action-card.swipe-snooze,
+.swipeable-wrap .task-item.swipe-snooze {
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.swipeable-wrap.swiped-away {
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease 0.2s, padding 0.3s ease 0.2s, margin 0.3s ease 0.2s;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
 /*  SKELETON LOADERS — pulse animation while content loads                   */
 /* ══════════════════════════════════════════════════════════════════════════ */
 @keyframes skeleton-pulse {
@@ -1407,6 +1787,36 @@ canvas { max-width: 100%; }
     .rcfe-label { min-width: 72px; font-size: 11px; }
     .rcfe-row { font-size: 12px; }
     .command-panel { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+
+    /* Batch 5 mobile: summary cards scroll horizontally */
+    .summary-cards {
+        grid-template-columns: repeat(5, 130px);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+    }
+    .summary-cards::-webkit-scrollbar { display: none; }
+    .summary-card {
+        scroll-snap-align: start;
+        min-height: 60px;
+        padding: 10px 12px;
+    }
+    .sc-value { font-size: 16px; }
+
+    /* Batch 5 mobile: kanban stacks vertically */
+    .kanban-board { grid-template-columns: 1fr; }
+    .kanban-col { min-height: 60px; }
+
+    /* Batch 5 mobile: calendar smaller text */
+    .cal-day { font-size: 12px; padding: 6px 2px; min-height: 36px; }
+    .cal-month-name { font-size: 13px; }
+
+    /* Batch 5 mobile: person timeline compact */
+    .person-tl-text { font-size: 10px; }
+    .person-tl-dot { width: 18px; height: 18px; font-size: 8px; }
+    .person-tl-item::before { left: 8px; }
     /* Chat panel: override panel padding and size for full-height chat */
     #panel-chat { padding: 0 0 56px; }
     #panel-chat .chat-container { height: calc(100dvh - 56px - 44px); max-height: none; border-radius: 0; box-shadow: none; }
@@ -2908,7 +3318,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 22:06</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 22:24</span>
     </div>
 </aside>
 
@@ -2941,6 +3351,35 @@ canvas { max-width: 100%; }
                 <span class="tod-text" id="tod-text"></span>
             </div>
             <div class="tod-emphasis" id="tod-emphasis"></div>
+        </div>
+
+        <div class="summary-cards">
+            <button class="summary-card sc-critical" data-panel="panel-tasks" onclick="showPanel('panel-tasks')">
+            <span class="sc-value">12</span>
+            <span class="sc-label">Attention</span>
+            <span class="sc-detail">Call Osamu Hashizu (714) 258-2819</span>
+        </button>
+<button class="summary-card sc-positive" data-panel="panel-intel" onclick="showPanel('panel-intel')">
+            <span class="sc-value">+$6,502</span>
+            <span class="sc-label">Money</span>
+            <span class="sc-detail">&#8599; Cash flow moderate</span>
+        </button>
+<button class="summary-card sc-info" data-panel="panel-calendar" onclick="showPanel('panel-calendar')">
+            <span class="sc-value">2026-03-28</span>
+            <span class="sc-label">Calendar</span>
+            <span class="sc-detail">Wedding Anniversary</span>
+        </button>
+<button class="summary-card sc-warning" data-panel="panel-family" onclick="showPanel('panel-family')">
+            <span class="sc-value">2</span>
+            <span class="sc-label">Family</span>
+            <span class="sc-detail">Minako, Mother need attention</span>
+        </button>
+<button class="summary-card sc-info" data-panel="panel-system" onclick="showPanel('panel-system')">
+            <span class="sc-value">Live</span>
+            <span class="sc-label">Phoebe</span>
+            <span class="sc-detail">45,000 nodes | 44 timers active</span>
+        </button>
+
         </div>
 
         <div class="section-title" id="sec-pinned-messages" onclick="toggleSectionCollapse(this)">Pinned Messages <span class="count-badge zero" id="pinned-count-badge">0</span> <span class="section-chevron">&#9660;</span></div>
@@ -2995,68 +3434,100 @@ canvas { max-width: 100%; }
 
         <div class="section-title" id="sec-home-priorities" onclick="toggleSectionCollapse(this)">Today's Priorities <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
         <div class="section-content" data-section="sec-home-priorities">
-        <div class="action-card urgent" data-index="action-0" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">URGENT</span>
-            <span class="action-text summary-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">CPA fees ~$1K-$3K &middot; 1 phone call</span>
+        <div class="swipeable-wrap" data-swipe-id="action-0">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card urgent" data-index="action-0" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">URGENT</span>
+                <span class="action-text summary-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">CPA fees ~$1K-$3K &middot; 1 phone call</span>
+            </div>
         </div>
-<div class="action-card high" data-index="action-1" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Pause distributions via Security Benefit</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Free &middot; 1 phone call</span>
+<div class="swipeable-wrap" data-swipe-id="action-1">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-1" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Pause distributions via Security Benefit</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Free &middot; 1 phone call</span>
+            </div>
         </div>
-<div class="action-card high" data-index="action-2" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Schedule Minako appointment via Kaiser</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+<div class="swipeable-wrap" data-swipe-id="action-2">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-2" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Schedule Minako appointment via Kaiser</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+            </div>
         </div>
-<div class="action-card high" data-index="action-3" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Schedule Minako pelvic ultrasound via Kaiser</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+<div class="swipeable-wrap" data-swipe-id="action-3">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-3" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Schedule Minako pelvic ultrasound via Kaiser</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+            </div>
         </div>
-<div class="action-card high" data-index="action-4" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Submit bond for mother's assets</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Bond premium ~$500-$1K &middot; 1-2 weeks</span>
+<div class="swipeable-wrap" data-swipe-id="action-4">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-4" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Submit bond for mother's assets</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Bond premium ~$500-$1K &middot; 1-2 weeks</span>
+            </div>
         </div>
-<div class="action-card high" data-index="action-5" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Provide 7 expense amounts + 4 balances</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Free &middot; 20 min of Dan's time</span>
+<div class="swipeable-wrap" data-swipe-id="action-5">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-5" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Provide 7 expense amounts + 4 balances</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Free &middot; 20 min of Dan's time</span>
+            </div>
         </div>
-<div class="action-card high" data-index="action-6" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Pause IRA (requires conservatorship)</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Free &middot; Blocked</span>
+<div class="swipeable-wrap" data-swipe-id="action-6">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-6" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Pause IRA (requires conservatorship)</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Free &middot; Blocked</span>
+            </div>
         </div>
-<div class="action-card high" data-index="action-7" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Install ramp + DME wheelchair</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">$2K-$5K &middot; 2-4 weeks</span>
+<div class="swipeable-wrap" data-swipe-id="action-7">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-7" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Install ramp + DME wheelchair</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">$2K-$5K &middot; 2-4 weeks</span>
+            </div>
         </div>
 
         <button class="clear-completed-btn" id="clearCompleted" onclick="clearChecked()">Clear completed</button>
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 24, 2026 at 10:06 PM &middot;
+            Generated March 24, 2026 at 10:24 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -3162,95 +3633,226 @@ canvas { max-width: 100%; }
             <div class="panel-subtitle">Active tasks and priority actions</div>
         </div>
 
-        <div class="section-title" id="sec-tasks-priorities" onclick="toggleSectionCollapse(this)">Priority Actions <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-tasks-priorities">
-        <div class="action-card urgent" data-index="action-0" data-checkable="true">
+        <div class="view-toggle" id="taskViewToggle">
+            <button class="view-toggle-btn active" data-view="list" onclick="switchTaskView('list', this)">&#9776; List</button>
+            <button class="view-toggle-btn" data-view="kanban" onclick="switchTaskView('kanban', this)">&#9638; Kanban</button>
+            <button class="view-toggle-btn" data-view="calendar" onclick="switchTaskView('calendar', this)">&#128197; Calendar</button>
+        </div>
+
+        <div class="task-view active" id="taskViewList">
+            <div class="section-title" id="sec-tasks-priorities" onclick="toggleSectionCollapse(this)">Priority Actions <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
+            <div class="section-content" data-section="sec-tasks-priorities">
+            <div class="swipeable-wrap" data-swipe-id="action-0">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card urgent" data-index="action-0" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">URGENT</span>
+                <span class="action-text summary-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">CPA fees ~$1K-$3K &middot; 1 phone call</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="action-1">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-1" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Pause distributions via Security Benefit</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Free &middot; 1 phone call</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="action-2">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-2" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Schedule Minako appointment via Kaiser</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="action-3">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-3" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Schedule Minako pelvic ultrasound via Kaiser</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="action-4">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-4" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Submit bond for mother's assets</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Bond premium ~$500-$1K &middot; 1-2 weeks</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="action-5">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-5" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Provide 7 expense amounts + 4 balances</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Free &middot; 20 min of Dan's time</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="action-6">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-6" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Pause IRA (requires conservatorship)</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">Free &middot; Blocked</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="action-7">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="action-card high" data-index="action-7" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">HIGH</span>
+                <span class="action-text summary-text">Install ramp + DME wheelchair</span>
+                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
+                <span class="action-meta">$2K-$5K &middot; 2-4 weeks</span>
+            </div>
+        </div>
+
+            <button class="clear-completed-btn" id="clearCompleted2" onclick="clearChecked()">Clear completed</button>
+            </div>
+
+            <div class="section-title" id="sec-tasks-active" onclick="toggleSectionCollapse(this)">Active Tasks <span class="count-badge">4</span> <span class="section-chevron">&#9660;</span></div>
+            <div class="section-content" data-section="sec-tasks-active">
+            <div class="swipeable-wrap" data-swipe-id="task-0">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="task-item critical" data-index="task-0" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="task-0" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">URGENT</span>
+                <span class="task-id">Bond</span>
+                <span class="task-text">Print form from Danny Lee, BOTH Dan+Thomas sign same page, mail to Han &amp; Park. Conservatorship letters blocked until done.</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="task-1">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="task-item critical" data-index="task-1" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="task-1" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">URGENT</span>
+                <span class="task-id">SNT</span>
+                <span class="task-text">Schedule Mar 27 slot with Yujin Park. RCFE decision made — SNT is next.</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="task-2">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="task-item critical" data-index="task-2" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="task-2" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">URGENT</span>
+                <span class="task-id">Solvang</span>
+                <span class="task-text">Book Goleta Residence Inn + confirm Hannah+Thomas coverage. Trip departs Mar 30.</span>
+            </div>
+        </div>
+<div class="swipeable-wrap" data-swipe-id="task-3">
+            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
+            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
+            <div class="task-item critical" data-index="task-3" data-checkable="true">
+                <input type="checkbox" class="task-checkbox" data-task-id="task-3" onchange="handleCheck(this)" aria-label="Mark complete">
+                <span class="action-badge">URGENT</span>
+                <span class="task-id">Form</span>
+                <span class="task-text">Call Osamu Hashizu (714) 258-2819 to confirm engagement. Due April 15 = 23 days.</span>
+            </div>
+        </div>
+
+            </div>
+        </div>
+
+        <div class="task-view" id="taskViewKanban">
+            <div class="kanban-board" id="kanbanBoard">
+        <div class="kanban-col" data-col="urgent">
+            <div class="kanban-col-header critical">Urgent <span class="count-badge">5</span></div>
+            <div class="kanban-col-body" data-drop="urgent">
+                <div class="kanban-card critical" draggable="true" data-task-key="action-0" data-checkable="true">
             <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
             <span class="action-badge">URGENT</span>
-            <span class="action-text summary-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">CPA fees ~$1K-$3K &middot; 1 phone call</span>
-        </div>
-<div class="action-card high" data-index="action-1" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Pause distributions via Security Benefit</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Free &middot; 1 phone call</span>
-        </div>
-<div class="action-card high" data-index="action-2" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Schedule Minako appointment via Kaiser</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
-        </div>
-<div class="action-card high" data-index="action-3" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Schedule Minako pelvic ultrasound via Kaiser</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
-        </div>
-<div class="action-card high" data-index="action-4" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Submit bond for mother's assets</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Bond premium ~$500-$1K &middot; 1-2 weeks</span>
-        </div>
-<div class="action-card high" data-index="action-5" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Provide 7 expense amounts + 4 balances</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Free &middot; 20 min of Dan's time</span>
-        </div>
-<div class="action-card high" data-index="action-6" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Pause IRA (requires conservatorship)</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">Free &middot; Blocked</span>
-        </div>
-<div class="action-card high" data-index="action-7" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="action-text summary-text">Install ramp + DME wheelchair</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-            <span class="action-meta">$2K-$5K &middot; 2-4 weeks</span>
-        </div>
-
-        <button class="clear-completed-btn" id="clearCompleted2" onclick="clearChecked()">Clear completed</button>
-        </div>
-
-        <div class="section-title" id="sec-tasks-active" onclick="toggleSectionCollapse(this)">Active Tasks <span class="count-badge">4</span> <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-tasks-active">
-        <div class="task-item critical" data-index="task-0" data-checkable="true">
+            <span class="kanban-card-text">Call Osamu Hashizu (714) 258-2819</span>
+        </div><div class="kanban-card critical" draggable="true" data-task-key="task-0" data-checkable="true">
             <input type="checkbox" class="task-checkbox" data-task-id="task-0" onchange="handleCheck(this)" aria-label="Mark complete">
             <span class="action-badge">URGENT</span>
-            <span class="task-id">Bond</span>
-            <span class="task-text">Print form from Danny Lee, BOTH Dan+Thomas sign same page, mail to Han &amp; Park. Conservatorship letters blocked until done.</span>
-        </div>
-<div class="task-item critical" data-index="task-1" data-checkable="true">
+            <span class="kanban-card-text">Print form from Danny Lee, BOTH Dan+Thomas sign same page, mail to Han &amp; Park. C</span>
+        </div><div class="kanban-card critical" draggable="true" data-task-key="task-1" data-checkable="true">
             <input type="checkbox" class="task-checkbox" data-task-id="task-1" onchange="handleCheck(this)" aria-label="Mark complete">
             <span class="action-badge">URGENT</span>
-            <span class="task-id">SNT</span>
-            <span class="task-text">Schedule Mar 27 slot with Yujin Park. RCFE decision made — SNT is next.</span>
-        </div>
-<div class="task-item critical" data-index="task-2" data-checkable="true">
+            <span class="kanban-card-text">Schedule Mar 27 slot with Yujin Park. RCFE decision made — SNT is next.</span>
+        </div><div class="kanban-card critical" draggable="true" data-task-key="task-2" data-checkable="true">
             <input type="checkbox" class="task-checkbox" data-task-id="task-2" onchange="handleCheck(this)" aria-label="Mark complete">
             <span class="action-badge">URGENT</span>
-            <span class="task-id">Solvang</span>
-            <span class="task-text">Book Goleta Residence Inn + confirm Hannah+Thomas coverage. Trip departs Mar 30.</span>
-        </div>
-<div class="task-item critical" data-index="task-3" data-checkable="true">
+            <span class="kanban-card-text">Book Goleta Residence Inn + confirm Hannah+Thomas coverage. Trip departs Mar 30.</span>
+        </div><div class="kanban-card critical" draggable="true" data-task-key="task-3" data-checkable="true">
             <input type="checkbox" class="task-checkbox" data-task-id="task-3" onchange="handleCheck(this)" aria-label="Mark complete">
             <span class="action-badge">URGENT</span>
-            <span class="task-id">Form</span>
-            <span class="task-text">Call Osamu Hashizu (714) 258-2819 to confirm engagement. Due April 15 = 23 days.</span>
+            <span class="kanban-card-text">Call Osamu Hashizu (714) 258-2819 to confirm engagement. Due April 15 = 23 days.</span>
+        </div>
+            </div>
+        </div>
+        <div class="kanban-col" data-col="high">
+            <div class="kanban-col-header warning">High <span class="count-badge">7</span></div>
+            <div class="kanban-col-body" data-drop="high">
+                <div class="kanban-card warning" draggable="true" data-task-key="action-1" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="kanban-card-text">Pause distributions via Security Benefit</span>
+        </div><div class="kanban-card warning" draggable="true" data-task-key="action-2" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="kanban-card-text">Schedule Minako appointment via Kaiser</span>
+        </div><div class="kanban-card warning" draggable="true" data-task-key="action-3" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="kanban-card-text">Schedule Minako pelvic ultrasound via Kaiser</span>
+        </div><div class="kanban-card warning" draggable="true" data-task-key="action-4" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="kanban-card-text">Submit bond for mother's assets</span>
+        </div><div class="kanban-card warning" draggable="true" data-task-key="action-5" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="kanban-card-text">Provide 7 expense amounts + 4 balances</span>
+        </div><div class="kanban-card warning" draggable="true" data-task-key="action-6" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="kanban-card-text">Pause IRA (requires conservatorship)</span>
+        </div><div class="kanban-card warning" draggable="true" data-task-key="action-7" data-checkable="true">
+            <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="action-badge">HIGH</span>
+            <span class="kanban-card-text">Install ramp + DME wheelchair</span>
+        </div>
+            </div>
+        </div>
+        <div class="kanban-col" data-col="medium">
+            <div class="kanban-col-header info">Medium/Low <span class="count-badge">0</span></div>
+            <div class="kanban-col-body" data-drop="medium">
+                <div class="kanban-empty">None</div>
+            </div>
+        </div>
+    </div>
         </div>
 
+        <div class="task-view" id="taskViewCalendar">
+            <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day today" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31<span class="cal-dot"></span></div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
         </div>
     </div>
 
@@ -3455,27 +4057,105 @@ canvas { max-width: 100%; }
             <div class="family-card" onclick="toggleFamilyDetail(this)">
             <strong>Dan </strong>
             <span class="family-notes">Weight: 165 lbs, TKD goal 145 lbs, piriformis syndrome</span>
-            <div class="family-detail"><div class="family-detail-row">Weight: 165 lbs</div><div class="family-detail-row">TKD goal 145 lbs</div><div class="family-detail-row">piriformis syndrome</div></div>
+            <div class="family-detail">
+                <div class="family-detail-row">Weight: 165 lbs</div><div class="family-detail-row">TKD goal 145 lbs</div><div class="family-detail-row">piriformis syndrome</div>
+                <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#9989;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">Print form from Danny Lee, BOTH Dan+Thomas sign same page, mail to Han &amp; Park. C</span>
+                </div>
+            </div>
+<div class="person-tl-item">
+                <span class="person-tl-dot">&#9888;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">Dan's weight (165 lbs) — no downward progress toward 145 lb target</span>
+                </div>
+            </div>
+</div>
+            </div>
         </div>
 <div class="family-card has-alert" onclick="toggleFamilyDetail(this)">
             <strong>Minako </strong>
             <span class="family-notes">2 overdue Kaiser appts, hand specialist needed</span>
-            <div class="family-detail"><div class="family-detail-row">2 overdue Kaiser appts</div><div class="family-detail-row">hand specialist needed</div></div>
+            <div class="family-detail">
+                <div class="family-detail-row">2 overdue Kaiser appts</div><div class="family-detail-row">hand specialist needed</div>
+                <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#9889;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">Schedule Minako appointment via Kaiser</span>
+                </div>
+            </div>
+<div class="person-tl-item">
+                <span class="person-tl-dot">&#9889;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">Schedule Minako pelvic ultrasound via Kaiser</span>
+                </div>
+            </div>
+<div class="person-tl-item">
+                <span class="person-tl-dot">&#9888;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">Minako pelvic ultrasound — due in 69 days (2026-06-01)</span>
+                </div>
+            </div>
+<div class="person-tl-item">
+                <span class="person-tl-dot">&#9888;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">Minako echocardiogram — due in 37 days (2026-04-30)</span>
+                </div>
+            </div>
+</div>
+            </div>
         </div>
 <div class="family-card" onclick="toggleFamilyDetail(this)">
             <strong>Koko <span class="family-age">6</span></strong>
             <span class="family-notes">IEP needed, RCOC: swimming + TKD</span>
-            <div class="family-detail"><div class="family-detail-row">IEP needed</div><div class="family-detail-row">RCOC: swimming + TKD</div></div>
+            <div class="family-detail">
+                <div class="family-detail-row">IEP needed</div><div class="family-detail-row">RCOC: swimming + TKD</div>
+                <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#128197;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-04-10</span>
+                    <span class="person-tl-text">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (</span>
+                </div>
+            </div>
+</div>
+            </div>
         </div>
 <div class="family-card" onclick="toggleFamilyDetail(this)">
             <strong>Issa <span class="family-age">4</span></strong>
             <span class="family-notes">Preschool at Cadenza</span>
-            <div class="family-detail"><div class="family-detail-row">Preschool at Cadenza</div></div>
+            <div class="family-detail">
+                <div class="family-detail-row">Preschool at Cadenza</div>
+                <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
+            </div>
         </div>
 <div class="family-card has-alert" onclick="toggleFamilyDetail(this)">
             <strong>Mother <span class="family-age">67</span></strong>
             <span class="family-notes">FAST 6e | 93.8 lbs | RCFE decision made</span>
-            <div class="family-detail"><div class="family-detail-row">FAST 6e</div><div class="family-detail-row">93.8 lbs</div><div class="family-detail-row">RCFE decision made</div></div>
+            <div class="family-detail">
+                <div class="family-detail-row">FAST 6e</div><div class="family-detail-row">93.8 lbs</div><div class="family-detail-row">RCFE decision made</div>
+                <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#9889;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">Submit bond for mother's assets</span>
+                </div>
+            </div>
+<div class="person-tl-item">
+                <span class="person-tl-dot">&#9888;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-03-24</span>
+                    <span class="person-tl-text">IHSS reassessment request — mother mobility decline — due in 52 days (2026-05-15</span>
+                </div>
+            </div>
+</div>
+            </div>
         </div>
 
         </div>
@@ -3822,7 +4502,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 24, 2026 at 10:06 PM</div>
+            <div class="report-meta">Generated March 24, 2026 at 10:24 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -3834,7 +4514,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 24, 2026 at 10:06 PM</div>
+            <div class="report-meta">Last updated: March 24, 2026 at 10:24 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -3871,7 +4551,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">84</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">44</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 22:06</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 22:24</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -5211,6 +5891,246 @@ function updateSwipeCounter(dismissed, snoozed) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
+/*  11b. BATCH 5 — SWIPE GESTURES for tasks + action cards (Item 15)        */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function initTaskSwipe() {
+    if (typeof Hammer === "undefined") return;
+
+    /* Restore snoozed tasks from IndexedDB */
+    storageGet("phoebe_task_snoozed", {}).then(function(snoozed) {
+        snoozed = snoozed || {};
+        var now = Date.now();
+        /* Clean expired snoozes */
+        var cleaned = {};
+        Object.keys(snoozed).forEach(function(k) {
+            if (snoozed[k] > now) cleaned[k] = snoozed[k];
+        });
+        if (Object.keys(cleaned).length !== Object.keys(snoozed).length) {
+            storageSet("phoebe_task_snoozed", cleaned);
+            snoozed = cleaned;
+        }
+
+        /* Hide snoozed items */
+        Object.keys(snoozed).forEach(function(tid) {
+            var wrap = document.querySelector('.swipeable-wrap[data-swipe-id="' + tid + '"]');
+            if (wrap) wrap.style.display = "none";
+        });
+
+        /* Attach Hammer.js to each swipeable-wrap */
+        var wraps = document.querySelectorAll(".swipeable-wrap");
+        wraps.forEach(function(wrap) {
+            if (wrap.style.display === "none") return;
+            var inner = wrap.querySelector(".action-card, .task-item");
+            if (!inner) return;
+            var revealL = wrap.querySelector(".swipe-reveal-left");
+            var revealR = wrap.querySelector(".swipe-reveal-right");
+            var mc = new Hammer(inner, { touchAction: "pan-y" });
+            mc.get("pan").set({ direction: Hammer.DIRECTION_HORIZONTAL, threshold: 30 });
+
+            mc.on("panleft panright", function(ev) {
+                inner.style.transition = "none";
+                inner.style.transform = "translateX(" + ev.deltaX + "px)";
+                /* Show reveal background proportionally */
+                if (ev.deltaX < 0 && revealL) {
+                    revealL.style.opacity = Math.min(Math.abs(ev.deltaX) / 100, 1);
+                } else if (ev.deltaX > 0 && revealR) {
+                    revealR.style.opacity = Math.min(Math.abs(ev.deltaX) / 100, 1);
+                }
+            });
+
+            mc.on("panend pancancel", function(ev) {
+                inner.style.transition = "";
+                if (revealL) revealL.style.opacity = "";
+                if (revealR) revealR.style.opacity = "";
+
+                if (Math.abs(ev.deltaX) > 100) {
+                    var tid = wrap.getAttribute("data-swipe-id");
+                    if (ev.deltaX < 0) {
+                        /* Swipe LEFT = complete (check the checkbox) */
+                        inner.classList.add("swipe-dismiss");
+                        if (navigator.vibrate) navigator.vibrate(50);
+                        var cb = inner.querySelector(".task-checkbox");
+                        if (cb && !cb.checked) {
+                            cb.checked = true;
+                            handleCheck(cb);
+                        }
+                        setTimeout(function() {
+                            wrap.classList.add("swiped-away");
+                        }, 300);
+                    } else {
+                        /* Swipe RIGHT = snooze 24h */
+                        inner.classList.add("swipe-snooze");
+                        if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+                        var expiry = Date.now() + 24 * 60 * 60 * 1000;
+                        storageGet("phoebe_task_snoozed", {}).then(function(s) {
+                            s = s || {};
+                            s[tid] = expiry;
+                            storageSet("phoebe_task_snoozed", s);
+                        });
+                        setTimeout(function() {
+                            wrap.classList.add("swiped-away");
+                        }, 300);
+                    }
+                } else {
+                    /* Snap back */
+                    inner.style.transform = "";
+                }
+            });
+        });
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  11c. BATCH 5 — TASK MULTI-VIEW: List/Kanban/Calendar (Item 12)          */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _calEventsData = {"2026-03-28": ["Wedding Anniversary"], "2026-03-30": ["Stay at The Hadsten Solvang, Tapestry Collection by Hilton"], "2026-03-31": ["leave to go to 2pm appointment with Dr. Chang on Bldg 1 Suite 104?"], "2026-04-05": ["Trim Hair", "Prepare tithe"], "2026-04-10": ["Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)"], "2026-04-11": ["Grandpa Han's Birthday"], "2026-04-12": ["Chris Eun's Birthday", "Vacuum all filters for air purifiers"], "2026-04-21": ["Plan for Summer Trip"], "2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
+
+function switchTaskView(view, btn) {
+    /* Update toggle buttons */
+    document.querySelectorAll("#taskViewToggle .view-toggle-btn").forEach(function(b) {
+        b.classList.remove("active");
+    });
+    if (btn) btn.classList.add("active");
+
+    /* Show the matching view */
+    document.querySelectorAll("#panel-tasks .task-view").forEach(function(v) {
+        v.classList.remove("active");
+    });
+    var target = document.getElementById("taskView" + view.charAt(0).toUpperCase() + view.slice(1));
+    if (target) target.classList.add("active");
+
+    /* Save preference */
+    storageSet("phoebe_task_view", view);
+
+    /* Init kanban drag-drop when first shown */
+    if (view === "kanban") initKanbanDragDrop();
+    /* Init task swipe when list view shown */
+    if (view === "list") initTaskSwipe();
+}
+
+function restoreTaskView() {
+    storageGet("phoebe_task_view", "list").then(function(view) {
+        var btn = document.querySelector('#taskViewToggle .view-toggle-btn[data-view="' + view + '"]');
+        if (btn) switchTaskView(view, btn);
+    });
+}
+
+/* Kanban drag and drop (desktop) */
+function initKanbanDragDrop() {
+    var cards = document.querySelectorAll(".kanban-card[draggable]");
+    var dropZones = document.querySelectorAll(".kanban-col-body[data-drop]");
+
+    cards.forEach(function(card) {
+        card.addEventListener("dragstart", function(e) {
+            card.classList.add("dragging");
+            e.dataTransfer.setData("text/plain", card.getAttribute("data-task-key"));
+            e.dataTransfer.effectAllowed = "move";
+        });
+        card.addEventListener("dragend", function() {
+            card.classList.remove("dragging");
+            dropZones.forEach(function(z) { z.classList.remove("drag-over"); });
+        });
+    });
+
+    dropZones.forEach(function(zone) {
+        zone.addEventListener("dragover", function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            zone.classList.add("drag-over");
+        });
+        zone.addEventListener("dragleave", function() {
+            zone.classList.remove("drag-over");
+        });
+        zone.addEventListener("drop", function(e) {
+            e.preventDefault();
+            zone.classList.remove("drag-over");
+            var taskKey = e.dataTransfer.getData("text/plain");
+            var card = document.querySelector('.kanban-card[data-task-key="' + taskKey + '"]');
+            if (card) {
+                /* Remove empty state if exists */
+                var empty = zone.querySelector(".kanban-empty");
+                if (empty) empty.remove();
+                zone.appendChild(card);
+                /* Update column counts */
+                document.querySelectorAll(".kanban-col").forEach(function(col) {
+                    var header = col.querySelector(".kanban-col-header .count-badge");
+                    var body = col.querySelector(".kanban-col-body");
+                    if (header && body) {
+                        header.textContent = body.querySelectorAll(".kanban-card").length;
+                    }
+                });
+            }
+        });
+    });
+
+    /* Mobile: tap-to-select + tap-target */
+    if ("ontouchstart" in window) {
+        var _selectedKanbanCard = null;
+        cards.forEach(function(card) {
+            card.setAttribute("draggable", "false");
+            card.addEventListener("click", function(e) {
+                if (e.target.classList.contains("task-checkbox")) return;
+                if (_selectedKanbanCard === card) {
+                    card.classList.remove("dragging");
+                    _selectedKanbanCard = null;
+                    return;
+                }
+                if (_selectedKanbanCard) _selectedKanbanCard.classList.remove("dragging");
+                card.classList.add("dragging");
+                _selectedKanbanCard = card;
+            });
+        });
+        dropZones.forEach(function(zone) {
+            zone.addEventListener("click", function() {
+                if (!_selectedKanbanCard) return;
+                var empty = zone.querySelector(".kanban-empty");
+                if (empty) empty.remove();
+                zone.appendChild(_selectedKanbanCard);
+                _selectedKanbanCard.classList.remove("dragging");
+                /* Update counts */
+                document.querySelectorAll(".kanban-col").forEach(function(col) {
+                    var header = col.querySelector(".kanban-col-header .count-badge");
+                    var body = col.querySelector(".kanban-col-body");
+                    if (header && body) header.textContent = body.querySelectorAll(".kanban-card").length;
+                });
+                _selectedKanbanCard = null;
+            });
+        });
+    }
+}
+
+/* Calendar day detail popup */
+function showCalDay(dayEl) {
+    var date = dayEl.getAttribute("data-date");
+    if (!date) return;
+    var detail = document.getElementById("calDayDetail");
+    if (!detail) return;
+
+    /* Toggle off if clicking same day */
+    document.querySelectorAll(".cal-day.selected").forEach(function(d) { d.classList.remove("selected"); });
+    if (detail.classList.contains("open") && detail.getAttribute("data-active-date") === date) {
+        detail.classList.remove("open");
+        detail.removeAttribute("data-active-date");
+        return;
+    }
+
+    dayEl.classList.add("selected");
+    detail.setAttribute("data-active-date", date);
+
+    var events = _calEventsData[date] || [];
+    if (events.length === 0) {
+        detail.innerHTML = '<div class="cal-detail-date">' + date + '</div><div class="cal-detail-item" style="color:var(--ink-secondary);font-style:italic">No events</div>';
+    } else {
+        var html = '<div class="cal-detail-date">' + date + '</div>';
+        events.forEach(function(ev) {
+            html += '<div class="cal-detail-item">' + ev.replace(/</g, "&lt;").replace(/>/g, "&gt;") + '</div>';
+        });
+        detail.innerHTML = html;
+    }
+    detail.classList.add("open");
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
 /*  12. FIREBASE CHAT — multi-thread, thinking indicator, avatars           */
 /* ══════════════════════════════════════════════════════════════════════════ */
 var FIREBASE_CONFIG = {
@@ -5410,6 +6330,8 @@ function _initDashboardAfterAuth() {
     restoreCollapsedSections();
     setTimeOfDay();
     initAnomalySwipe();
+    initTaskSwipe();
+    restoreTaskView();
     autoCollapseEmptySections();
     setTimeout(hideUnnecessaryToggles, 300);
 }
@@ -7419,6 +8341,8 @@ document.addEventListener("DOMContentLoaded", function() {
         restoreCollapsedSections();
         setTimeOfDay();
         initAnomalySwipe();
+        initTaskSwipe();
+        restoreTaskView();
         autoCollapseEmptySections();
         setTimeout(hideUnnecessaryToggles, 300);
     }
