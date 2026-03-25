@@ -1360,6 +1360,12 @@ canvas { max-width: 100%; }
     .mention-dropdown { left: 8px; right: 8px; min-width: auto; }
     .mention-option { padding: 10px 12px; min-height: 44px; }
     .chat-search-bar input { font-size: 16px; }
+    .thread-tab-actions { display: none; }
+    .thread-topic-line { padding: 0 8px 4px; font-size: 10px; }
+    .voice-recording-bar { padding: 6px 8px; }
+    .chat-mic-btn { width: 36px; height: 36px; font-size: 18px; }
+    .chat-card { max-width: 240px; }
+    .pinned-msg-card { padding: 8px 10px; }
     .report-card { padding: 14px; }
     .report-section-title { font-size: 12px; }
 }
@@ -1552,6 +1558,378 @@ canvas { max-width: 100%; }
     opacity: 0.7;
 }
 .thread-tab-new:hover { opacity: 1; }
+
+/* ── Thread tab actions (rename, pin, delete) ──────────────────────── */
+.thread-tab-actions {
+    display: inline-flex;
+    gap: 2px;
+    margin-left: 4px;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.thread-tab:hover .thread-tab-actions,
+.thread-tab.active .thread-tab-actions {
+    opacity: 1;
+}
+.thread-tab-actions button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    opacity: 0.7;
+    padding: 0;
+    min-height: auto;
+    min-width: auto;
+}
+.thread-tab-actions button:hover { opacity: 1; background: rgba(0,0,0,0.1); }
+.thread-tab.active .thread-tab-actions button:hover { background: rgba(255,255,255,0.2); }
+.thread-tab .pin-icon {
+    font-size: 9px;
+    margin-right: 2px;
+    opacity: 0.7;
+}
+
+/* ── Thread description line ───────────────────────────────────────── */
+.thread-topic-line {
+    padding: 0 16px 6px;
+    font-size: 11px;
+    color: var(--ink-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 18px;
+    cursor: pointer;
+}
+.thread-topic-line:hover { color: var(--ink); }
+.thread-topic-line:empty { display: none; }
+
+/* ── Inline rename input ───────────────────────────────────────────── */
+.thread-rename-input {
+    display: inline-block;
+    width: auto;
+    min-width: 80px;
+    max-width: 160px;
+    padding: 3px 8px;
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    font-size: 11px;
+    font-family: var(--font);
+    font-weight: 600;
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+}
+
+/* ── Thread delete confirmation ────────────────────────────────────── */
+.thread-delete-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.thread-delete-overlay.visible { display: flex; }
+
+/* ── Pinned message indicator ──────────────────────────────────────── */
+.gchat-pin-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    color: var(--accent);
+    margin-top: 2px;
+}
+
+/* ── Pinned Messages section on Home panel ─────────────────────────── */
+.pinned-messages-section {
+    margin-bottom: 8px;
+}
+.pinned-msg-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm, 10px);
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pinned-msg-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.pinned-msg-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+.pinned-msg-thread {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(168,95,63,0.1);
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+[data-theme="dark"] .pinned-msg-thread { background: rgba(212,132,90,0.15); }
+.pinned-msg-sender {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+}
+.pinned-msg-time {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    margin-left: auto;
+}
+.pinned-msg-text {
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Voice message recording UI ────────────────────────────────────── */
+.chat-mic-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    color: var(--ink-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+}
+.chat-mic-btn:hover { color: var(--accent); background: var(--bg); }
+.chat-mic-btn.recording {
+    color: #fff;
+    background: var(--red, #e53e3e);
+    animation: micPulse 1s ease-in-out infinite;
+}
+@keyframes micPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(229,62,62,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(229,62,62,0); }
+}
+.voice-recording-bar {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(229,62,62,0.05);
+    border-top: 1px solid rgba(229,62,62,0.2);
+    flex-shrink: 0;
+    animation: chatMsgIn 0.15s ease;
+}
+.voice-recording-bar.visible { display: flex; }
+.voice-rec-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--red, #e53e3e);
+    animation: micPulse 1s ease-in-out infinite;
+    flex-shrink: 0;
+}
+.voice-rec-timer {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--red, #e53e3e);
+    font-variant-numeric: tabular-nums;
+}
+.voice-rec-cancel {
+    margin-left: auto;
+    padding: 6px 14px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink-secondary);
+    font-size: 12px;
+    font-family: var(--font);
+    cursor: pointer;
+    min-height: 32px;
+}
+.voice-rec-cancel:hover { border-color: var(--red); color: var(--red); }
+
+/* ── Audio player in message bubble ────────────────────────────────── */
+.voice-msg-player {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    min-width: 180px;
+}
+.voice-play-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+.voice-play-btn:hover { background: #8b4e33; }
+.voice-waveform {
+    flex: 1;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+.voice-waveform-bar {
+    width: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.4;
+    transition: opacity 0.1s;
+}
+.voice-waveform-bar.active { opacity: 1; }
+.voice-duration {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    font-variant-numeric: tabular-nums;
+    min-width: 28px;
+}
+
+/* ── Rich Cards in chat ────────────────────────────────────────────── */
+.chat-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 4px 0;
+    max-width: 280px;
+}
+.gchat-msg.own .chat-card { border-color: rgba(0,0,0,0.1); }
+.chat-card-header {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+}
+.chat-card-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.chat-card-badge.urgent { background: rgba(229,62,62,0.1); color: var(--red); }
+.chat-card-badge.high { background: rgba(255,165,0,0.1); color: #e67e22; }
+.chat-card-badge.medium { background: rgba(59,130,246,0.1); color: #3b82f6; }
+.chat-card-badge.low { background: rgba(34,197,94,0.1); color: var(--green); }
+.chat-card-body {
+    padding: 10px 12px;
+}
+.chat-card-body .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+.chat-card-body .card-detail {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    line-height: 1.4;
+}
+.chat-card-body .card-metric-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.1;
+}
+.chat-card-body .card-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 2px;
+}
+.chat-card-body .card-trend.up { color: var(--green); }
+.chat-card-body .card-trend.down { color: var(--red); }
+.chat-card-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--ink-secondary);
+    cursor: pointer;
+}
+.chat-card-checkbox input { width: 16px; height: 16px; accent-color: var(--accent); }
+.chat-card-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+}
+.chat-card-link img {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+}
+.chat-card-link .link-info { flex: 1; min-width: 0; }
+.chat-card-link .link-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.chat-card-link .link-desc {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.chat-card-link .link-url {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    opacity: 0.7;
+}
+
+/* ── Read receipts (ticks) ─────────────────────────────────────────── */
+.gchat-ticks {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: -2px;
+}
+.gchat-ticks.sent { color: var(--ink-secondary); }
+.gchat-ticks.delivered { color: var(--ink-secondary); }
+.gchat-ticks.read { color: #3b82f6; }
 
 /* ── Date separators ─────────────────────────────────────────────────── */
 .gchat-date-sep {
@@ -2465,7 +2843,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 21:49</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 21:59</span>
     </div>
 </aside>
 
@@ -2498,6 +2876,11 @@ canvas { max-width: 100%; }
                 <span class="tod-text" id="tod-text"></span>
             </div>
             <div class="tod-emphasis" id="tod-emphasis"></div>
+        </div>
+
+        <div class="section-title" id="sec-pinned-messages" onclick="toggleSectionCollapse(this)">Pinned Messages <span class="count-badge zero" id="pinned-count-badge">0</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content pinned-messages-section" data-section="sec-pinned-messages" id="pinned-messages-container">
+            <div class="section-empty"><span class="section-empty-icon">&#128204;</span>No pinned messages</div>
         </div>
 
         <div class="section-title" id="sec-metrics" onclick="toggleSectionCollapse(this)">Key Metrics <span class="section-chevron">&#9660;</span></div>
@@ -2608,7 +2991,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 24, 2026 at 09:49 PM &middot;
+            Generated March 24, 2026 at 09:59 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -2641,6 +3024,7 @@ canvas { max-width: 100%; }
                     <button class="thread-tab active" data-thread="phoebe-family" onclick="switchThread('phoebe-family', this)">Family</button>
                     <button class="thread-tab thread-tab-new" onclick="createNewThread()">+ New</button>
                 </div>
+                <div class="thread-topic-line" id="thread-topic-line" onclick="editThreadDescription()"></div>
             </div>
             <div class="chat-messages" id="chat-messages">
                 <div class="chat-empty" id="chat-empty">
@@ -2657,9 +3041,16 @@ canvas { max-width: 100%; }
                 </div>
                 <button class="chat-reply-bar-close" onclick="cancelReply()" aria-label="Cancel reply">&times;</button>
             </div>
+            <div class="voice-recording-bar" id="voice-recording-bar">
+                <div class="voice-rec-dot"></div>
+                <span class="voice-rec-timer" id="voice-rec-timer">0:00</span>
+                <span style="font-size:12px;color:var(--ink-secondary)">Recording...</span>
+                <button class="voice-rec-cancel" onclick="cancelVoiceRecording()">Cancel</button>
+            </div>
             <div class="chat-input-area" style="position:relative;">
                 <div class="mention-dropdown" id="mention-dropdown"></div>
                 <input type="text" id="chat-input" placeholder="Message Phoebe..." autocomplete="off">
+                <button class="chat-mic-btn" id="chat-mic-btn" onclick="toggleVoiceRecording()" title="Voice message" aria-label="Record voice message">&#127908;</button>
                 <button id="chat-send" onclick="sendChatMessage()">Send</button>
             </div>
         </div>
@@ -2681,6 +3072,18 @@ canvas { max-width: 100%; }
             <div class="gchat-confirm-actions">
                 <button class="cancel-btn" onclick="closeChatConfirm()">Cancel</button>
                 <button class="delete-btn" id="gchat-confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thread delete confirmation dialog -->
+    <div class="thread-delete-overlay" id="thread-delete-overlay">
+        <div class="gchat-confirm-dialog">
+            <h4>Delete thread?</h4>
+            <p id="thread-delete-msg">This thread and all messages in it will be permanently deleted.</p>
+            <div class="gchat-confirm-actions">
+                <button class="cancel-btn" onclick="closeThreadDeleteConfirm()">Cancel</button>
+                <button class="delete-btn" id="thread-confirm-delete" onclick="executeThreadDelete()">Delete</button>
             </div>
         </div>
     </div>
@@ -2801,7 +3204,67 @@ canvas { max-width: 100%; }
         </div>
         <div class="card">
             <div class="card-body tab-panel active" id="tab-calendar-events">
-                <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
+                <div class="timeline-item info">
+            <div class="timeline-date">2026-03-28</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Wedding Anniversary</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-03-30</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Mar 31, 01:15 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">leave to go to 2pm appointment with Dr. Chang on Bldg 1 Suite 104?</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 08:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Trim Hair</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 09:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Prepare tithe</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 10, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-11</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Grandpa Han's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-12</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Chris Eun's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 12, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Vacuum all filters for air purifiers</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-21</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Plan for Summer Trip</span>
+            </div>
+        </div>
+
             </div>
             <div class="card-body tab-panel" id="tab-calendar-deadlines">
                 <div class="timeline-item critical">
@@ -3294,7 +3757,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 24, 2026 at 09:49 PM</div>
+            <div class="report-meta">Generated March 24, 2026 at 09:59 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -3306,7 +3769,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 24, 2026 at 09:49 PM</div>
+            <div class="report-meta">Last updated: March 24, 2026 at 09:59 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -3343,7 +3806,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">84</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">44</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 21:49</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 21:59</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -4916,6 +5379,14 @@ function initChat() {
         /* Listen for typing indicators */
         initTypingListener();
 
+        /* Initialize read receipt observer */
+        initReadReceipts();
+
+        /* Load pinned messages for Home panel */
+        loadPinnedMessages();
+        /* Refresh pinned messages periodically */
+        setInterval(loadPinnedMessages, 30000);
+
         /* Connection state monitoring */
         var connRef = firebase.database().ref(".info/connected");
         connRef.on("value", function(snap) {
@@ -4937,36 +5408,75 @@ function initChat() {
 }
 
 /* ── Thread management ────────────────────────────────────────────────── */
+var _threadMeta = {}; /* cached thread metadata */
+var _pendingDeleteThread = null;
+
 function loadThreadList() {
     if (!chatDb) return;
     var threadsRef = chatDb.ref("threads");
     threadsRef.on("value", function(snap) {
         var threads = snap.val() || {};
+        _threadMeta = threads;
         var tabsEl = document.getElementById("thread-tabs");
         if (!tabsEl) return;
 
-        /* Keep + New button */
         var html = "";
         /* Always show Family first */
         var threadIds = Object.keys(threads);
         if (threadIds.indexOf("phoebe-family") === -1) {
-            html += buildThreadTab("phoebe-family", "Family");
+            html += buildThreadTab("phoebe-family", { name: "Family" });
         }
-        for (var tid in threads) {
-            var t = threads[tid];
-            html += buildThreadTab(tid, t.name || tid);
+
+        /* Sort: pinned first, then by created_at */
+        var sorted = threadIds.slice().sort(function(a, b) {
+            var pa = threads[a].pinned ? 1 : 0;
+            var pb = threads[b].pinned ? 1 : 0;
+            if (pa !== pb) return pb - pa;
+            return (threads[a].created_at || 0) - (threads[b].created_at || 0);
+        });
+
+        for (var i = 0; i < sorted.length; i++) {
+            var tid = sorted[i];
+            html += buildThreadTab(tid, threads[tid]);
         }
         html += '<button class="thread-tab thread-tab-new" onclick="createNewThread()">+ New</button>';
         tabsEl.innerHTML = html;
+
+        /* Update topic line for current thread */
+        updateThreadTopicLine();
     });
 }
 
-function buildThreadTab(threadId, name) {
+function buildThreadTab(threadId, meta) {
+    var name = (meta && meta.name) || threadId;
     var active = (threadId === _currentThread) ? " active" : "";
+    var pinIcon = (meta && meta.pinned) ? '<span class="pin-icon">&#128204;</span>' : "";
+    var colorDot = (meta && meta.color) ? '<span style="width:6px;height:6px;border-radius:50%;background:' + escHtml(meta.color) + ';flex-shrink:0"></span>' : "";
+
+    var actions = '<span class="thread-tab-actions">' +
+        '<button onclick="event.stopPropagation();startThreadRename(\'' + threadId + '\')" title="Rename">&#9998;</button>' +
+        '<button onclick="event.stopPropagation();toggleThreadPin(\'' + threadId + '\')" title="' + (meta && meta.pinned ? 'Unpin' : 'Pin') + '">' + (meta && meta.pinned ? '&#128204;' : '&#128392;') + '</button>';
+    if (threadId !== "phoebe-family") {
+        actions += '<button onclick="event.stopPropagation();confirmThreadDelete(\'' + threadId + '\', \'' + escHtml(name).replace(/'/g, "\\'") + '\')" title="Delete">&#128465;</button>';
+    }
+    actions += '</span>';
+
     return '<button class="thread-tab' + active + '" data-thread="' + threadId + '" onclick="switchThread(\'' + threadId + '\', this)">' +
-        escHtml(name) +
+        pinIcon + colorDot + escHtml(name) +
         '<span class="unread-badge" id="unread-' + threadId + '" style="display:none">0</span>' +
-        '</button>';
+        actions + '</button>';
+}
+
+function updateThreadTopicLine() {
+    var el = document.getElementById("thread-topic-line");
+    if (!el) return;
+    var meta = _threadMeta[_currentThread];
+    if (meta && meta.description) {
+        el.textContent = meta.description;
+        el.title = "Click to edit topic";
+    } else {
+        el.textContent = "";
+    }
 }
 
 function switchThread(threadId, btnEl) {
@@ -4974,6 +5484,9 @@ function switchThread(threadId, btnEl) {
 
     /* Detach old listener */
     detachThread(_currentThread);
+
+    /* Disconnect read receipt observer for old thread */
+    if (_readReceiptObserver) { _readReceiptObserver.disconnect(); }
 
     _currentThread = threadId;
     _chatMsgCount = 0;
@@ -4985,6 +5498,9 @@ function switchThread(threadId, btnEl) {
         tabs[i].classList.remove("active");
         if (tabs[i].getAttribute("data-thread") === threadId) tabs[i].classList.add("active");
     }
+
+    /* Update topic line */
+    updateThreadTopicLine();
 
     /* Clear messages — show skeleton loader */
     var messagesEl = document.getElementById("chat-messages");
@@ -5082,6 +5598,31 @@ function attachThread(threadId) {
 
         /* Update reactions */
         renderReactions(el, key, msg.reactions || {});
+
+        /* Update pin indicator */
+        var pinEl = el.querySelector(".gchat-pin-indicator");
+        if (msg.pinned && !pinEl) {
+            var bubble = el.querySelector(".gchat-bubble");
+            var timeEl = bubble ? bubble.querySelector(".gchat-time") : null;
+            if (timeEl) {
+                var pind = document.createElement("div");
+                pind.className = "gchat-pin-indicator";
+                pind.innerHTML = "&#128204; Pinned";
+                timeEl.parentNode.insertBefore(pind, timeEl);
+            }
+        } else if (!msg.pinned && pinEl) {
+            pinEl.remove();
+        }
+
+        /* Update read receipt ticks */
+        var tickEl = el.querySelector(".gchat-ticks");
+        var newTicks = getTicksHtml(msg);
+        if (newTicks && tickEl) {
+            tickEl.outerHTML = newTicks;
+        } else if (newTicks && !tickEl) {
+            var timeElR = el.querySelector(".gchat-time");
+            if (timeElR) timeElR.insertAdjacentHTML("beforeend", newTicks);
+        }
     });
 
     _threadListeners[threadId] = { addRef: addRef, ref: chatRef };
@@ -5097,25 +5638,158 @@ function detachThread(threadId) {
 }
 
 function createNewThread() {
-    var name = prompt("Thread topic (e.g. Solvang Trip, Health, School):");
-    if (!name || !name.trim()) return;
-    name = name.trim();
-    var slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-    if (!slug) slug = "thread-" + Date.now();
+    /* Replace the "+ New" button with an inline input */
+    var tabsEl = document.getElementById("thread-tabs");
+    if (!tabsEl) return;
+    var newBtn = tabsEl.querySelector(".thread-tab-new");
+    if (!newBtn) return;
 
-    /* Write thread metadata to /threads/ */
-    if (chatDb) {
-        var threadMeta = {
-            name: name,
-            created_at: firebase.database.ServerValue.TIMESTAMP,
-            created_by: CHAT_USER
-        };
-        if (_currentUser) threadMeta.created_by_email = _currentUser.email;
-        chatDb.ref("threads/" + slug).set(threadMeta);
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "thread-rename-input";
+    input.placeholder = "Topic name...";
+    input.setAttribute("maxlength", "40");
+    newBtn.style.display = "none";
+    tabsEl.appendChild(input);
+    input.focus();
+
+    function finalize() {
+        var name = input.value.trim();
+        input.remove();
+        newBtn.style.display = "";
+        if (!name) return;
+        var slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+        if (!slug) slug = "thread-" + Date.now();
+        if (chatDb) {
+            var threadMeta = {
+                name: name,
+                description: "",
+                pinned: false,
+                color: "",
+                created_at: firebase.database.ServerValue.TIMESTAMP,
+                created_by: CHAT_USER
+            };
+            if (_currentUser) threadMeta.created_by_email = _currentUser.email;
+            chatDb.ref("threads/" + slug).set(threadMeta);
+        }
+        switchThread(slug, null);
     }
 
-    /* Switch to new thread */
-    switchThread(slug, null);
+    input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") { e.preventDefault(); finalize(); }
+        if (e.key === "Escape") { input.remove(); newBtn.style.display = ""; }
+    });
+    input.addEventListener("blur", function() {
+        setTimeout(finalize, 100);
+    });
+}
+
+/* ── Thread rename ──────────────────────────────────────────────────── */
+function startThreadRename(threadId) {
+    var tabsEl = document.getElementById("thread-tabs");
+    if (!tabsEl) return;
+    var tabs = tabsEl.querySelectorAll(".thread-tab");
+    var targetTab = null;
+    for (var i = 0; i < tabs.length; i++) {
+        if (tabs[i].getAttribute("data-thread") === threadId) { targetTab = tabs[i]; break; }
+    }
+    if (!targetTab) return;
+
+    var currentName = (_threadMeta[threadId] && _threadMeta[threadId].name) || threadId;
+    var origHtml = targetTab.innerHTML;
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "thread-rename-input";
+    input.value = currentName;
+    input.setAttribute("maxlength", "40");
+    targetTab.innerHTML = "";
+    targetTab.appendChild(input);
+    input.focus();
+    input.select();
+
+    function finalize() {
+        var newName = input.value.trim();
+        if (newName && newName !== currentName && chatDb) {
+            chatDb.ref("threads/" + threadId + "/name").set(newName);
+        }
+    }
+
+    input.addEventListener("keydown", function(e) {
+        e.stopPropagation();
+        if (e.key === "Enter") { e.preventDefault(); finalize(); }
+        if (e.key === "Escape") { /* loadThreadList will rebuild */ }
+    });
+    input.addEventListener("blur", function() {
+        setTimeout(finalize, 100);
+    });
+    input.addEventListener("click", function(e) { e.stopPropagation(); });
+}
+
+/* ── Thread description editing ────────────────────────────────────── */
+function editThreadDescription() {
+    var el = document.getElementById("thread-topic-line");
+    if (!el || !chatDb) return;
+    var currentDesc = (_threadMeta[_currentThread] && _threadMeta[_currentThread].description) || "";
+    var input = document.createElement("input");
+    input.type = "text";
+    input.className = "thread-rename-input";
+    input.style.width = "100%";
+    input.style.maxWidth = "none";
+    input.value = currentDesc;
+    input.placeholder = "Add a topic description...";
+    el.textContent = "";
+    el.appendChild(input);
+    input.focus();
+
+    function finalize() {
+        var desc = input.value.trim();
+        chatDb.ref("threads/" + _currentThread + "/description").set(desc);
+        el.textContent = desc;
+    }
+
+    input.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") { e.preventDefault(); finalize(); }
+        if (e.key === "Escape") { el.textContent = currentDesc; }
+    });
+    input.addEventListener("blur", function() {
+        setTimeout(finalize, 100);
+    });
+}
+
+/* ── Thread pin toggle ─────────────────────────────────────────────── */
+function toggleThreadPin(threadId) {
+    if (!chatDb) return;
+    var meta = _threadMeta[threadId];
+    var newPinned = !(meta && meta.pinned);
+    chatDb.ref("threads/" + threadId + "/pinned").set(newPinned);
+}
+
+/* ── Thread delete ─────────────────────────────────────────────────── */
+function confirmThreadDelete(threadId, name) {
+    _pendingDeleteThread = threadId;
+    var msgEl = document.getElementById("thread-delete-msg");
+    if (msgEl) msgEl.textContent = 'Thread "' + name + '" and all messages will be permanently deleted.';
+    var overlay = document.getElementById("thread-delete-overlay");
+    if (overlay) overlay.classList.add("visible");
+}
+
+function closeThreadDeleteConfirm() {
+    _pendingDeleteThread = null;
+    var overlay = document.getElementById("thread-delete-overlay");
+    if (overlay) overlay.classList.remove("visible");
+}
+
+function executeThreadDelete() {
+    if (!_pendingDeleteThread || !chatDb) { closeThreadDeleteConfirm(); return; }
+    var tid = _pendingDeleteThread;
+    /* Remove thread metadata and all messages */
+    chatDb.ref("threads/" + tid).remove();
+    chatDb.ref("chat/" + tid).remove();
+    closeThreadDeleteConfirm();
+    /* Switch to Family if we were on the deleted thread */
+    if (_currentThread === tid) {
+        switchThread("phoebe-family", null);
+    }
 }
 
 /* ── Message rendering ────────────────────────────────────────────────── */
@@ -5137,6 +5811,9 @@ function appendChatMessage(key, msg) {
     var reactions = msg.reactions || {};
     var edited = msg.edited || false;
     var deleted = msg.deleted || false;
+    var pinned = msg.pinned || false;
+    var isVoice = (type === "voice");
+    var isCard = (type === "card");
 
     var isPhoebe = (sender === "Phoebe" || type === "phoebe" || type === "thinking");
     var isThinking = (type === "thinking");
@@ -5181,6 +5858,12 @@ function appendChatMessage(key, msg) {
             escHtml(replyTo.text || "") + '</div>';
     }
 
+    /* Read receipt ticks (own messages only) */
+    var ticksHtml = getTicksHtml(msg);
+
+    /* Pin indicator */
+    var pinIndicator = pinned ? '<div class="gchat-pin-indicator">&#128204; Pinned</div>' : '';
+
     /* Bubble content */
     var bubbleContent = "";
     if (isThinking) {
@@ -5194,12 +5877,27 @@ function appendChatMessage(key, msg) {
             '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
             '<span class="gchat-msg-text"><span class="gchat-deleted">Message deleted</span></span>' +
             '<span class="gchat-time">' + time + '</span>';
+    } else if (isVoice && msg.audioData) {
+        /* Voice message */
+        bubbleContent = replyHtml +
+            '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
+            '<span class="gchat-msg-text">' + renderVoicePlayer(msg.audioData, msg.audioMime || "audio/webm", msg.audioDuration || 0) + '</span>' +
+            pinIndicator +
+            '<span class="gchat-time">' + time + ticksHtml + '</span>';
+    } else if (isCard && msg.cardType) {
+        /* Rich card message */
+        bubbleContent = replyHtml +
+            '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
+            '<span class="gchat-msg-text">' + renderChatCard(msg) + '</span>' +
+            pinIndicator +
+            '<span class="gchat-time">' + time + ticksHtml + '</span>';
     } else {
         var safeText = renderMentions(escHtml(text).replace(/\n/g, "<br>"));
         bubbleContent = replyHtml +
             '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
             '<span class="gchat-msg-text">' + safeText + '</span>' +
-            '<span class="gchat-time">' + time + (edited ? '<span class="gchat-edited"> (edited)</span>' : '') + '</span>';
+            pinIndicator +
+            '<span class="gchat-time">' + time + (edited ? '<span class="gchat-edited"> (edited)</span>' : '') + ticksHtml + '</span>';
     }
 
     /* Hover menu (desktop only — hidden on mobile via CSS) */
@@ -5207,7 +5905,8 @@ function appendChatMessage(key, msg) {
     if (!isThinking && !deleted) {
         hoverMenu = '<div class="gchat-hover-menu">' +
             '<button class="gchat-hover-btn" onclick="openEmojiPicker(\'' + key + '\')" title="React">&#128578;</button>' +
-            '<button class="gchat-hover-btn" onclick="startReply(document.getElementById(\'msg-' + key + '\'))" title="Reply">&#8617;</button>';
+            '<button class="gchat-hover-btn" onclick="startReply(document.getElementById(\'msg-' + key + '\'))" title="Reply">&#8617;</button>' +
+            '<button class="gchat-hover-btn" onclick="togglePin(\'' + key + '\')" title="' + (pinned ? 'Unpin' : 'Pin') + '">' + (pinned ? '&#128204;' : '&#128392;') + '</button>';
         if (isOwn) {
             hoverMenu += '<button class="gchat-hover-btn" onclick="startEdit(\'' + key + '\')" title="Edit">&#9998;</button>' +
                 '<button class="gchat-hover-btn" onclick="confirmDelete(\'' + key + '\')" title="Delete">&#128465;</button>';
@@ -5230,7 +5929,7 @@ function appendChatMessage(key, msg) {
         if (deleted || isThinking) return;
         touchStartTime = Date.now();
         _longPressTimer = setTimeout(function() {
-            openChatBottomSheet(key, sender, text, isOwn);
+            openChatBottomSheet(key, sender, text, isOwn, pinned);
         }, 500);
     }, { passive: true });
     div.addEventListener("touchend", function() {
@@ -5242,6 +5941,9 @@ function appendChatMessage(key, msg) {
 
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
+
+    /* Observe for read receipts */
+    observeMessageForReadReceipt(div);
 }
 
 /* ── Rebuild message content (after thinking -> response transition) ── */
@@ -5267,9 +5969,14 @@ function rebuildMessageContent(el, key, msg) {
 
     var safeText = renderMentions(escHtml(msg.text || "").replace(/\n/g, "<br>"));
 
+    var ticksHtml = getTicksHtml(msg);
+    var pinned = msg.pinned || false;
+    var pinIndicator = pinned ? '<div class="gchat-pin-indicator">&#128204; Pinned</div>' : '';
+
     var hoverMenu = '<div class="gchat-hover-menu">' +
         '<button class="gchat-hover-btn" onclick="openEmojiPicker(\'' + key + '\')" title="React">&#128578;</button>' +
-        '<button class="gchat-hover-btn" onclick="startReply(document.getElementById(\'msg-' + key + '\'))" title="Reply">&#8617;</button>';
+        '<button class="gchat-hover-btn" onclick="startReply(document.getElementById(\'msg-' + key + '\'))" title="Reply">&#8617;</button>' +
+        '<button class="gchat-hover-btn" onclick="togglePin(\'' + key + '\')" title="' + (pinned ? 'Unpin' : 'Pin') + '">' + (pinned ? '&#128204;' : '&#128392;') + '</button>';
     if (isOwn) {
         hoverMenu += '<button class="gchat-hover-btn" onclick="startEdit(\'' + key + '\')" title="Edit">&#9998;</button>' +
             '<button class="gchat-hover-btn" onclick="confirmDelete(\'' + key + '\')" title="Delete">&#128465;</button>';
@@ -5281,7 +5988,8 @@ function rebuildMessageContent(el, key, msg) {
         '<div class="gchat-bubble">' + replyHtml +
         '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
         '<span class="gchat-msg-text">' + safeText + '</span>' +
-        '<span class="gchat-time">' + time + '</span>' +
+        pinIndicator +
+        '<span class="gchat-time">' + time + ticksHtml + '</span>' +
         hoverMenu + '</div>' +
         '<div class="gchat-reactions" id="reactions-' + key + '"></div>' +
         '</div>';
@@ -5707,7 +6415,7 @@ function scrollToSearchMatch(idx) {
 /* ══════════════════════════════════════════════════════════════════════ */
 /*  MOBILE BOTTOM SHEET (long-press actions)                             */
 /* ══════════════════════════════════════════════════════════════════════ */
-function openChatBottomSheet(msgKey, sender, text, isOwn) {
+function openChatBottomSheet(msgKey, sender, text, isOwn, pinned) {
     _bsMsgKey = msgKey;
     _bsMsgSender = sender;
 
@@ -5722,6 +6430,8 @@ function openChatBottomSheet(msgKey, sender, text, isOwn) {
         '<span class="bs-icon">&#128578;</span> React</div>' +
         '<div class="gchat-bs-action" onclick="startReply(document.getElementById(\'msg-' + msgKey + '\'))">' +
         '<span class="bs-icon">&#8617;</span> Reply</div>' +
+        '<div class="gchat-bs-action" onclick="togglePin(\'' + msgKey + '\')">' +
+        '<span class="bs-icon">' + (pinned ? '&#128204;' : '&#128392;') + '</span> ' + (pinned ? 'Unpin' : 'Pin to feed') + '</div>' +
         '<div class="gchat-bs-action" onclick="copyMessageText(\'' + msgKey + '\')">' +
         '<span class="bs-icon">&#128203;</span> Copy text</div>';
     if (isOwn) {
@@ -5774,6 +6484,410 @@ function copyMessageText(msgKey) {
         navigator.clipboard.writeText(text);
     }
     closeChatBottomSheet();
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  PIN TO MAIN FEED (Item 13)                                          */
+/* ══════════════════════════════════════════════════════════════════════ */
+function togglePin(msgKey, threadId) {
+    if (!chatDb) return;
+    var tid = threadId || _currentThread;
+    var path = "chat/" + tid + "/" + msgKey + "/pinned";
+    chatDb.ref(path).once("value", function(snap) {
+        chatDb.ref(path).set(!snap.val());
+    });
+    closeChatBottomSheet();
+}
+
+function loadPinnedMessages() {
+    /* Query all threads for pinned messages and display on Home panel */
+    if (!chatDb) return;
+    chatDb.ref("chat").once("value", function(snap) {
+        var allChats = snap.val() || {};
+        var pinned = [];
+        for (var tid in allChats) {
+            var msgs = allChats[tid];
+            for (var mk in msgs) {
+                var m = msgs[mk];
+                if (m && m.pinned && !m.deleted) {
+                    var threadName = (_threadMeta[tid] && _threadMeta[tid].name) || tid;
+                    pinned.push({
+                        key: mk,
+                        threadId: tid,
+                        threadName: threadName,
+                        sender: m.sender || "Unknown",
+                        text: m.text || "",
+                        timestamp: m.timestamp || 0,
+                        type: m.type || "user"
+                    });
+                }
+            }
+        }
+
+        /* Sort by timestamp descending */
+        pinned.sort(function(a, b) { return (b.timestamp || 0) - (a.timestamp || 0); });
+
+        var container = document.getElementById("pinned-messages-container");
+        var badge = document.getElementById("pinned-count-badge");
+        if (!container) return;
+
+        if (pinned.length === 0) {
+            container.innerHTML = '<div class="section-empty"><span class="section-empty-icon">&#128204;</span>No pinned messages</div>';
+            if (badge) { badge.textContent = "0"; badge.classList.add("zero"); }
+            return;
+        }
+
+        if (badge) { badge.textContent = String(pinned.length); badge.classList.remove("zero"); }
+        var html = "";
+        for (var i = 0; i < Math.min(pinned.length, 10); i++) {
+            var p = pinned[i];
+            var time = "";
+            if (p.timestamp) {
+                try { time = new Date(p.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" }); } catch(e) {}
+            }
+            html += '<div class="pinned-msg-card" onclick="showPanel(\'panel-chat\');switchThread(\'' + p.threadId + '\', null)">' +
+                '<div class="pinned-msg-header">' +
+                '<span class="pinned-msg-thread">#' + escHtml(p.threadName) + '</span>' +
+                '<span class="pinned-msg-sender">' + escHtml(p.sender) + '</span>' +
+                '<span class="pinned-msg-time">' + time + '</span>' +
+                '</div>' +
+                '<div class="pinned-msg-text">' + escHtml(p.text).substring(0, 120) + '</div>' +
+                '</div>';
+        }
+        container.innerHTML = html;
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  VOICE MESSAGES (Item 16)                                            */
+/* ══════════════════════════════════════════════════════════════════════ */
+var _mediaRecorder = null;
+var _audioChunks = [];
+var _voiceRecording = false;
+var _voiceRecordTimer = null;
+var _voiceRecordStart = 0;
+var _voiceMaxDuration = 30; /* seconds */
+
+function toggleVoiceRecording() {
+    if (_voiceRecording) {
+        stopVoiceRecording(true); /* true = send */
+    } else {
+        startVoiceRecording();
+    }
+}
+
+function startVoiceRecording() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert("Voice recording is not supported in this browser.");
+        return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: { sampleRate: 16000, channelCount: 1 } }).then(function(stream) {
+        var options = { mimeType: "audio/webm;codecs=opus", audioBitsPerSecond: 8000 };
+        if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            options = { mimeType: "audio/webm" };
+            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                options = {};
+            }
+        }
+
+        _mediaRecorder = new MediaRecorder(stream, options);
+        _audioChunks = [];
+
+        _mediaRecorder.addEventListener("dataavailable", function(e) {
+            if (e.data.size > 0) _audioChunks.push(e.data);
+        });
+
+        _mediaRecorder.addEventListener("stop", function() {
+            stream.getTracks().forEach(function(t) { t.stop(); });
+        });
+
+        _mediaRecorder.start(100); /* collect data every 100ms */
+        _voiceRecording = true;
+        _voiceRecordStart = Date.now();
+
+        /* UI updates */
+        var micBtn = document.getElementById("chat-mic-btn");
+        if (micBtn) micBtn.classList.add("recording");
+        var bar = document.getElementById("voice-recording-bar");
+        if (bar) bar.classList.add("visible");
+
+        /* Timer display */
+        _voiceRecordTimer = setInterval(function() {
+            var elapsed = Math.floor((Date.now() - _voiceRecordStart) / 1000);
+            var timerEl = document.getElementById("voice-rec-timer");
+            if (timerEl) timerEl.textContent = Math.floor(elapsed / 60) + ":" + String(elapsed % 60).padStart(2, "0");
+            /* Auto-stop at max duration */
+            if (elapsed >= _voiceMaxDuration) {
+                stopVoiceRecording(true);
+            }
+        }, 250);
+
+        if (navigator.vibrate) navigator.vibrate(30);
+    }).catch(function(err) {
+        console.error("Microphone access denied:", err);
+        alert("Microphone access is required for voice messages.");
+    });
+}
+
+function stopVoiceRecording(shouldSend) {
+    if (!_mediaRecorder || !_voiceRecording) return;
+    _voiceRecording = false;
+    clearInterval(_voiceRecordTimer);
+
+    var micBtn = document.getElementById("chat-mic-btn");
+    if (micBtn) micBtn.classList.remove("recording");
+    var bar = document.getElementById("voice-recording-bar");
+    if (bar) bar.classList.remove("visible");
+
+    if (shouldSend) {
+        _mediaRecorder.addEventListener("stop", function() {
+            if (_audioChunks.length === 0) return;
+            var blob = new Blob(_audioChunks, { type: _mediaRecorder.mimeType || "audio/webm" });
+            var reader = new FileReader();
+            reader.onloadend = function() {
+                var base64 = reader.result.split(",")[1];
+                /* Check size — Firebase RTDB limit ~10MB per node but keep it small */
+                if (base64.length > 500000) {
+                    alert("Voice message too large. Try a shorter recording.");
+                    return;
+                }
+                sendVoiceMessage(base64, _mediaRecorder.mimeType || "audio/webm",
+                    Math.floor((Date.now() - _voiceRecordStart) / 1000));
+            };
+            reader.readAsDataURL(blob);
+        }, { once: true });
+    }
+    _mediaRecorder.stop();
+}
+
+function cancelVoiceRecording() {
+    stopVoiceRecording(false); /* false = don't send */
+}
+
+function sendVoiceMessage(audioData, mimeType, duration) {
+    if (!chatRef) return;
+    var msgData = {
+        sender: CHAT_USER,
+        text: "[Voice message]",
+        type: "voice",
+        audioData: audioData,
+        audioMime: mimeType,
+        audioDuration: duration || 0,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+    };
+    if (_currentUser) {
+        msgData.email = _currentUser.email;
+        msgData.persona = _currentUser.persona;
+    }
+    if (_replyTo) {
+        msgData.replyTo = {
+            key: _replyTo.key,
+            sender: _replyTo.sender,
+            text: (_replyTo.text || "").substring(0, 80)
+        };
+    }
+    chatRef.push(msgData);
+    if (chatDb) {
+        chatDb.ref("threads/" + _currentThread + "/last_message").set({
+            text: "[Voice message]",
+            sender: CHAT_USER,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+    }
+    cancelReply();
+    if (navigator.vibrate) navigator.vibrate(30);
+}
+
+function renderVoicePlayer(audioData, mimeType, duration) {
+    var dur = duration || 0;
+    var durStr = Math.floor(dur / 60) + ":" + String(dur % 60).padStart(2, "0");
+    /* Generate pseudo-waveform bars */
+    var bars = "";
+    var barCount = 20;
+    for (var i = 0; i < barCount; i++) {
+        var h = 4 + Math.floor(Math.random() * 16);
+        bars += '<div class="voice-waveform-bar" style="height:' + h + 'px"></div>';
+    }
+    var id = "voice-" + Math.random().toString(36).substr(2, 9);
+    return '<div class="voice-msg-player" id="' + id + '">' +
+        '<button class="voice-play-btn" onclick="playVoiceMsg(\'' + id + '\', \'' + mimeType + '\')" data-audio="' + audioData.substring(0, 60) + '..." data-playing="0">&#9654;</button>' +
+        '<div class="voice-waveform">' + bars + '</div>' +
+        '<span class="voice-duration">' + durStr + '</span>' +
+        '<audio style="display:none" src="data:' + escHtml(mimeType) + ';base64,' + audioData + '"></audio>' +
+        '</div>';
+}
+
+function playVoiceMsg(playerId) {
+    var container = document.getElementById(playerId);
+    if (!container) return;
+    var audio = container.querySelector("audio");
+    var btn = container.querySelector(".voice-play-btn");
+    if (!audio || !btn) return;
+
+    if (audio.paused) {
+        audio.play();
+        btn.innerHTML = "&#9646;&#9646;";
+        audio.onended = function() {
+            btn.innerHTML = "&#9654;";
+            /* Reset waveform */
+            var bars = container.querySelectorAll(".voice-waveform-bar");
+            for (var i = 0; i < bars.length; i++) bars[i].classList.remove("active");
+        };
+        /* Animate waveform */
+        audio.ontimeupdate = function() {
+            var pct = audio.currentTime / audio.duration;
+            var bars = container.querySelectorAll(".voice-waveform-bar");
+            var activeIdx = Math.floor(pct * bars.length);
+            for (var i = 0; i < bars.length; i++) {
+                bars[i].classList.toggle("active", i <= activeIdx);
+            }
+        };
+    } else {
+        audio.pause();
+        btn.innerHTML = "&#9654;";
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  RICH CARDS IN CHAT (Item 17)                                        */
+/* ══════════════════════════════════════════════════════════════════════ */
+function renderChatCard(msg) {
+    var cardType = msg.cardType || "link";
+    var data = msg.cardData || {};
+
+    if (cardType === "task") {
+        var prioClass = (data.priority || "medium").toLowerCase();
+        return '<div class="chat-card">' +
+            '<div class="chat-card-header">' +
+            '<span class="chat-card-badge ' + prioClass + '">' + escHtml(data.priority || "MEDIUM") + '</span>' +
+            '<span style="font-size:12px;color:var(--ink-secondary)">Task</span>' +
+            '</div>' +
+            '<div class="chat-card-body">' +
+            '<div class="card-title">' + escHtml(data.title || "") + '</div>' +
+            (data.detail ? '<div class="card-detail">' + escHtml(data.detail) + '</div>' : '') +
+            '</div>' +
+            (data.title ? '<label class="chat-card-checkbox"><input type="checkbox" ' + (data.done ? 'checked' : '') + ' onchange="this.parentElement.style.opacity=this.checked?0.5:1"> Mark complete</label>' : '') +
+            '</div>';
+    }
+
+    if (cardType === "calendar") {
+        var dateStr = data.date || "";
+        return '<div class="chat-card">' +
+            '<div class="chat-card-header">' +
+            '<span style="font-size:14px">&#128197;</span>' +
+            '<span>Calendar Event</span>' +
+            '</div>' +
+            '<div class="chat-card-body">' +
+            '<div class="card-title">' + escHtml(data.title || "") + '</div>' +
+            '<div class="card-detail">' + escHtml(dateStr) + (data.location ? '<br>' + escHtml(data.location) : '') + '</div>' +
+            '</div></div>';
+    }
+
+    if (cardType === "metric") {
+        var trendClass = data.trend === "up" ? "up" : data.trend === "down" ? "down" : "";
+        var trendArrow = data.trend === "up" ? "&#9650;" : data.trend === "down" ? "&#9660;" : "";
+        return '<div class="chat-card">' +
+            '<div class="chat-card-body">' +
+            '<div class="card-detail">' + escHtml(data.label || "") + '</div>' +
+            '<div class="card-metric-value">' + escHtml(data.value || "") + '</div>' +
+            (trendArrow ? '<div class="card-trend ' + trendClass + '">' + trendArrow + ' ' + escHtml(data.change || "") + '</div>' : '') +
+            '</div></div>';
+    }
+
+    if (cardType === "link") {
+        var domain = "";
+        try { domain = new URL(data.url || "").hostname; } catch(e) {}
+        var faviconUrl = data.favicon || ("https://www.google.com/s2/favicons?domain=" + domain + "&sz=32");
+        return '<div class="chat-card" onclick="window.open(\'' + escHtml(data.url || "#") + '\', \'_blank\')" style="cursor:pointer">' +
+            '<div class="chat-card-link">' +
+            '<img src="' + escHtml(faviconUrl) + '" alt="" onerror="this.style.display=\'none\'">' +
+            '<div class="link-info">' +
+            '<div class="link-title">' + escHtml(data.title || data.url || "") + '</div>' +
+            (data.description ? '<div class="link-desc">' + escHtml(data.description) + '</div>' : '') +
+            '<div class="link-url">' + escHtml(domain) + '</div>' +
+            '</div></div></div>';
+    }
+
+    return "";
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  READ RECEIPTS (Item 19)                                             */
+/* ══════════════════════════════════════════════════════════════════════ */
+var _readReceiptObserver = null;
+var _readReceiptBatch = {};
+var _readReceiptFlushTimer = null;
+
+function initReadReceipts() {
+    if (!("IntersectionObserver" in window)) return;
+    if (_readReceiptObserver) _readReceiptObserver.disconnect();
+
+    _readReceiptObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            var msgKey = el.getAttribute("data-msg-key");
+            var sender = el.getAttribute("data-msg-sender");
+            if (!msgKey || sender === CHAT_USER) return; /* Don't mark own messages as read */
+            _readReceiptBatch[msgKey] = Date.now();
+            scheduleReadReceiptFlush();
+        });
+    }, {
+        root: document.getElementById("chat-messages"),
+        threshold: 0.5
+    });
+}
+
+function scheduleReadReceiptFlush() {
+    if (_readReceiptFlushTimer) return;
+    _readReceiptFlushTimer = setTimeout(flushReadReceipts, 2000);
+}
+
+function flushReadReceipts() {
+    _readReceiptFlushTimer = null;
+    if (!chatDb || !_currentThread) return;
+    var batch = _readReceiptBatch;
+    _readReceiptBatch = {};
+    var userKey = CHAT_USER;
+    if (_currentUser && _currentUser.email) {
+        userKey = _currentUser.email.replace(/\./g, ",");
+    }
+    var updates = {};
+    for (var msgKey in batch) {
+        updates["chat/" + _currentThread + "/" + msgKey + "/readBy/" + userKey] = batch[msgKey];
+    }
+    if (Object.keys(updates).length > 0) {
+        chatDb.ref().update(updates);
+    }
+}
+
+function observeMessageForReadReceipt(el) {
+    if (_readReceiptObserver && el) {
+        _readReceiptObserver.observe(el);
+    }
+}
+
+function getTicksHtml(msg) {
+    if (!msg || msg.sender !== CHAT_USER) return "";
+    var readBy = msg.readBy || {};
+    var userKey = CHAT_USER;
+    if (_currentUser && _currentUser.email) {
+        userKey = _currentUser.email.replace(/\./g, ",");
+    }
+    /* Count readers that are not the sender */
+    var otherReaders = 0;
+    for (var k in readBy) {
+        if (k !== userKey && readBy.hasOwnProperty(k)) otherReaders++;
+    }
+
+    if (otherReaders > 0) {
+        return '<span class="gchat-ticks read" title="Read">&#10003;&#10003;</span>';
+    }
+    if (msg.timestamp) {
+        return '<span class="gchat-ticks delivered" title="Delivered">&#10003;&#10003;</span>';
+    }
+    return '<span class="gchat-ticks sent" title="Sent">&#10003;</span>';
 }
 
 /* ── @mention functions ──────────────────────────────────────────────── */
