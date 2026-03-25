@@ -1076,19 +1076,21 @@ canvas { max-width: 100%; }
     .chat-status { font-size: 10px; }
     .thread-tabs { padding: 6px 8px; }
     .thread-tab { padding: 5px 10px; font-size: 11px; min-height: 28px; }
-    .msg-avatar { width: 28px; height: 28px; font-size: 11px; }
-    .chat-msg { max-width: 90%; }
-    .msg-reply-btn { display: none !important; }
-    .chat-msg { -webkit-tap-highlight-color: transparent; }
+    .gchat-avatar, .gchat-avatar-letter { width: 28px; height: 28px; font-size: 11px; }
+    .gchat-body { max-width: 85%; }
+    /* Hide hover menu on mobile — long-press bottom sheet used instead */
+    .gchat-hover-menu { display: none !important; }
+    .gchat-msg { -webkit-tap-highlight-color: transparent; }
     .chat-reply-bar { padding: 6px 8px; font-size: 11px; }
     .mention-dropdown { left: 8px; right: 8px; min-width: auto; }
     .mention-option { padding: 10px 12px; min-height: 44px; }
+    .chat-search-bar input { font-size: 16px; }
     .report-card { padding: 14px; }
     .report-section-title { font-size: 12px; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
-/*  CHAT PANEL                                                              */
+/*  CHAT PANEL — Google Chat Style                                          */
 /* ══════════════════════════════════════════════════════════════════════════ */
 .chat-container {
     display: flex;
@@ -1108,12 +1110,37 @@ canvas { max-width: 100%; }
     border-bottom: 1px solid var(--line);
     flex-shrink: 0;
 }
+.chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 .chat-header h3 {
     font-size: 16px;
     font-weight: 700;
     color: var(--ink);
     margin: 0;
 }
+.chat-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.chat-header-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--ink-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+.chat-header-btn:hover { background: var(--bg); }
 .chat-status {
     font-size: 12px;
     color: var(--ink-secondary);
@@ -1121,6 +1148,77 @@ canvas { max-width: 100%; }
 }
 .chat-status.connected { color: var(--green); }
 .chat-status.error { color: var(--red); }
+
+/* ── Search bar (slides down from header) ────────────────────────────── */
+.chat-search-bar {
+    display: none;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    flex-shrink: 0;
+    animation: chatMsgIn 0.15s ease;
+}
+.chat-search-bar.visible { display: flex; gap: 8px; align-items: center; }
+.chat-search-bar input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 13px;
+    font-family: var(--font);
+    outline: none;
+    min-height: 36px;
+}
+.chat-search-bar input:focus { border-color: var(--accent); }
+.chat-search-nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 12px;
+    color: var(--ink-secondary);
+    white-space: nowrap;
+}
+.chat-search-nav button {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ink-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chat-search-nav button:hover { background: var(--line); }
+.chat-search-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--ink-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chat-search-close:hover { background: var(--line); }
+.msg-search-highlight {
+    background: rgba(168, 95, 63, 0.25);
+    border-radius: 2px;
+    padding: 0 1px;
+}
+.msg-search-highlight.active {
+    background: rgba(168, 95, 63, 0.5);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+[data-theme="dark"] .msg-search-highlight { background: rgba(212, 132, 90, 0.3); }
+[data-theme="dark"] .msg-search-highlight.active { background: rgba(212, 132, 90, 0.5); }
 
 /* ── Thread Tabs ──────────────────────────────────────────────────────── */
 .chat-threads {
@@ -1180,85 +1278,300 @@ canvas { max-width: 100%; }
 }
 .thread-tab-new:hover { opacity: 1; }
 
-/* ── Messages ─────────────────────────────────────────────────────────── */
+/* ── Date separators ─────────────────────────────────────────────────── */
+.gchat-date-sep {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-secondary);
+    padding: 16px 0 8px;
+    position: relative;
+}
+.gchat-date-sep::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    top: 50%;
+    height: 1px;
+    background: var(--line);
+}
+.gchat-date-sep span {
+    background: var(--paper);
+    padding: 0 12px;
+    position: relative;
+}
+
+/* ── Messages — Google Chat layout ────────────────────────────────────── */
 .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding: 16px;
+    padding: 8px 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
     scrollbar-width: thin;
     scroll-behavior: smooth;
 }
 .chat-messages::-webkit-scrollbar { width: 4px; }
 .chat-messages::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
-.chat-msg {
+
+.gchat-msg {
     display: flex;
     gap: 8px;
-    max-width: 85%;
+    padding: 4px 16px;
+    margin: 1px 0;
+    position: relative;
     animation: chatMsgIn 0.2s ease;
 }
 @keyframes chatMsgIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.chat-msg.phoebe { align-self: flex-start; }
-.chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
-.chat-msg.thinking { align-self: flex-start; }
+.gchat-msg:hover {
+    background: var(--bg);
+}
+.gchat-msg.own {
+    flex-direction: row-reverse;
+}
 
-/* Avatars */
-.msg-avatar {
+/* Avatars — photo first, letter fallback */
+.gchat-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
     flex-shrink: 0;
+    object-fit: cover;
+    margin-top: 2px;
+}
+.gchat-avatar-letter {
     width: 32px;
     height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
     margin-top: 2px;
 }
-.msg-avatar.av-phoebe { background: var(--accent); }
-.msg-avatar.av-dan { background: var(--sea, #5f7f8f); }
-.msg-avatar.av-minako { background: #c47a9e; }
-.msg-avatar.av-default { background: var(--ink-secondary); }
+.gchat-avatar-letter.av-phoebe { background: var(--accent); }
+.gchat-avatar-letter.av-dan { background: var(--sea, #5f7f8f); }
+.gchat-avatar-letter.av-minako { background: #c47a9e; }
+.gchat-avatar-letter.av-default { background: var(--ink-secondary); }
 
 /* Bubble */
-.msg-bubble {
-    padding: 10px 14px;
-    border-radius: 16px;
-    font-size: 14px;
-    line-height: 1.4;
-    word-wrap: break-word;
+.gchat-body {
+    max-width: 70%;
+    min-width: 0;
 }
-.chat-msg.phoebe .msg-bubble,
-.chat-msg.thinking .msg-bubble {
+.gchat-bubble {
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.45;
+    word-wrap: break-word;
+    position: relative;
+}
+.gchat-msg:not(.own) .gchat-bubble {
     background: var(--bg);
-    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
     color: var(--ink);
 }
-.chat-msg.user .msg-bubble {
-    background: var(--accent);
-    color: #fff;
-    border-bottom-right-radius: 4px;
+.gchat-msg.own .gchat-bubble {
+    background: #e3f2fd;
+    border-top-right-radius: 4px;
+    color: #1a1a1a;
 }
-.msg-bubble .msg-time {
-    font-size: 10px;
-    opacity: 0.6;
-    margin-top: 4px;
-    display: block;
+[data-theme="dark"] .gchat-msg.own .gchat-bubble {
+    background: #1a3a5c;
+    color: #e5e5e5;
 }
-.msg-bubble .msg-sender {
-    font-size: 11px;
+.gchat-msg.thinking .gchat-bubble {
+    background: var(--bg);
+    border-top-left-radius: 4px;
+    color: var(--ink);
+}
+.gchat-sender {
+    font-size: 12px;
     font-weight: 600;
     margin-bottom: 2px;
     display: block;
-    opacity: 0.8;
 }
-.chat-msg.phoebe .msg-sender { color: var(--accent); }
+.gchat-msg:not(.own) .gchat-sender { color: var(--accent); }
+.gchat-msg.own .gchat-sender { color: var(--sea, #5f7f8f); text-align: right; }
+.gchat-time {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    margin-top: 2px;
+    display: block;
+}
+.gchat-msg.own .gchat-time { text-align: right; }
+.gchat-edited {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    font-style: italic;
+}
+.gchat-deleted {
+    font-style: italic;
+    color: var(--ink-secondary);
+    opacity: 0.6;
+}
+
+/* ── Hover menu (Google Chat style floating toolbar) ─────────────────── */
+.gchat-hover-menu {
+    display: none;
+    position: absolute;
+    top: -12px;
+    right: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 2px 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+.gchat-msg:hover .gchat-hover-menu {
+    display: flex;
+    gap: 2px;
+}
+.gchat-msg.own .gchat-hover-menu {
+    right: auto;
+    left: 8px;
+}
+.gchat-hover-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-secondary);
+    transition: background 0.1s;
+}
+.gchat-hover-btn:hover {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+/* ── Emoji reactions ─────────────────────────────────────────────────── */
+.gchat-reactions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+.gchat-reaction {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 6px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    font-size: 12px;
+    cursor: pointer;
+    background: var(--paper);
+    transition: all 0.15s;
+}
+.gchat-reaction:hover { border-color: var(--accent); }
+.gchat-reaction.own {
+    border-color: var(--accent);
+    background: rgba(168, 95, 63, 0.1);
+}
+[data-theme="dark"] .gchat-reaction.own { background: rgba(212, 132, 90, 0.15); }
+.gchat-reaction-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+}
+
+/* ── Emoji picker ────────────────────────────────────────────────────── */
+.gchat-emoji-picker {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 4px);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    z-index: 20;
+    gap: 2px;
+}
+.gchat-emoji-picker.visible { display: flex; }
+.gchat-emoji-pick {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s;
+}
+.gchat-emoji-pick:hover { background: var(--bg); }
+
+/* ── Typing indicator ────────────────────────────────────────────────── */
+.gchat-typing {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    padding: 4px 16px;
+    font-style: italic;
+    min-height: 20px;
+    flex-shrink: 0;
+}
+
+/* ── Edit mode ───────────────────────────────────────────────────────── */
+.gchat-edit-area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+.gchat-edit-input {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 14px;
+    font-family: var(--font);
+    outline: none;
+    resize: none;
+    min-height: 36px;
+    line-height: 1.4;
+}
+.gchat-edit-actions {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+}
+.gchat-edit-actions button {
+    padding: 4px 12px;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 12px;
+    font-family: var(--font);
+    cursor: pointer;
+    min-height: 28px;
+    transition: all 0.15s;
+}
+.gchat-edit-actions button.save {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+.gchat-edit-actions button:hover { opacity: 0.85; }
 
 /* Thinking dots animation */
 .thinking-dots {
@@ -1415,34 +1728,8 @@ canvas { max-width: 100%; }
 }
 .chat-reply-bar-close:hover { background: var(--line); color: var(--ink); }
 
-/* ── Reply action on hover / long-press ──────────────────────────────── */
-.chat-msg .msg-reply-btn {
-    display: none;
-    position: absolute;
-    top: 4px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    color: var(--ink-secondary);
-    font-size: 11px;
-    cursor: pointer;
-    font-family: var(--font);
-    white-space: nowrap;
-    z-index: 5;
-    line-height: 1.4;
-}
-.chat-msg { position: relative; }
-.chat-msg:hover .msg-reply-btn,
-.chat-msg .msg-reply-btn.visible { display: block; }
-.chat-msg.phoebe .msg-reply-btn,
-.chat-msg.thinking .msg-reply-btn { right: -4px; }
-.chat-msg.user .msg-reply-btn { left: -4px; }
-.msg-reply-btn:hover { background: var(--bg); color: var(--accent); border-color: var(--accent); }
-
 /* ── Highlight when scrolled-to from reply quote ─────────────────────── */
-.chat-msg.highlight-flash .msg-bubble {
+.gchat-msg.highlight-flash .gchat-bubble {
     box-shadow: 0 0 0 2px var(--accent);
     transition: box-shadow 0.3s ease;
 }
@@ -1459,7 +1746,7 @@ canvas { max-width: 100%; }
     position: absolute;
     bottom: 100%;
     left: 16px;
-    background: var(--surface, var(--paper));
+    background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 8px;
     box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
@@ -1498,6 +1785,120 @@ canvas { max-width: 100%; }
     color: white;
     flex-shrink: 0;
 }
+
+/* ── Mobile bottom sheet for message actions ─────────────────────────── */
+.gchat-bottom-sheet-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 998;
+    animation: bsOverlayIn 0.2s ease;
+}
+.gchat-bottom-sheet-overlay.visible { display: block; }
+@keyframes bsOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+.gchat-bottom-sheet {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    border-radius: 16px 16px 0 0;
+    padding: 8px 0 calc(env(safe-area-inset-bottom, 0px) + 16px);
+    z-index: 999;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    animation: bsSlideUp 0.25s ease;
+}
+.gchat-bottom-sheet.visible { display: block; }
+@keyframes bsSlideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.gchat-bs-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    margin: 4px auto 12px;
+}
+.gchat-bs-preview {
+    padding: 0 20px 12px;
+    font-size: 13px;
+    color: var(--ink-secondary);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.gchat-bs-action {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.1s;
+    min-height: 48px;
+}
+.gchat-bs-action:hover { background: var(--bg); }
+.gchat-bs-action .bs-icon { font-size: 20px; width: 24px; text-align: center; }
+.gchat-bs-action.danger { color: var(--red); }
+
+/* ── Delete confirmation dialog ──────────────────────────────────────── */
+.gchat-confirm-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.gchat-confirm-overlay.visible { display: flex; }
+.gchat-confirm-dialog {
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: 24px;
+    max-width: 320px;
+    width: 90%;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.gchat-confirm-dialog h4 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: var(--ink);
+}
+.gchat-confirm-dialog p {
+    margin: 0 0 20px;
+    font-size: 14px;
+    color: var(--ink-secondary);
+    line-height: 1.5;
+}
+.gchat-confirm-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+.gchat-confirm-actions button {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: none;
+    font-size: 14px;
+    font-family: var(--font);
+    cursor: pointer;
+    min-height: 36px;
+    font-weight: 600;
+}
+.gchat-confirm-actions .cancel-btn {
+    background: var(--bg);
+    color: var(--ink);
+}
+.gchat-confirm-actions .cancel-btn:hover { background: var(--line); }
+.gchat-confirm-actions .delete-btn {
+    background: var(--red);
+    color: #fff;
+}
+.gchat-confirm-actions .delete-btn:hover { opacity: 0.9; }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  REPORTS PANEL                                                           */
@@ -1789,7 +2190,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 20:15</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 21:04</span>
     </div>
 </aside>
 
@@ -1924,7 +2325,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 24, 2026 at 08:15 PM &middot;
+            Generated March 24, 2026 at 09:04 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -1935,8 +2336,22 @@ canvas { max-width: 100%; }
     <div class="panel" id="panel-chat">
         <div class="chat-container">
             <div class="chat-header">
-                <h3>Phoebe Chat</h3>
-                <span class="chat-status" id="chat-status">Connecting...</span>
+                <div class="chat-header-left">
+                    <h3>Phoebe Chat</h3>
+                    <span class="chat-status" id="chat-status">Connecting...</span>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="chat-header-btn" onclick="toggleChatSearch()" aria-label="Search messages" title="Search messages">&#128269;</button>
+                </div>
+            </div>
+            <div class="chat-search-bar" id="chat-search-bar">
+                <input type="text" id="chat-search-input" placeholder="Search messages..." autocomplete="off">
+                <div class="chat-search-nav">
+                    <span id="chat-search-count"></span>
+                    <button onclick="chatSearchNav(-1)" aria-label="Previous match">&#9650;</button>
+                    <button onclick="chatSearchNav(1)" aria-label="Next match">&#9660;</button>
+                </div>
+                <button class="chat-search-close" onclick="closeChatSearch()" aria-label="Close search">&times;</button>
             </div>
             <div class="chat-threads">
                 <div class="thread-tabs" id="thread-tabs">
@@ -1951,6 +2366,7 @@ canvas { max-width: 100%; }
                     <div class="chat-empty-sub">Messages sync in real-time across all family devices</div>
                 </div>
             </div>
+            <div class="gchat-typing" id="gchat-typing"></div>
             <div class="chat-reply-bar" id="chat-reply-bar">
                 <div class="chat-reply-bar-content">
                     <div class="chat-reply-bar-label" id="reply-bar-label"></div>
@@ -1962,6 +2378,26 @@ canvas { max-width: 100%; }
                 <div class="mention-dropdown" id="mention-dropdown"></div>
                 <input type="text" id="chat-input" placeholder="Message Phoebe..." autocomplete="off">
                 <button id="chat-send" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Chat bottom sheet (mobile long-press actions) -->
+    <div class="gchat-bottom-sheet-overlay" id="gchat-bs-overlay" onclick="closeChatBottomSheet()"></div>
+    <div class="gchat-bottom-sheet" id="gchat-bottom-sheet">
+        <div class="gchat-bs-handle"></div>
+        <div class="gchat-bs-preview" id="gchat-bs-preview"></div>
+        <div id="gchat-bs-actions"></div>
+    </div>
+
+    <!-- Delete confirmation dialog -->
+    <div class="gchat-confirm-overlay" id="gchat-confirm-overlay">
+        <div class="gchat-confirm-dialog">
+            <h4>Delete message?</h4>
+            <p>This message will be removed for everyone.</p>
+            <div class="gchat-confirm-actions">
+                <button class="cancel-btn" onclick="closeChatConfirm()">Cancel</button>
+                <button class="delete-btn" id="gchat-confirm-delete">Delete</button>
             </div>
         </div>
     </div>
@@ -2074,67 +2510,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="card">
             <div class="card-body tab-panel active" id="tab-calendar-events">
-                <div class="timeline-item info">
-            <div class="timeline-date">2026-03-28</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Wedding Anniversary</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-03-30</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Mar 31, 01:15 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">leave to go to 2pm appointment with Dr. Chang on Bldg 1 Suite 104?</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 08:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Trim Hair</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 09:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Prepare tithe</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 10, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-11</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Grandpa Han's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-12</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Chris Eun's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 12, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Vacuum all filters for air purifiers</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-21</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Plan for Summer Trip</span>
-            </div>
-        </div>
-
+                <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
             </div>
             <div class="card-body tab-panel" id="tab-calendar-deadlines">
                 <div class="timeline-item critical">
@@ -2596,7 +2972,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 24, 2026 at 08:15 PM</div>
+            <div class="report-meta">Generated March 24, 2026 at 09:04 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -2608,7 +2984,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 24, 2026 at 08:15 PM</div>
+            <div class="report-meta">Last updated: March 24, 2026 at 09:04 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -2642,10 +3018,10 @@ canvas { max-width: 100%; }
         <div class="sysstat-grid">
         <div class="sysstat-item"><span class="sysstat-val">36</span><span class="sysstat-lbl">Agents</span></div>
         <div class="sysstat-item"><span class="sysstat-val">29</span><span class="sysstat-lbl">Skills</span></div>
-        <div class="sysstat-item"><span class="sysstat-val">82</span><span class="sysstat-lbl">Tools</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">84</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">44</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 20:15</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 21:04</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -3529,6 +3905,18 @@ function _initAuthObserver() {
             /* Set chat sender name */
             CHAT_USER = profile.name;
 
+            /* Store profile photo in Firebase for cross-device chat photo sharing */
+            if (user.photoURL && firebase.database) {
+                try {
+                    var safeEmail = email.replace(/\./g, ",");
+                    firebase.database().ref("users/" + safeEmail).update({
+                        name: profile.name,
+                        photoURL: user.photoURL,
+                        lastSeen: firebase.database.ServerValue.TIMESTAMP
+                    });
+                } catch(e) { /* ignore -- chat may not be initialized yet */ }
+            }
+
             /* Apply persona-based access control */
             _applyPersonaAccess();
 
@@ -3616,9 +4004,27 @@ var _chatInitialized = false;
 var _chatMsgCount = 0;
 var _currentThread = "phoebe-family";
 var _threadListeners = {};
+var _userPhotos = {};  /* email -> photoURL cache from Firebase /users/ */
+var _lastDateLabel = ""; /* tracks last date separator rendered */
 
 /* ── Reply-to state ─────────────────────────────────────────────────── */
 var _replyTo = null; /* { key: "msg-key", sender: "Dan", text: "first 80 chars" } */
+
+/* ── Edit / delete state ─────────────────────────────────────────────── */
+var _editingMsgKey = null;
+
+/* ── Typing indicator state ─────────────────────────────────────────── */
+var _typingTimeout = null;
+var _isTyping = false;
+
+/* ── Search state ────────────────────────────────────────────────────── */
+var _searchMatches = [];
+var _searchCurrentIdx = -1;
+
+/* ── Bottom sheet state ──────────────────────────────────────────────── */
+var _bsMsgKey = null;
+var _bsMsgSender = null;
+var _longPressTimer = null;
 
 /* ── @mention config ───────────────────────────────────────────────── */
 var MENTION_USERS = [
@@ -3634,15 +4040,51 @@ var _mentionFiltered = [];
 
 /* Avatar lookup */
 var AVATAR_MAP = {
-    "Phoebe": { cls: "av-phoebe", letter: "P" },
-    "Dan":    { cls: "av-dan",    letter: "D" },
-    "Minako": { cls: "av-minako", letter: "M" },
+    "Phoebe": { cls: "av-phoebe", letter: "P", photo: "phoebe/profile.png" },
+    "Dan":    { cls: "av-dan",    letter: "D", photo: null },
+    "Minako": { cls: "av-minako", letter: "M", photo: null },
+    "Tim":    { cls: "av-default", letter: "T", photo: null },
 };
 
-function getAvatar(sender) {
-    var a = AVATAR_MAP[sender];
-    if (!a) a = { cls: "av-default", letter: (sender || "?").charAt(0).toUpperCase() };
-    return '<div class="msg-avatar ' + a.cls + '">' + a.letter + '</div>';
+/* Common emojis for reaction picker */
+var REACTION_EMOJIS = [
+    String.fromCodePoint(0x1F44D),
+    String.fromCodePoint(0x2764, 0xFE0F),
+    String.fromCodePoint(0x1F602),
+    String.fromCodePoint(0x1F62E),
+    String.fromCodePoint(0x1F622),
+    String.fromCodePoint(0x1F64F)
+];
+
+function getAvatarHtml(sender, email) {
+    var a = AVATAR_MAP[sender] || { cls: "av-default", letter: (sender || "?").charAt(0).toUpperCase(), photo: null };
+
+    /* Check for Google profile photo from cached user photos */
+    var photoURL = a.photo;
+    if (email && _userPhotos[email]) {
+        photoURL = _userPhotos[email];
+    } else if (_currentUser && _currentUser.name === sender && _currentUser.photoURL) {
+        photoURL = _currentUser.photoURL;
+    }
+
+    if (photoURL) {
+        return '<img class="gchat-avatar" src="' + escHtml(photoURL) + '" alt="' + escHtml(sender) + '" referrerpolicy="no-referrer" onerror="this.outerHTML=\'<div class=\\'gchat-avatar-letter ' + a.cls + '\\'>' + a.letter + '</div>\'">';
+    }
+    return '<div class="gchat-avatar-letter ' + a.cls + '">' + a.letter + '</div>';
+}
+
+/* ── Date formatting for separators ──────────────────────────────────── */
+function getDateLabel(timestamp) {
+    if (!timestamp) return "";
+    var d = new Date(timestamp);
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var msgDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var diff = (today - msgDay) / 86400000;
+
+    if (diff < 1) return "Today";
+    if (diff < 2) return "Yesterday";
+    return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 }
 
 function initChat() {
@@ -3685,11 +4127,40 @@ function initChat() {
         }
         chatDb = firebase.database();
 
+        /* Store current user profile photo in Firebase for cross-device photo sharing */
+        if (_currentUser && _currentUser.photoURL && _currentUser.email) {
+            var safeEmail = _currentUser.email.replace(/\./g, ",");
+            chatDb.ref("users/" + safeEmail).update({
+                name: _currentUser.name || CHAT_USER,
+                photoURL: _currentUser.photoURL,
+                lastSeen: firebase.database.ServerValue.TIMESTAMP
+            });
+        }
+
+        /* Load user photos cache from /users/ */
+        chatDb.ref("users").on("value", function(snap) {
+            var users = snap.val() || {};
+            for (var emailKey in users) {
+                var u = users[emailKey];
+                if (u && u.photoURL) {
+                    var realEmail = emailKey.replace(/,/g, ".");
+                    _userPhotos[realEmail] = u.photoURL;
+                    /* Also update AVATAR_MAP by name if we know it */
+                    if (u.name && AVATAR_MAP[u.name]) {
+                        AVATAR_MAP[u.name].photo = u.photoURL;
+                    }
+                }
+            }
+        });
+
         /* Load thread list from /threads/ and populate tabs */
         loadThreadList();
 
         /* Attach to default thread */
         attachThread(_currentThread);
+
+        /* Listen for typing indicators */
+        initTypingListener();
 
         /* Connection state monitoring */
         var connRef = firebase.database().ref(".info/connected");
@@ -3752,6 +4223,7 @@ function switchThread(threadId, btnEl) {
 
     _currentThread = threadId;
     _chatMsgCount = 0;
+    _lastDateLabel = "";
 
     /* Update tab active state */
     var tabs = document.querySelectorAll(".thread-tab");
@@ -3772,6 +4244,9 @@ function switchThread(threadId, btnEl) {
     var badge = document.getElementById("unread-" + threadId);
     if (badge) { badge.style.display = "none"; badge.textContent = "0"; }
 
+    /* Re-init typing listener for new thread */
+    initTypingListener();
+
     /* Attach new thread */
     attachThread(threadId);
 }
@@ -3789,37 +4264,65 @@ function attachThread(threadId) {
         if (!msg) return;
         _chatMsgCount++;
         if (emptyEl) emptyEl.style.display = (_chatMsgCount > 0) ? "none" : "";
-        appendChatMessage(snapshot.key, msg.sender, msg.text, msg.timestamp, msg.type || "user", msg.replyTo || null);
+        appendChatMessage(snapshot.key, msg);
     });
 
-    /* Listen for changes -- thinking -> response transitions */
+    /* Listen for changes -- thinking -> response transitions, edits, reactions */
     chatRef.on("child_changed", function(snapshot) {
         var msg = snapshot.val();
         var key = snapshot.key;
+        if (!msg) return;
+
         var el = document.getElementById("msg-" + key);
-        if (el && msg && msg.type !== "thinking") {
-            /* Replace thinking dots with actual response */
-            el.className = "chat-msg phoebe";
-            var bubble = el.querySelector(".msg-bubble");
+        if (!el) return;
+
+        /* Handle deleted messages */
+        if (msg.deleted) {
+            var bubble = el.querySelector(".gchat-bubble");
             if (bubble) {
-                var time = "";
-                if (msg.responded_at) {
-                    try { time = new Date(msg.responded_at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); } catch(e) {}
+                var textEl = bubble.querySelector(".gchat-msg-text");
+                if (textEl) {
+                    textEl.innerHTML = '<span class="gchat-deleted">Message deleted</span>';
                 }
-                var safeText = renderMentions(escHtml(msg.text || "").replace(/\n/g, "<br>"));
-                /* Preserve reply quote if present */
-                var replyQuoteHtml = "";
-                if (msg.replyTo && msg.replyTo.key) {
-                    replyQuoteHtml = '<div class="reply-quote" onclick="scrollToMessage(\'' + escHtml(msg.replyTo.key) + '\')">' +
-                        '<span class="reply-quote-sender">' + escHtml(msg.replyTo.sender || "Unknown") + ':</span> ' +
-                        escHtml(msg.replyTo.text || "") + '</div>';
+                /* Remove edit indicator if present */
+                var editInd = bubble.querySelector(".gchat-edited");
+                if (editInd) editInd.remove();
+            }
+            /* Remove reactions */
+            var reactionsEl = el.querySelector(".gchat-reactions");
+            if (reactionsEl) reactionsEl.innerHTML = "";
+            return;
+        }
+
+        /* Handle thinking -> response */
+        if (msg.type !== "thinking" && el.classList.contains("thinking")) {
+            var isOwn = (msg.sender === CHAT_USER);
+            el.className = "gchat-msg" + (isOwn ? " own" : "") + (msg.sender === "Phoebe" ? " phoebe-msg" : "");
+            rebuildMessageContent(el, key, msg);
+            return;
+        }
+
+        /* Handle edits */
+        if (msg.edited) {
+            var textEl = el.querySelector(".gchat-msg-text");
+            if (textEl) {
+                textEl.innerHTML = renderMentions(escHtml(msg.text || "").replace(/\n/g, "<br>"));
+            }
+            /* Add or update edited indicator */
+            var bubble = el.querySelector(".gchat-bubble");
+            if (bubble && !bubble.querySelector(".gchat-edited")) {
+                var timeEl = bubble.querySelector(".gchat-time");
+                if (timeEl) {
+                    var editSpan = document.createElement("span");
+                    editSpan.className = "gchat-edited";
+                    editSpan.textContent = " (edited)";
+                    timeEl.appendChild(editSpan);
                 }
-                bubble.innerHTML = replyQuoteHtml +
-                    '<span class="msg-sender">' + escHtml(msg.sender || "Phoebe") + '</span>' +
-                    '<span class="msg-text">' + safeText + '</span>' +
-                    '<span class="msg-time">' + time + '</span>';
             }
         }
+
+        /* Update reactions */
+        renderReactions(el, key, msg.reactions || {});
     });
 
     _threadListeners[threadId] = { addRef: addRef, ref: chatRef };
@@ -3862,19 +4365,44 @@ function renderMentions(html) {
     return html.replace(/@(Phoebe|Dan|Minako|Tim)/g, '<span class="mention">@$1</span>');
 }
 
-function appendChatMessage(key, sender, text, timestamp, type, replyTo) {
+function appendChatMessage(key, msg) {
     var container = document.getElementById("chat-messages");
     if (!container) return;
 
-    var div = document.createElement("div");
+    var sender = msg.sender || "Unknown";
+    var text = msg.text || "";
+    var timestamp = msg.timestamp;
+    var type = msg.type || "user";
+    var replyTo = msg.replyTo || null;
+    var email = msg.email || null;
+    var reactions = msg.reactions || {};
+    var edited = msg.edited || false;
+    var deleted = msg.deleted || false;
+
     var isPhoebe = (sender === "Phoebe" || type === "phoebe" || type === "thinking");
     var isThinking = (type === "thinking");
+    var isOwn = (sender === CHAT_USER);
 
+    /* ── Date separator ─────────────────────────────────────────────── */
+    if (timestamp && !isThinking) {
+        var dateLabel = getDateLabel(timestamp);
+        if (dateLabel && dateLabel !== _lastDateLabel) {
+            _lastDateLabel = dateLabel;
+            var sep = document.createElement("div");
+            sep.className = "gchat-date-sep";
+            sep.innerHTML = "<span>" + escHtml(dateLabel) + "</span>";
+            container.appendChild(sep);
+        }
+    }
+
+    /* ── Message element ────────────────────────────────────────────── */
+    var div = document.createElement("div");
     div.id = "msg-" + key;
     div.setAttribute("data-msg-key", key);
-    div.setAttribute("data-msg-sender", sender || "");
-    div.setAttribute("data-msg-text", (text || "").substring(0, 80));
-    div.className = "chat-msg " + (isThinking ? "thinking" : (isPhoebe ? "phoebe" : "user"));
+    div.setAttribute("data-msg-sender", sender);
+    div.setAttribute("data-msg-text", text.substring(0, 80));
+    if (email) div.setAttribute("data-msg-email", email);
+    div.className = "gchat-msg" + (isOwn ? " own" : "") + (isThinking ? " thinking" : "") + (isPhoebe && !isOwn ? " phoebe-msg" : "");
 
     var time = "";
     if (timestamp && !isThinking) {
@@ -3884,66 +4412,120 @@ function appendChatMessage(key, sender, text, timestamp, type, replyTo) {
         } catch(e) { time = ""; }
     }
 
-    var avatarHtml = getAvatar(isPhoebe ? "Phoebe" : sender);
-    var bubbleContent = "";
+    var avatarHtml = getAvatarHtml(isPhoebe ? "Phoebe" : sender, email);
 
-    /* Reply quote block (if this message is a reply) */
+    /* Reply quote */
     var replyHtml = "";
     if (replyTo && replyTo.key) {
         replyHtml = '<div class="reply-quote" onclick="scrollToMessage(\'' + escHtml(replyTo.key) + '\')">' +
             '<span class="reply-quote-sender">' + escHtml(replyTo.sender || "Unknown") + ':</span> ' +
-            escHtml(replyTo.text || "") +
-            '</div>';
+            escHtml(replyTo.text || "") + '</div>';
     }
 
+    /* Bubble content */
+    var bubbleContent = "";
     if (isThinking) {
         bubbleContent = replyHtml +
-            '<span class="msg-sender">' + escHtml(sender || "Phoebe") + '</span>' +
-            '<span class="msg-text"><span class="thinking-dots">' +
+            '<span class="gchat-sender">' + escHtml(sender || "Phoebe") + '</span>' +
+            '<span class="gchat-msg-text"><span class="thinking-dots">' +
             '<span class="thinking-dot"></span><span class="thinking-dot"></span><span class="thinking-dot"></span>' +
             '</span></span>';
-    } else {
-        var safeText = renderMentions(escHtml(text || "").replace(/\n/g, "<br>"));
+    } else if (deleted) {
         bubbleContent = replyHtml +
-            '<span class="msg-sender">' + escHtml(sender || "Unknown") + '</span>' +
-            '<span class="msg-text">' + safeText + '</span>' +
-            '<span class="msg-time">' + time + '</span>';
+            '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
+            '<span class="gchat-msg-text"><span class="gchat-deleted">Message deleted</span></span>' +
+            '<span class="gchat-time">' + time + '</span>';
+    } else {
+        var safeText = renderMentions(escHtml(text).replace(/\n/g, "<br>"));
+        bubbleContent = replyHtml +
+            '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
+            '<span class="gchat-msg-text">' + safeText + '</span>' +
+            '<span class="gchat-time">' + time + (edited ? '<span class="gchat-edited"> (edited)</span>' : '') + '</span>';
     }
 
-    /* Reply button (shown on hover / tap) */
-    var replyBtn = '<button class="msg-reply-btn" onclick="startReply(this.parentNode)" aria-label="Reply">Reply</button>';
-
-    div.innerHTML = avatarHtml + '<div class="msg-bubble">' + bubbleContent + '</div>' + replyBtn;
-
-    /* Mobile: tap to show reply button (since no hover) */
-    div.addEventListener("click", function(e) {
-        /* Don't trigger on reply button click or reply-quote click */
-        if (e.target.closest(".msg-reply-btn") || e.target.closest(".reply-quote")) return;
-        var btn = div.querySelector(".msg-reply-btn");
-        if (btn) {
-            /* Toggle visibility */
-            var wasVisible = btn.classList.contains("visible");
-            /* Hide all other visible reply buttons */
-            var allBtns = document.querySelectorAll(".msg-reply-btn.visible");
-            for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.remove("visible");
-            if (!wasVisible) btn.classList.add("visible");
+    /* Hover menu (desktop only — hidden on mobile via CSS) */
+    var hoverMenu = '';
+    if (!isThinking && !deleted) {
+        hoverMenu = '<div class="gchat-hover-menu">' +
+            '<button class="gchat-hover-btn" onclick="openEmojiPicker(\'' + key + '\')" title="React">&#128578;</button>' +
+            '<button class="gchat-hover-btn" onclick="startReply(document.getElementById(\'msg-' + key + '\'))" title="Reply">&#8617;</button>';
+        if (isOwn) {
+            hoverMenu += '<button class="gchat-hover-btn" onclick="startEdit(\'' + key + '\')" title="Edit">&#9998;</button>' +
+                '<button class="gchat-hover-btn" onclick="confirmDelete(\'' + key + '\')" title="Delete">&#128465;</button>';
         }
-    });
+        hoverMenu += '</div>';
+    }
 
-    /* Context menu -- copy text on right-click / long-press */
-    div.addEventListener("contextmenu", function(e) {
-        e.preventDefault();
-        var txt = (text || "").trim();
-        if (txt && navigator.clipboard) {
-            navigator.clipboard.writeText(txt).then(function() {
-                div.style.opacity = "0.6";
-                setTimeout(function() { div.style.opacity = "1"; }, 300);
-            });
-        }
-    });
+    /* Reactions display */
+    var reactionsHtml = buildReactionsHtml(key, reactions);
+
+    div.innerHTML = avatarHtml +
+        '<div class="gchat-body">' +
+        '<div class="gchat-bubble">' + bubbleContent + hoverMenu + '</div>' +
+        '<div class="gchat-reactions" id="reactions-' + key + '">' + reactionsHtml + '</div>' +
+        '</div>';
+
+    /* ── Mobile: long-press to show bottom sheet ────────────────────── */
+    var touchStartTime = 0;
+    div.addEventListener("touchstart", function(e) {
+        if (deleted || isThinking) return;
+        touchStartTime = Date.now();
+        _longPressTimer = setTimeout(function() {
+            openChatBottomSheet(key, sender, text, isOwn);
+        }, 500);
+    }, { passive: true });
+    div.addEventListener("touchend", function() {
+        clearTimeout(_longPressTimer);
+    }, { passive: true });
+    div.addEventListener("touchmove", function() {
+        clearTimeout(_longPressTimer);
+    }, { passive: true });
 
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
+}
+
+/* ── Rebuild message content (after thinking -> response transition) ── */
+function rebuildMessageContent(el, key, msg) {
+    var sender = msg.sender || "Unknown";
+    var email = msg.email || null;
+    var isPhoebe = (sender === "Phoebe" || msg.type === "phoebe");
+    var isOwn = (sender === CHAT_USER);
+
+    var time = "";
+    if (msg.responded_at || msg.timestamp) {
+        try { time = new Date(msg.responded_at || msg.timestamp).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); } catch(e) {}
+    }
+
+    var avatarHtml = getAvatarHtml(isPhoebe ? "Phoebe" : sender, email);
+
+    var replyHtml = "";
+    if (msg.replyTo && msg.replyTo.key) {
+        replyHtml = '<div class="reply-quote" onclick="scrollToMessage(\'' + escHtml(msg.replyTo.key) + '\')">' +
+            '<span class="reply-quote-sender">' + escHtml(msg.replyTo.sender || "Unknown") + ':</span> ' +
+            escHtml(msg.replyTo.text || "") + '</div>';
+    }
+
+    var safeText = renderMentions(escHtml(msg.text || "").replace(/\n/g, "<br>"));
+
+    var hoverMenu = '<div class="gchat-hover-menu">' +
+        '<button class="gchat-hover-btn" onclick="openEmojiPicker(\'' + key + '\')" title="React">&#128578;</button>' +
+        '<button class="gchat-hover-btn" onclick="startReply(document.getElementById(\'msg-' + key + '\'))" title="Reply">&#8617;</button>';
+    if (isOwn) {
+        hoverMenu += '<button class="gchat-hover-btn" onclick="startEdit(\'' + key + '\')" title="Edit">&#9998;</button>' +
+            '<button class="gchat-hover-btn" onclick="confirmDelete(\'' + key + '\')" title="Delete">&#128465;</button>';
+    }
+    hoverMenu += '</div>';
+
+    el.innerHTML = avatarHtml +
+        '<div class="gchat-body">' +
+        '<div class="gchat-bubble">' + replyHtml +
+        '<span class="gchat-sender">' + escHtml(sender) + '</span>' +
+        '<span class="gchat-msg-text">' + safeText + '</span>' +
+        '<span class="gchat-time">' + time + '</span>' +
+        hoverMenu + '</div>' +
+        '<div class="gchat-reactions" id="reactions-' + key + '"></div>' +
+        '</div>';
 }
 
 /* ── Reply-to functions ──────────────────────────────────────────────── */
@@ -3965,13 +4547,10 @@ function startReply(msgEl) {
         bar.classList.add("visible");
     }
 
-    /* Focus the input */
     var input = document.getElementById("chat-input");
     if (input) input.focus();
 
-    /* Hide the reply button */
-    var allBtns = document.querySelectorAll(".msg-reply-btn.visible");
-    for (var i = 0; i < allBtns.length; i++) allBtns[i].classList.remove("visible");
+    closeChatBottomSheet();
 }
 
 function cancelReply() {
@@ -3983,12 +4562,459 @@ function cancelReply() {
 function scrollToMessage(msgKey) {
     var el = document.getElementById("msg-" + msgKey);
     if (!el) return;
-    var container = document.getElementById("chat-messages");
-    if (container) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
-        el.classList.add("highlight-flash");
-        setTimeout(function() { el.classList.remove("highlight-flash"); }, 1500);
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("highlight-flash");
+    setTimeout(function() { el.classList.remove("highlight-flash"); }, 1500);
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  EDIT MESSAGE                                                         */
+/* ══════════════════════════════════════════════════════════════════════ */
+function startEdit(msgKey) {
+    var el = document.getElementById("msg-" + msgKey);
+    if (!el) return;
+    _editingMsgKey = msgKey;
+
+    var textEl = el.querySelector(".gchat-msg-text");
+    if (!textEl) return;
+
+    /* Get raw text from data attribute */
+    var rawText = el.getAttribute("data-msg-text") || textEl.textContent || "";
+
+    /* Replace text with edit input */
+    var bubble = el.querySelector(".gchat-bubble");
+    if (!bubble) return;
+
+    /* Store original content */
+    bubble.setAttribute("data-original-html", bubble.innerHTML);
+
+    /* Get sender line */
+    var senderEl = bubble.querySelector(".gchat-sender");
+    var senderHtml = senderEl ? senderEl.outerHTML : "";
+
+    bubble.innerHTML = senderHtml +
+        '<div class="gchat-edit-area">' +
+        '<textarea class="gchat-edit-input" id="edit-input-' + msgKey + '">' + escHtml(rawText) + '</textarea>' +
+        '<div class="gchat-edit-actions">' +
+        '<button onclick="cancelEdit(\'' + msgKey + '\')">Cancel</button>' +
+        '<button class="save" onclick="saveEdit(\'' + msgKey + '\')">Save</button>' +
+        '</div></div>';
+
+    var editInput = document.getElementById("edit-input-" + msgKey);
+    if (editInput) {
+        editInput.focus();
+        editInput.setSelectionRange(editInput.value.length, editInput.value.length);
+        /* Auto-resize */
+        editInput.style.height = editInput.scrollHeight + "px";
+        editInput.addEventListener("input", function() {
+            this.style.height = "auto";
+            this.style.height = this.scrollHeight + "px";
+        });
+        editInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); saveEdit(msgKey); }
+            if (e.key === "Escape") cancelEdit(msgKey);
+        });
     }
+
+    closeChatBottomSheet();
+}
+
+function cancelEdit(msgKey) {
+    var el = document.getElementById("msg-" + msgKey);
+    if (!el) return;
+    var bubble = el.querySelector(".gchat-bubble");
+    if (!bubble) return;
+
+    var original = bubble.getAttribute("data-original-html");
+    if (original) {
+        bubble.innerHTML = original;
+        bubble.removeAttribute("data-original-html");
+    }
+    _editingMsgKey = null;
+}
+
+function saveEdit(msgKey) {
+    var editInput = document.getElementById("edit-input-" + msgKey);
+    if (!editInput || !chatRef) return;
+
+    var newText = editInput.value.trim();
+    if (!newText) return;
+
+    chatRef.child(msgKey).update({
+        text: newText,
+        edited: true,
+        edited_at: firebase.database.ServerValue.TIMESTAMP
+    });
+
+    /* Update data attribute */
+    var el = document.getElementById("msg-" + msgKey);
+    if (el) el.setAttribute("data-msg-text", newText.substring(0, 80));
+
+    _editingMsgKey = null;
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  DELETE MESSAGE                                                       */
+/* ══════════════════════════════════════════════════════════════════════ */
+var _pendingDeleteKey = null;
+
+function confirmDelete(msgKey) {
+    _pendingDeleteKey = msgKey;
+    var overlay = document.getElementById("gchat-confirm-overlay");
+    if (overlay) overlay.classList.add("visible");
+    var deleteBtn = document.getElementById("gchat-confirm-delete");
+    if (deleteBtn) {
+        deleteBtn.onclick = function() {
+            executeDelete();
+        };
+    }
+    closeChatBottomSheet();
+}
+
+function closeChatConfirm() {
+    _pendingDeleteKey = null;
+    var overlay = document.getElementById("gchat-confirm-overlay");
+    if (overlay) overlay.classList.remove("visible");
+}
+
+function executeDelete() {
+    if (!_pendingDeleteKey || !chatRef) { closeChatConfirm(); return; }
+    chatRef.child(_pendingDeleteKey).update({
+        deleted: true,
+        deleted_at: firebase.database.ServerValue.TIMESTAMP,
+        deleted_by: CHAT_USER
+    });
+    closeChatConfirm();
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  EMOJI REACTIONS                                                      */
+/* ══════════════════════════════════════════════════════════════════════ */
+function buildReactionsHtml(msgKey, reactions) {
+    if (!reactions || typeof reactions !== "object") return "";
+    var html = "";
+    for (var emoji in reactions) {
+        if (!reactions.hasOwnProperty(emoji)) continue;
+        var users = reactions[emoji];
+        if (!users || typeof users !== "object") continue;
+        var userList = Object.keys(users);
+        if (userList.length === 0) continue;
+        var isOwn = (userList.indexOf(CHAT_USER) !== -1) ? " own" : "";
+        html += '<span class="gchat-reaction' + isOwn + '" onclick="toggleReaction(\'' + msgKey + '\', \'' + emoji + '\')" title="' + escHtml(userList.join(", ")) + '">' +
+            emoji + '<span class="gchat-reaction-count">' + userList.length + '</span></span>';
+    }
+    return html;
+}
+
+function renderReactions(el, msgKey, reactions) {
+    var reactionsEl = el.querySelector(".gchat-reactions") || document.getElementById("reactions-" + msgKey);
+    if (reactionsEl) {
+        reactionsEl.innerHTML = buildReactionsHtml(msgKey, reactions);
+    }
+}
+
+function toggleReaction(msgKey, emoji) {
+    if (!chatRef) return;
+    var path = msgKey + "/reactions/" + emoji + "/" + CHAT_USER;
+    chatRef.child(path).once("value", function(snap) {
+        if (snap.exists()) {
+            chatRef.child(path).remove();
+        } else {
+            chatRef.child(path).set(true);
+        }
+    });
+}
+
+function openEmojiPicker(msgKey) {
+    /* Close any existing picker */
+    closeAllEmojiPickers();
+
+    var el = document.getElementById("msg-" + msgKey);
+    if (!el) return;
+    var bubble = el.querySelector(".gchat-bubble");
+    if (!bubble) return;
+
+    var picker = document.createElement("div");
+    picker.className = "gchat-emoji-picker visible";
+    picker.id = "emoji-picker-" + msgKey;
+    for (var i = 0; i < REACTION_EMOJIS.length; i++) {
+        var em = REACTION_EMOJIS[i];
+        var btn = document.createElement("button");
+        btn.className = "gchat-emoji-pick";
+        btn.textContent = em;
+        btn.setAttribute("data-emoji", em);
+        btn.setAttribute("data-key", msgKey);
+        btn.addEventListener("click", function() {
+            toggleReaction(this.getAttribute("data-key"), this.getAttribute("data-emoji"));
+            closeAllEmojiPickers();
+        });
+        picker.appendChild(btn);
+    }
+    bubble.appendChild(picker);
+
+    /* Close on outside click */
+    setTimeout(function() {
+        document.addEventListener("click", _emojiPickerOutsideClick);
+    }, 10);
+}
+
+function _emojiPickerOutsideClick(e) {
+    if (!e.target.closest(".gchat-emoji-picker") && !e.target.closest(".gchat-hover-btn")) {
+        closeAllEmojiPickers();
+    }
+}
+
+function closeAllEmojiPickers() {
+    var pickers = document.querySelectorAll(".gchat-emoji-picker");
+    for (var i = 0; i < pickers.length; i++) pickers[i].remove();
+    document.removeEventListener("click", _emojiPickerOutsideClick);
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  TYPING INDICATOR                                                     */
+/* ══════════════════════════════════════════════════════════════════════ */
+function setTypingState(isTyping) {
+    if (!chatDb || !_currentThread) return;
+    var path = "typing/" + _currentThread + "/" + CHAT_USER;
+    if (isTyping) {
+        chatDb.ref(path).set(true);
+    } else {
+        chatDb.ref(path).remove();
+    }
+}
+
+function handleTypingInput() {
+    if (!_isTyping) {
+        _isTyping = true;
+        setTypingState(true);
+    }
+    clearTimeout(_typingTimeout);
+    _typingTimeout = setTimeout(function() {
+        _isTyping = false;
+        setTypingState(false);
+    }, 1500);
+}
+
+function initTypingListener() {
+    if (!chatDb || !_currentThread) return;
+    var typingRef = chatDb.ref("typing/" + _currentThread);
+    typingRef.on("value", function(snap) {
+        var typing = snap.val() || {};
+        var typingEl = document.getElementById("gchat-typing");
+        if (!typingEl) return;
+
+        var typingNames = [];
+        for (var name in typing) {
+            if (typing.hasOwnProperty(name) && name !== CHAT_USER && typing[name]) {
+                typingNames.push(name);
+            }
+        }
+
+        if (typingNames.length === 0) {
+            typingEl.textContent = "";
+        } else if (typingNames.length === 1) {
+            typingEl.textContent = typingNames[0] + " is typing...";
+        } else {
+            typingEl.textContent = typingNames.join(" and ") + " are typing...";
+        }
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  MESSAGE SEARCH                                                       */
+/* ══════════════════════════════════════════════════════════════════════ */
+function toggleChatSearch() {
+    var bar = document.getElementById("chat-search-bar");
+    if (!bar) return;
+    if (bar.classList.contains("visible")) {
+        closeChatSearch();
+    } else {
+        bar.classList.add("visible");
+        var input = document.getElementById("chat-search-input");
+        if (input) input.focus();
+    }
+}
+
+function closeChatSearch() {
+    var bar = document.getElementById("chat-search-bar");
+    if (bar) bar.classList.remove("visible");
+    var input = document.getElementById("chat-search-input");
+    if (input) input.value = "";
+    clearSearchHighlights();
+    var countEl = document.getElementById("chat-search-count");
+    if (countEl) countEl.textContent = "";
+    _searchMatches = [];
+    _searchCurrentIdx = -1;
+}
+
+function executeChatSearch(query) {
+    clearSearchHighlights();
+    _searchMatches = [];
+    _searchCurrentIdx = -1;
+
+    if (!query || query.length < 2) {
+        var countEl = document.getElementById("chat-search-count");
+        if (countEl) countEl.textContent = "";
+        return;
+    }
+
+    var lowerQ = query.toLowerCase();
+    var msgs = document.querySelectorAll(".gchat-msg");
+    for (var i = 0; i < msgs.length; i++) {
+        var textEl = msgs[i].querySelector(".gchat-msg-text");
+        if (!textEl) continue;
+        var txt = textEl.textContent || "";
+        if (txt.toLowerCase().indexOf(lowerQ) !== -1) {
+            _searchMatches.push(msgs[i]);
+            /* Highlight matching text */
+            highlightTextInEl(textEl, query);
+        }
+    }
+
+    var countEl = document.getElementById("chat-search-count");
+    if (countEl) {
+        countEl.textContent = _searchMatches.length > 0 ? "0 / " + _searchMatches.length : "No results";
+    }
+
+    if (_searchMatches.length > 0) {
+        _searchCurrentIdx = 0;
+        scrollToSearchMatch(0);
+    }
+}
+
+function highlightTextInEl(el, query) {
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+    var lowerQ = query.toLowerCase();
+    for (var i = textNodes.length - 1; i >= 0; i--) {
+        var node = textNodes[i];
+        var txt = node.nodeValue;
+        var lowerTxt = txt.toLowerCase();
+        var idx = lowerTxt.indexOf(lowerQ);
+        if (idx === -1) continue;
+
+        var before = txt.substring(0, idx);
+        var match = txt.substring(idx, idx + query.length);
+        var after = txt.substring(idx + query.length);
+
+        var frag = document.createDocumentFragment();
+        if (before) frag.appendChild(document.createTextNode(before));
+        var mark = document.createElement("mark");
+        mark.className = "msg-search-highlight";
+        mark.textContent = match;
+        frag.appendChild(mark);
+        if (after) frag.appendChild(document.createTextNode(after));
+        node.parentNode.replaceChild(frag, node);
+    }
+}
+
+function clearSearchHighlights() {
+    var marks = document.querySelectorAll(".msg-search-highlight");
+    for (var i = 0; i < marks.length; i++) {
+        var parent = marks[i].parentNode;
+        parent.replaceChild(document.createTextNode(marks[i].textContent), marks[i]);
+        parent.normalize();
+    }
+}
+
+function chatSearchNav(dir) {
+    if (_searchMatches.length === 0) return;
+    _searchCurrentIdx += dir;
+    if (_searchCurrentIdx < 0) _searchCurrentIdx = _searchMatches.length - 1;
+    if (_searchCurrentIdx >= _searchMatches.length) _searchCurrentIdx = 0;
+    scrollToSearchMatch(_searchCurrentIdx);
+}
+
+function scrollToSearchMatch(idx) {
+    /* Remove active class from all highlights */
+    var actives = document.querySelectorAll(".msg-search-highlight.active");
+    for (var i = 0; i < actives.length; i++) actives[i].classList.remove("active");
+
+    var el = _searchMatches[idx];
+    if (!el) return;
+
+    /* Mark current match as active */
+    var mark = el.querySelector(".msg-search-highlight");
+    if (mark) mark.classList.add("active");
+
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    var countEl = document.getElementById("chat-search-count");
+    if (countEl) countEl.textContent = (idx + 1) + " / " + _searchMatches.length;
+}
+
+/* ══════════════════════════════════════════════════════════════════════ */
+/*  MOBILE BOTTOM SHEET (long-press actions)                             */
+/* ══════════════════════════════════════════════════════════════════════ */
+function openChatBottomSheet(msgKey, sender, text, isOwn) {
+    _bsMsgKey = msgKey;
+    _bsMsgSender = sender;
+
+    var preview = document.getElementById("gchat-bs-preview");
+    if (preview) preview.textContent = (sender || "") + ": " + (text || "").substring(0, 60);
+
+    var actions = document.getElementById("gchat-bs-actions");
+    if (!actions) return;
+
+    var html =
+        '<div class="gchat-bs-action" onclick="openEmojiPickerMobile(\'' + msgKey + '\')">' +
+        '<span class="bs-icon">&#128578;</span> React</div>' +
+        '<div class="gchat-bs-action" onclick="startReply(document.getElementById(\'msg-' + msgKey + '\'))">' +
+        '<span class="bs-icon">&#8617;</span> Reply</div>' +
+        '<div class="gchat-bs-action" onclick="copyMessageText(\'' + msgKey + '\')">' +
+        '<span class="bs-icon">&#128203;</span> Copy text</div>';
+    if (isOwn) {
+        html += '<div class="gchat-bs-action" onclick="startEdit(\'' + msgKey + '\')">' +
+            '<span class="bs-icon">&#9998;</span> Edit</div>' +
+            '<div class="gchat-bs-action danger" onclick="confirmDelete(\'' + msgKey + '\')">' +
+            '<span class="bs-icon">&#128465;</span> Delete</div>';
+    }
+    actions.innerHTML = html;
+
+    document.getElementById("gchat-bs-overlay").classList.add("visible");
+    document.getElementById("gchat-bottom-sheet").classList.add("visible");
+
+    if (navigator.vibrate) navigator.vibrate(30);
+}
+
+function closeChatBottomSheet() {
+    var overlay = document.getElementById("gchat-bs-overlay");
+    var sheet = document.getElementById("gchat-bottom-sheet");
+    if (overlay) overlay.classList.remove("visible");
+    if (sheet) sheet.classList.remove("visible");
+    _bsMsgKey = null;
+}
+
+function openEmojiPickerMobile(msgKey) {
+    closeChatBottomSheet();
+    /* Show emoji picker as a new bottom sheet */
+    var actions = document.getElementById("gchat-bs-actions");
+    var preview = document.getElementById("gchat-bs-preview");
+    if (preview) preview.textContent = "Add a reaction";
+    if (actions) {
+        var html = '<div style="display:flex;justify-content:center;gap:8px;padding:16px 20px;flex-wrap:wrap;">';
+        for (var i = 0; i < REACTION_EMOJIS.length; i++) {
+            html += '<button class="gchat-emoji-pick" style="width:48px;height:48px;font-size:24px;" ' +
+                'onclick="toggleReaction(\'' + msgKey + '\', \'' + REACTION_EMOJIS[i] + '\'); closeChatBottomSheet();">' +
+                REACTION_EMOJIS[i] + '</button>';
+        }
+        html += '</div>';
+        actions.innerHTML = html;
+    }
+    document.getElementById("gchat-bs-overlay").classList.add("visible");
+    document.getElementById("gchat-bottom-sheet").classList.add("visible");
+}
+
+function copyMessageText(msgKey) {
+    var el = document.getElementById("msg-" + msgKey);
+    if (!el) { closeChatBottomSheet(); return; }
+    var text = el.getAttribute("data-msg-text") || "";
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+    }
+    closeChatBottomSheet();
 }
 
 /* ── @mention functions ──────────────────────────────────────────────── */
@@ -4120,6 +5146,10 @@ function sendChatMessage() {
     input.value = "";
     cancelReply();
     hideMentionDropdown();
+    /* Clear typing state */
+    _isTyping = false;
+    clearTimeout(_typingTimeout);
+    setTypingState(false);
     if (navigator.vibrate) navigator.vibrate(30);
 }
 
@@ -4149,7 +5179,7 @@ document.addEventListener("DOMContentLoaded", function() {
         initAnomalySwipe();
     }
 
-    /* Chat: Enter key to send, @mention handling, Escape to cancel reply */
+    /* Chat: Enter key to send, @mention handling, typing indicator, Escape to cancel reply */
     var chatInput = document.getElementById("chat-input");
     if (chatInput) {
         chatInput.addEventListener("keydown", function(e) {
@@ -4182,6 +5212,22 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         chatInput.addEventListener("input", function() {
             handleMentionInput(this);
+            handleTypingInput();
+        });
+    }
+
+    /* Chat search: Enter to search, Escape to close */
+    var searchInput = document.getElementById("chat-search-input");
+    if (searchInput) {
+        var _searchDebounce = null;
+        searchInput.addEventListener("input", function() {
+            clearTimeout(_searchDebounce);
+            var q = this.value;
+            _searchDebounce = setTimeout(function() { executeChatSearch(q); }, 300);
+        });
+        searchInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") { e.preventDefault(); chatSearchNav(1); }
+            if (e.key === "Escape") closeChatSearch();
         });
     }
 });
