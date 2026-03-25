@@ -1006,7 +1006,7 @@ canvas { max-width: 100%; }
 .nav-tab-label { font-size: 9px; line-height: 1; }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
-/*  FLOATING ACTION BUTTON + COMMAND BAR                                    */
+/*  FLOATING ACTION BUTTON + COMMAND PALETTE (Cmd+K)                        */
 /* ══════════════════════════════════════════════════════════════════════════ */
 .fab {
     position: fixed; bottom: 24px; right: 24px; z-index: 110;
@@ -1020,46 +1020,197 @@ canvas { max-width: 100%; }
 .fab:active { transform: scale(0.95); }
 .fab.open { background: var(--red); transform: rotate(45deg); }
 
-.command-overlay {
-    display: none; position: fixed; bottom: 0; left: 0; right: 0; top: 0;
-    z-index: 105; background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+/* Command palette overlay */
+.cmd-palette-overlay {
+    display: none; position: fixed; inset: 0;
+    z-index: 200; background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    justify-content: center; align-items: flex-start; padding-top: min(20vh, 160px);
 }
-.command-overlay.open { display: flex; align-items: flex-end; }
-.command-panel {
-    width: 100%; max-width: 500px; margin: 0 auto;
-    background: var(--paper); border-radius: var(--radius) var(--radius) 0 0;
-    box-shadow: var(--shadow-lg); padding: 16px;
-    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0));
+.cmd-palette-overlay.open { display: flex; }
+
+/* Command palette container */
+.cmd-palette {
+    width: 100%; max-width: 560px;
+    background: var(--paper); border-radius: var(--radius);
+    box-shadow: 0 16px 70px rgba(0,0,0,0.35), 0 0 0 1px rgba(0,0,0,0.08);
+    overflow: hidden; animation: cmdSlideIn 0.15s ease-out;
 }
-.command-input-wrap { display: flex; gap: 8px; align-items: center; }
-.command-input {
-    flex: 1; padding: 12px 14px; font-size: 15px; font-family: var(--font);
-    border: 2px solid var(--line); border-radius: var(--radius-sm);
-    background: var(--bg); color: var(--ink); outline: none; min-height: 48px;
+@keyframes cmdSlideIn { 0% { opacity: 0; transform: scale(0.96) translateY(-8px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+
+/* Search input area */
+.cmd-palette-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border-bottom: 1px solid var(--line);
 }
-.command-input:focus { border-color: var(--accent); }
-.command-input::placeholder { color: var(--ink-secondary); }
-.command-hints { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-.command-hint {
-    font-size: 11px; padding: 4px 10px; border-radius: 12px;
-    background: var(--accent-light); color: var(--accent);
-    border: 1px solid transparent; cursor: pointer; font-family: var(--font);
-    min-height: 32px; display: flex; align-items: center;
+.cmd-palette-icon {
+    color: var(--ink-secondary); font-size: 16px; flex-shrink: 0;
+    display: flex; align-items: center;
 }
-.command-hint:hover { border-color: var(--accent); }
-.quick-notes { margin-top: 10px; max-height: 150px; overflow-y: auto; font-size: 12px; }
+.cmd-palette-input {
+    flex: 1; padding: 0; font-size: 16px; font-family: var(--font);
+    border: none; background: transparent; color: var(--ink);
+    outline: none; line-height: 1.5;
+}
+.cmd-palette-input::placeholder { color: var(--ink-secondary); }
+.cmd-palette-esc {
+    font-size: 10px; padding: 3px 7px; border-radius: 5px;
+    background: var(--bg); color: var(--ink-secondary);
+    border: 1px solid var(--line); font-family: var(--font);
+    font-weight: 600; flex-shrink: 0; line-height: 1;
+}
+
+/* Results list */
+.cmd-palette-results {
+    max-height: 360px; overflow-y: auto; padding: 6px 0;
+    scrollbar-width: thin;
+}
+.cmd-palette-group {
+    padding: 6px 16px 2px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-secondary); font-family: var(--font);
+}
+.cmd-palette-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 16px; cursor: pointer; font-family: var(--font);
+    transition: background 0.08s;
+}
+.cmd-palette-item:hover,
+.cmd-palette-item.selected {
+    background: var(--accent-light);
+}
+.cmd-palette-item.selected {
+    outline: none;
+}
+.cmd-palette-item-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--bg); display: flex; align-items: center;
+    justify-content: center; font-size: 14px; flex-shrink: 0;
+}
+.cmd-palette-item-text {
+    flex: 1; min-width: 0;
+}
+.cmd-palette-item-label {
+    font-size: 14px; color: var(--ink); font-weight: 500;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cmd-palette-item-label mark {
+    background: transparent; color: var(--accent); font-weight: 700;
+    text-decoration: underline; text-decoration-color: var(--accent);
+    text-underline-offset: 2px;
+}
+.cmd-palette-item-desc {
+    font-size: 11px; color: var(--ink-secondary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cmd-palette-item-shortcut {
+    font-size: 10px; padding: 2px 6px; border-radius: 4px;
+    background: var(--bg); color: var(--ink-secondary);
+    border: 1px solid var(--line); font-family: var(--font);
+    font-weight: 600; flex-shrink: 0; white-space: nowrap;
+}
+
+/* Footer */
+.cmd-palette-footer {
+    display: flex; align-items: center; gap: 16px;
+    padding: 8px 16px; border-top: 1px solid var(--line);
+    font-size: 11px; color: var(--ink-secondary); font-family: var(--font);
+}
+.cmd-palette-footer kbd {
+    font-size: 10px; padding: 1px 5px; border-radius: 3px;
+    background: var(--bg); border: 1px solid var(--line);
+    font-family: var(--font); font-weight: 600;
+}
+
+/* Quick notes sub-area (shown when "note:" is typed) */
+.cmd-palette-notes {
+    max-height: 120px; overflow-y: auto; padding: 4px 16px 8px;
+    border-top: 1px solid var(--line); font-size: 12px;
+}
 .quick-note-item {
     display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 6px 0; border-bottom: 1px solid var(--line); gap: 8px;
+    padding: 5px 0; border-bottom: 1px solid var(--line); gap: 8px;
 }
 .quick-note-item:last-child { border-bottom: none; }
-.quick-note-text { color: var(--ink); flex: 1; }
+.quick-note-text { color: var(--ink); flex: 1; font-size: 12px; }
 .quick-note-time { color: var(--ink-secondary); font-size: 10px; flex-shrink: 0; white-space: nowrap; }
 .quick-note-del {
     background: none; border: none; color: var(--red); cursor: pointer;
     font-size: 14px; padding: 0 4px; min-width: 28px; min-height: 28px;
     display: flex; align-items: center; justify-content: center;
+}
+
+/* Cheat sheet modal */
+.shortcut-modal-overlay {
+    display: none; position: fixed; inset: 0;
+    z-index: 210; background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    justify-content: center; align-items: center;
+}
+.shortcut-modal-overlay.open { display: flex; }
+.shortcut-modal {
+    width: 90%; max-width: 520px;
+    background: var(--paper); border-radius: var(--radius);
+    box-shadow: 0 16px 70px rgba(0,0,0,0.35);
+    overflow: hidden; animation: cmdSlideIn 0.15s ease-out;
+}
+.shortcut-modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--line);
+}
+.shortcut-modal-header h3 {
+    margin: 0; font-size: 16px; font-weight: 700; color: var(--ink);
+    font-family: var(--font);
+}
+.shortcut-modal-close {
+    background: none; border: none; color: var(--ink-secondary);
+    font-size: 20px; cursor: pointer; padding: 4px 8px; border-radius: 6px;
+    line-height: 1; display: flex; align-items: center;
+}
+.shortcut-modal-close:hover { background: var(--bg); }
+.shortcut-modal-body {
+    padding: 16px 20px 20px; display: grid;
+    grid-template-columns: 1fr 1fr; gap: 0;
+}
+.shortcut-section {
+    padding: 8px 0;
+}
+.shortcut-section-title {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ink-secondary);
+    margin-bottom: 8px; font-family: var(--font);
+}
+.shortcut-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 0; gap: 12px;
+}
+.shortcut-row-label {
+    font-size: 13px; color: var(--ink); font-family: var(--font);
+}
+.shortcut-row-keys {
+    display: flex; gap: 3px; flex-shrink: 0;
+}
+.shortcut-row-keys kbd {
+    font-size: 11px; padding: 2px 7px; border-radius: 4px;
+    background: var(--bg); border: 1px solid var(--line);
+    font-family: var(--font); font-weight: 600; color: var(--ink-secondary);
+    line-height: 1.4;
+}
+
+/* Mobile: command palette becomes bottom sheet */
+@media (max-width: 480px) {
+    .cmd-palette-overlay {
+        align-items: flex-end; padding-top: 0;
+    }
+    .cmd-palette {
+        max-width: 100%; border-radius: var(--radius) var(--radius) 0 0;
+        max-height: 85vh;
+        padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+    .cmd-palette-results { max-height: 45vh; }
+    .cmd-palette-footer { display: none; }
+    .shortcut-modal { width: 95%; }
+    .shortcut-modal-body { grid-template-columns: 1fr; }
 }
 
 /* Text highlight from find command */
@@ -2314,7 +2465,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 21:42</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-24 21:49</span>
     </div>
 </aside>
 
@@ -2457,7 +2608,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 24, 2026 at 09:42 PM &middot;
+            Generated March 24, 2026 at 09:49 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -2650,67 +2801,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="card">
             <div class="card-body tab-panel active" id="tab-calendar-events">
-                <div class="timeline-item info">
-            <div class="timeline-date">2026-03-28</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Wedding Anniversary</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-03-30</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Mar 31, 01:15 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">leave to go to 2pm appointment with Dr. Chang on Bldg 1 Suite 104?</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 08:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Trim Hair</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 09:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Prepare tithe</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 10, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-11</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Grandpa Han's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-12</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Chris Eun's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 12, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Vacuum all filters for air purifiers</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-21</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Plan for Summer Trip</span>
-            </div>
-        </div>
-
+                <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
             </div>
             <div class="card-body tab-panel" id="tab-calendar-deadlines">
                 <div class="timeline-item critical">
@@ -3203,7 +3294,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 24, 2026 at 09:42 PM</div>
+            <div class="report-meta">Generated March 24, 2026 at 09:49 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -3215,7 +3306,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 24, 2026 at 09:42 PM</div>
+            <div class="report-meta">Last updated: March 24, 2026 at 09:49 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -3252,7 +3343,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">84</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">44</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 21:42</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-24 21:49</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -3283,20 +3374,36 @@ canvas { max-width: 100%; }
     </button>
 </nav>
 
-<!-- ══════════════ FAB + COMMAND BAR ══════════════ -->
-<button class="fab" id="fab" onclick="toggleCommandBar()" aria-label="Quick command">&#9889;</button>
+<!-- ══════════════ FAB + COMMAND PALETTE (Cmd+K) ══════════════ -->
+<button class="fab" id="fab" onclick="openCommandPalette()" aria-label="Quick command (Ctrl+K)">&#9889;</button>
 
-<div class="command-overlay" id="commandOverlay" onclick="if(event.target===this) toggleCommandBar()">
-    <div class="command-panel">
-        <div class="command-input-wrap">
-            <input type="text" class="command-input" id="commandInput" placeholder="call, note:, find..." autocomplete="off" onkeydown="handleCommandKey(event)">
+<div class="cmd-palette-overlay" id="cmdPaletteOverlay" onclick="if(event.target===this) closeCommandPalette()">
+    <div class="cmd-palette" role="dialog" aria-label="Command palette">
+        <div class="cmd-palette-header">
+            <span class="cmd-palette-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input type="text" class="cmd-palette-input" id="cmdPaletteInput" placeholder="Type a command or search..." autocomplete="off" spellcheck="false">
+            <span class="cmd-palette-esc">ESC</span>
         </div>
-        <div class="command-hints">
-            <button class="command-hint" onclick="setCommand('call ')">call [name]</button>
-            <button class="command-hint" onclick="setCommand('note: ')">note: [text]</button>
-            <button class="command-hint" onclick="setCommand('find ')">find [term]</button>
+        <div class="cmd-palette-results" id="cmdPaletteResults"></div>
+        <div class="cmd-palette-notes" id="cmdPaletteNotes" style="display:none;"></div>
+        <div class="cmd-palette-footer">
+            <span><kbd>&uarr;</kbd> <kbd>&darr;</kbd> navigate</span>
+            <span><kbd>Enter</kbd> select</span>
+            <span><kbd>Esc</kbd> close</span>
         </div>
-        <div class="quick-notes" id="quickNotes"></div>
+    </div>
+</div>
+
+<!-- ══════════════ KEYBOARD SHORTCUTS CHEAT SHEET ══════════════ -->
+<div class="shortcut-modal-overlay" id="shortcutModalOverlay" onclick="if(event.target===this) closeShortcutModal()">
+    <div class="shortcut-modal">
+        <div class="shortcut-modal-header">
+            <h3>Keyboard Shortcuts</h3>
+            <button class="shortcut-modal-close" onclick="closeShortcutModal()" aria-label="Close">&times;</button>
+        </div>
+        <div class="shortcut-modal-body" id="shortcutModalBody"></div>
     </div>
 </div>
 
@@ -3637,76 +3744,217 @@ function switchTab(e, id) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
-/*  7. COMMAND BAR (FAB)                                                    */
+/*  7. COMMAND PALETTE (Cmd+K) + KEYBOARD SHORTCUTS                         */
 /* ══════════════════════════════════════════════════════════════════════════ */
-function toggleCommandBar() {
-    var overlay = document.getElementById("commandOverlay");
-    var fab = document.getElementById("fab");
-    var isOpen = overlay.classList.contains("open");
-    overlay.classList.toggle("open");
-    fab.classList.toggle("open");
-    if (!isOpen) {
-        var input = document.getElementById("commandInput");
-        setTimeout(function() { input.focus(); }, 100);
-        renderQuickNotes();
+
+/* --- Command Registry --- */
+var _cmdRegistry = [
+    /* Navigation */
+    { id: "go:home",       group: "Navigation", icon: "🏠", label: "Home",         shortcut: "1", action: function() { showPanel("panel-home"); } },
+    { id: "go:chat",       group: "Navigation", icon: "💬", label: "Chat",         shortcut: "2", action: function() { showPanel("panel-chat"); } },
+    { id: "go:tasks",      group: "Navigation", icon: "✅",     label: "Tasks",        shortcut: "3", action: function() { showPanel("panel-tasks"); } },
+    { id: "go:calendar",   group: "Navigation", icon: "📅", label: "Calendar",     shortcut: "4", action: function() { showPanel("panel-calendar"); } },
+    { id: "go:family",     group: "Navigation", icon: "👪", label: "Family",       shortcut: "5", action: function() { showPanel("panel-family"); } },
+    { id: "go:intel",      group: "Navigation", icon: "📊", label: "Intelligence", shortcut: "6", action: function() { showPanel("panel-intel"); } },
+    { id: "go:risks",      group: "Navigation", icon: "⚠️", label: "Risks",     shortcut: "7", action: function() { showPanel("panel-risks"); } },
+    { id: "go:rcfe",       group: "Navigation", icon: "🏥", label: "RCFE",         shortcut: "8", action: function() { showPanel("panel-rcfe"); } },
+    { id: "go:goals",      group: "Navigation", icon: "🎯", label: "Goals",        shortcut: "9", action: function() { showPanel("panel-goals"); } },
+    { id: "go:reports",    group: "Navigation", icon: "📄", label: "Reports",      shortcut: "",  action: function() { showPanel("panel-reports"); } },
+    { id: "go:system",     group: "Navigation", icon: "⚙️", label: "System",     shortcut: "0", action: function() { showPanel("panel-system"); } },
+    /* Actions */
+    { id: "action:theme",  group: "Actions", icon: "🌙", label: "Toggle dark mode",      shortcut: "T",   action: function() { toggleTheme(); } },
+    { id: "action:find",   group: "Actions", icon: "🔍", label: "Find in page...",        shortcut: "/",   action: function() { _cmdFindMode = true; _cmdRenderResults(); } },
+    { id: "action:call",   group: "Actions", icon: "📞", label: "Call someone...",        shortcut: "",    action: function() { _cmdCallMode = true; _cmdRenderResults(); } },
+    { id: "action:note",   group: "Actions", icon: "📝", label: "Quick note...",          shortcut: "",    action: function() { _cmdNoteMode = true; _cmdRenderResults(); } },
+    { id: "action:keys",   group: "Actions", icon: "⌨️", label: "Keyboard shortcuts",  shortcut: "?",   action: function() { closeCommandPalette(); openShortcutModal(); } },
+];
+
+var _cmdSelectedIdx = 0;
+var _cmdFindMode = false;
+var _cmdCallMode = false;
+var _cmdNoteMode = false;
+
+/* --- Fuzzy matching --- */
+function _cmdFuzzyMatch(query, text) {
+    if (!query) return { match: true, score: 0, indices: [] };
+    var q = query.toLowerCase();
+    var t = text.toLowerCase();
+    /* Exact substring match (high score) */
+    var subIdx = t.indexOf(q);
+    if (subIdx !== -1) {
+        var indices = [];
+        for (var k = subIdx; k < subIdx + q.length; k++) indices.push(k);
+        return { match: true, score: 100 - subIdx, indices: indices };
     }
-}
-function setCommand(text) { var input = document.getElementById("commandInput"); input.value = text; input.focus(); }
-function handleCommandKey(e) {
-    if (e.key === "Enter") { executeCommand(e.target.value.trim()); e.target.value = ""; }
-    else if (e.key === "Escape") { toggleCommandBar(); }
-}
-function executeCommand(cmd) {
-    if (!cmd) return;
-    var lower = cmd.toLowerCase();
-    if (lower.startsWith("call ")) {
-        var name = cmd.substring(5).trim();
-        var links = document.querySelectorAll('a[href^="tel:"]');
-        var found = false;
-        links.forEach(function(a) {
-            if (a.textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-                a.closest(".family-card, .rcfe-card, .action-card, .anomaly-item") &&
-                a.closest(".family-card, .rcfe-card, .action-card, .anomaly-item").textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1) {
-                if (!found) { window.location.href = a.href; found = true; }
-            }
-        });
-        if (!found) alert("No phone number found for: " + name);
-        toggleCommandBar();
-        return;
-    }
-    if (lower.startsWith("note:") || lower.startsWith("note ")) {
-        var noteText = cmd.replace(/^note[: ]*/i, "").trim();
-        if (noteText) {
-            var notes = getQuickNotes();
-            notes.unshift({ text: noteText, time: new Date().toISOString() });
-            if (notes.length > 50) notes = notes.slice(0, 50);
-            saveQuickNotes(notes);
-            renderQuickNotes();
+    /* Fuzzy character-by-character */
+    var qi = 0, indices = [], lastIdx = -1, score = 0;
+    for (var ti = 0; ti < t.length && qi < q.length; ti++) {
+        if (t[ti] === q[qi]) {
+            indices.push(ti);
+            score += (ti === lastIdx + 1) ? 10 : 1; /* consecutive bonus */
+            if (ti === 0 || t[ti - 1] === " ") score += 5; /* word-start bonus */
+            lastIdx = ti;
+            qi++;
         }
-        return;
     }
-    if (lower.startsWith("find ")) {
-        var term = cmd.substring(5).trim();
-        clearHighlights();
-        if (term.length < 2) return;
-        highlightText(document.getElementById("mainContent"), term);
-        toggleCommandBar();
-        var first = document.querySelector(".cmd-highlight");
-        if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
-        return;
-    }
-    alert("Commands: call [name], note: [text], find [term]");
+    if (qi === q.length) return { match: true, score: score, indices: indices };
+    return { match: false, score: 0, indices: [] };
 }
 
+function _cmdHighlightLabel(label, indices) {
+    if (!indices || indices.length === 0) return escHtml(label);
+    var result = "";
+    var idxSet = {};
+    indices.forEach(function(i) { idxSet[i] = true; });
+    for (var i = 0; i < label.length; i++) {
+        if (idxSet[i]) result += "<mark>" + escHtml(label[i]) + "</mark>";
+        else result += escHtml(label[i]);
+    }
+    return result;
+}
+
+/* --- Open / Close --- */
+function openCommandPalette() {
+    var overlay = document.getElementById("cmdPaletteOverlay");
+    if (overlay.classList.contains("open")) { closeCommandPalette(); return; }
+    _cmdFindMode = false; _cmdCallMode = false; _cmdNoteMode = false;
+    _cmdSelectedIdx = 0;
+    overlay.classList.add("open");
+    document.getElementById("fab").classList.add("open");
+    var input = document.getElementById("cmdPaletteInput");
+    input.value = "";
+    _cmdRenderResults();
+    setTimeout(function() { input.focus(); }, 50);
+}
+
+function closeCommandPalette() {
+    var overlay = document.getElementById("cmdPaletteOverlay");
+    overlay.classList.remove("open");
+    document.getElementById("fab").classList.remove("open");
+    _cmdFindMode = false; _cmdCallMode = false; _cmdNoteMode = false;
+    document.getElementById("cmdPaletteNotes").style.display = "none";
+}
+
+/* --- Render results --- */
+function _cmdRenderResults() {
+    var input = document.getElementById("cmdPaletteInput");
+    var container = document.getElementById("cmdPaletteResults");
+    var notesContainer = document.getElementById("cmdPaletteNotes");
+    var query = (input ? input.value : "").trim();
+
+    /* Special modes */
+    if (_cmdFindMode) {
+        input.placeholder = "Type text to find in page...";
+        container.innerHTML = '<div class="cmd-palette-group" style="padding:16px;color:var(--ink-secondary);">Type search text and press Enter</div>';
+        notesContainer.style.display = "none";
+        return;
+    }
+    if (_cmdCallMode) {
+        input.placeholder = "Type a name to call...";
+        container.innerHTML = '<div class="cmd-palette-group" style="padding:16px;color:var(--ink-secondary);">Type a contact name and press Enter</div>';
+        notesContainer.style.display = "none";
+        return;
+    }
+    if (_cmdNoteMode) {
+        input.placeholder = "Type your note and press Enter...";
+        container.innerHTML = "";
+        _cmdRenderNotes(notesContainer);
+        return;
+    }
+
+    input.placeholder = "Type a command or search...";
+    notesContainer.style.display = "none";
+
+    /* Filter and score */
+    var scored = [];
+    _cmdRegistry.forEach(function(item) {
+        var fm = _cmdFuzzyMatch(query, item.label);
+        var fm2 = _cmdFuzzyMatch(query, item.id);
+        var best = fm.score >= fm2.score ? fm : fm2;
+        if (best.match) {
+            scored.push({ item: item, score: best.score, indices: fm.match ? fm.indices : [] });
+        }
+    });
+    scored.sort(function(a, b) { return b.score - a.score; });
+
+    /* Group results */
+    var groups = {};
+    scored.forEach(function(s) {
+        var g = s.item.group;
+        if (!groups[g]) groups[g] = [];
+        groups[g].push(s);
+    });
+
+    /* Build HTML */
+    var html = "";
+    var flatIdx = 0;
+    var order = ["Navigation", "Actions"];
+    order.forEach(function(gName) {
+        var items = groups[gName];
+        if (!items || items.length === 0) return;
+        html += '<div class="cmd-palette-group">' + escHtml(gName) + '</div>';
+        items.forEach(function(s) {
+            var sel = flatIdx === _cmdSelectedIdx ? " selected" : "";
+            html += '<div class="cmd-palette-item' + sel + '" data-cmd-idx="' + flatIdx + '" onclick="_cmdExecuteIdx(' + flatIdx + ')">' +
+                '<span class="cmd-palette-item-icon">' + s.item.icon + '</span>' +
+                '<span class="cmd-palette-item-text">' +
+                    '<span class="cmd-palette-item-label">' + _cmdHighlightLabel(s.item.label, s.indices) + '</span>' +
+                '</span>';
+            if (s.item.shortcut) {
+                html += '<span class="cmd-palette-item-shortcut">' + escHtml(s.item.shortcut) + '</span>';
+            }
+            html += '</div>';
+            flatIdx++;
+        });
+    });
+
+    if (html === "") {
+        html = '<div class="cmd-palette-group" style="padding:16px;color:var(--ink-secondary);">No results found</div>';
+    }
+    container.innerHTML = html;
+    _cmdTotalItems = flatIdx;
+}
+
+var _cmdTotalItems = 0;
+
+/* Flat index to registry item */
+function _cmdGetFlatItem(idx) {
+    var query = (document.getElementById("cmdPaletteInput") || {}).value || "";
+    query = query.trim();
+    var scored = [];
+    _cmdRegistry.forEach(function(item) {
+        var fm = _cmdFuzzyMatch(query, item.label);
+        var fm2 = _cmdFuzzyMatch(query, item.id);
+        var best = fm.score >= fm2.score ? fm : fm2;
+        if (best.match) scored.push({ item: item, score: best.score });
+    });
+    scored.sort(function(a, b) { return b.score - a.score; });
+    var flat = [];
+    var order = ["Navigation", "Actions"];
+    order.forEach(function(gName) {
+        scored.forEach(function(s) { if (s.item.group === gName) flat.push(s.item); });
+    });
+    return flat[idx] || null;
+}
+
+function _cmdExecuteIdx(idx) {
+    var item = _cmdGetFlatItem(idx);
+    if (item) {
+        closeCommandPalette();
+        item.action();
+    }
+}
+
+/* --- Notes sub-mode --- */
 var _notesCache = [];
 function getQuickNotes() { return _notesCache; }
 function saveQuickNotes(arr) { _notesCache = arr; storageSet("phoebe_quick_notes", arr); }
-function renderQuickNotes() {
-    var container = document.getElementById("quickNotes");
-    if (!container) return;
+
+function _cmdRenderNotes(container) {
+    container.style.display = "block";
     storageGet("phoebe_quick_notes", []).then(function(notes) {
         _notesCache = notes || [];
-        if (_notesCache.length === 0) { container.innerHTML = ""; return; }
+        if (_notesCache.length === 0) { container.innerHTML = '<div style="padding:8px 0;color:var(--ink-secondary);font-size:12px;">No saved notes</div>'; return; }
         var html = "";
         _notesCache.slice(0, 10).forEach(function(n, i) {
             var d = new Date(n.time);
@@ -3720,7 +3968,92 @@ function renderQuickNotes() {
         container.innerHTML = html;
     });
 }
-function deleteNote(idx) { var notes = getQuickNotes(); notes.splice(idx, 1); saveQuickNotes(notes); renderQuickNotes(); }
+function deleteNote(idx) {
+    var notes = getQuickNotes(); notes.splice(idx, 1); saveQuickNotes(notes);
+    _cmdRenderNotes(document.getElementById("cmdPaletteNotes"));
+}
+
+/* --- Palette input handler --- */
+(function() {
+    document.addEventListener("DOMContentLoaded", function() {
+        var input = document.getElementById("cmdPaletteInput");
+        if (!input) return;
+        input.addEventListener("input", function() { _cmdSelectedIdx = 0; _cmdRenderResults(); });
+        input.addEventListener("keydown", function(e) {
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                _cmdSelectedIdx = Math.min(_cmdSelectedIdx + 1, _cmdTotalItems - 1);
+                _cmdRenderResults();
+                _cmdScrollSelected();
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                _cmdSelectedIdx = Math.max(_cmdSelectedIdx - 1, 0);
+                _cmdRenderResults();
+                _cmdScrollSelected();
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                if (_cmdFindMode) {
+                    var term = input.value.trim();
+                    closeCommandPalette();
+                    if (term.length >= 2) {
+                        clearHighlights();
+                        highlightText(document.getElementById("mainContent"), term);
+                        var first = document.querySelector(".cmd-highlight");
+                        if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                } else if (_cmdCallMode) {
+                    var name = input.value.trim();
+                    closeCommandPalette();
+                    if (name) _executeCall(name);
+                } else if (_cmdNoteMode) {
+                    var noteText = input.value.trim();
+                    if (noteText) {
+                        var notes = getQuickNotes();
+                        notes.unshift({ text: noteText, time: new Date().toISOString() });
+                        if (notes.length > 50) notes = notes.slice(0, 50);
+                        saveQuickNotes(notes);
+                        input.value = "";
+                        _cmdRenderNotes(document.getElementById("cmdPaletteNotes"));
+                    }
+                } else {
+                    _cmdExecuteIdx(_cmdSelectedIdx);
+                }
+            } else if (e.key === "Escape") {
+                if (_cmdFindMode || _cmdCallMode || _cmdNoteMode) {
+                    _cmdFindMode = false; _cmdCallMode = false; _cmdNoteMode = false;
+                    input.value = "";
+                    _cmdRenderResults();
+                } else {
+                    closeCommandPalette();
+                }
+            } else if (e.key === "Backspace" && input.value === "" && (_cmdFindMode || _cmdCallMode || _cmdNoteMode)) {
+                _cmdFindMode = false; _cmdCallMode = false; _cmdNoteMode = false;
+                _cmdRenderResults();
+            }
+        });
+    });
+})();
+
+function _cmdScrollSelected() {
+    var sel = document.querySelector(".cmd-palette-item.selected");
+    if (sel) sel.scrollIntoView({ block: "nearest" });
+}
+
+/* --- Call action (reused from old executeCommand) --- */
+function _executeCall(name) {
+    var links = document.querySelectorAll('a[href^="tel:"]');
+    var found = false;
+    links.forEach(function(a) {
+        if (a.textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+            a.closest(".family-card, .rcfe-card, .action-card, .anomaly-item") &&
+            a.closest(".family-card, .rcfe-card, .action-card, .anomaly-item").textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1) {
+            if (!found) { window.location.href = a.href; found = true; }
+        }
+    });
+    if (!found) alert("No phone number found for: " + name);
+}
+
+/* --- Utility (shared) --- */
 function escHtml(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
 
 function highlightText(root, term) {
@@ -3748,6 +4081,142 @@ function clearHighlights() {
         parent.normalize();
     });
 }
+
+/* --- Keyboard Shortcuts Cheat Sheet --- */
+var _shortcutSections = [
+    { title: "Navigation", shortcuts: [
+        { label: "Home",         keys: ["1"] },
+        { label: "Chat",         keys: ["2"] },
+        { label: "Tasks",        keys: ["3"] },
+        { label: "Calendar",     keys: ["4"] },
+        { label: "Family",       keys: ["5"] },
+        { label: "Intelligence", keys: ["6"] },
+        { label: "Risks",        keys: ["7"] },
+        { label: "RCFE",         keys: ["8"] },
+        { label: "Goals",        keys: ["9"] },
+        { label: "System",       keys: ["0"] },
+    ]},
+    { title: "Actions", shortcuts: [
+        { label: "Command palette", keys: ["Ctrl", "K"] },
+        { label: "Find in page",    keys: ["/"] },
+        { label: "Toggle theme",    keys: ["T"] },
+        { label: "Open chat",       keys: ["C"] },
+        { label: "Scroll down",     keys: ["J"] },
+        { label: "Scroll up",       keys: ["K"] },
+        { label: "This cheat sheet", keys: ["?"] },
+        { label: "Close overlay",   keys: ["Esc"] },
+    ]},
+];
+
+function openShortcutModal() {
+    var overlay = document.getElementById("shortcutModalOverlay");
+    var body = document.getElementById("shortcutModalBody");
+    var html = "";
+    _shortcutSections.forEach(function(sec) {
+        html += '<div class="shortcut-section">';
+        html += '<div class="shortcut-section-title">' + escHtml(sec.title) + '</div>';
+        sec.shortcuts.forEach(function(s) {
+            html += '<div class="shortcut-row">';
+            html += '<span class="shortcut-row-label">' + escHtml(s.label) + '</span>';
+            html += '<span class="shortcut-row-keys">';
+            s.keys.forEach(function(k) { html += '<kbd>' + escHtml(k) + '</kbd>'; });
+            html += '</span></div>';
+        });
+        html += '</div>';
+    });
+    body.innerHTML = html;
+    overlay.classList.add("open");
+}
+
+function closeShortcutModal() {
+    document.getElementById("shortcutModalOverlay").classList.remove("open");
+}
+
+/* --- Global Keyboard Shortcut Handler --- */
+(function() {
+    var _panelShortcuts = {
+        "1": "panel-home", "2": "panel-chat", "3": "panel-tasks",
+        "4": "panel-calendar", "5": "panel-family", "6": "panel-intel",
+        "7": "panel-risks", "8": "panel-rcfe", "9": "panel-goals",
+        "0": "panel-system"
+    };
+
+    document.addEventListener("keydown", function(e) {
+        /* Skip when inside inputs/textareas */
+        var tag = (e.target.tagName || "").toLowerCase();
+        var isInput = (tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable);
+
+        /* Cmd+K / Ctrl+K — always fires */
+        if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+            e.preventDefault();
+            openCommandPalette();
+            return;
+        }
+
+        /* Escape — close overlays */
+        if (e.key === "Escape") {
+            var cmdOverlay = document.getElementById("cmdPaletteOverlay");
+            var sModal = document.getElementById("shortcutModalOverlay");
+            if (sModal && sModal.classList.contains("open")) { closeShortcutModal(); return; }
+            if (cmdOverlay && cmdOverlay.classList.contains("open")) { closeCommandPalette(); return; }
+            return;
+        }
+
+        /* Everything below: only when NOT in an input */
+        if (isInput) return;
+
+        /* ? — show keyboard shortcuts cheat sheet */
+        if (e.key === "?" || (e.shiftKey && e.key === "/")) {
+            e.preventDefault();
+            openShortcutModal();
+            return;
+        }
+
+        /* / — open command palette in find mode */
+        if (e.key === "/") {
+            e.preventDefault();
+            _cmdFindMode = true;
+            openCommandPalette();
+            _cmdRenderResults();
+            return;
+        }
+
+        /* t — toggle theme */
+        if (e.key === "t" || e.key === "T") {
+            e.preventDefault();
+            toggleTheme();
+            return;
+        }
+
+        /* c — open chat panel */
+        if (e.key === "c" || e.key === "C") {
+            e.preventDefault();
+            showPanel("panel-chat");
+            return;
+        }
+
+        /* j/k — scroll current panel */
+        if (e.key === "j") {
+            e.preventDefault();
+            var mc = document.getElementById("mainContent");
+            if (mc) mc.scrollBy({ top: 120, behavior: "smooth" });
+            return;
+        }
+        if (e.key === "k") {
+            e.preventDefault();
+            var mc2 = document.getElementById("mainContent");
+            if (mc2) mc2.scrollBy({ top: -120, behavior: "smooth" });
+            return;
+        }
+
+        /* 0-9 — panel navigation */
+        if (_panelShortcuts[e.key]) {
+            e.preventDefault();
+            showPanel(_panelShortcuts[e.key]);
+            return;
+        }
+    });
+})();
 
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  8. TIME-OF-DAY CONTEXT                                                  */
