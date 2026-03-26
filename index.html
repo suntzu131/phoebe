@@ -23,49 +23,53 @@
 /*  CSS VARIABLES — Johnny's Design DNA                                      */
 /* ══════════════════════════════════════════════════════════════════════════ */
 :root {
-    --bg: #f6f1ea;
-    --paper: #fffdf9;
-    --ink: #1f2937;
-    --ink-secondary: #5b6573;
-    --line: #ddd3c7;
-    --accent: #a85f3f;
-    --accent-light: rgba(168,95,63,0.08);
+    --bg: #fafaf9;
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --ink-secondary: #737373;
+    --line: #e8e5e0;
+    --accent: #c2785c;
+    --accent-hover: #a8624a;
+    --accent-light: rgba(194,120,92,0.07);
     --accent-2: #d8b58a;
     --sea: #5f7f8f;
     --sky: #cfdde6;
-    --green: #16a34a;
+    --green: #22c55e;
     --green-bg: #dcfce7;
-    --amber: #d97706;
+    --amber: #f59e0b;
     --amber-bg: #fef3c7;
-    --red: #dc2626;
+    --red: #ef4444;
     --red-bg: #fee2e2;
-    --blue: #2563eb;
+    --blue: #3b82f6;
     --blue-bg: #dbeafe;
-    --radius: 16px;
-    --radius-sm: 10px;
-    --shadow: 0 1px 3px rgba(40,36,30,0.06), 0 4px 16px rgba(40,36,30,0.06);
-    --shadow-lg: 0 4px 12px rgba(40,36,30,0.08), 0 16px 40px rgba(40,36,30,0.10);
-    --shadow-card: 0 1px 2px rgba(40,36,30,0.04), 0 4px 12px rgba(40,36,30,0.06);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 6px rgba(0,0,0,0.05), 0 10px 24px rgba(0,0,0,0.08);
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
     --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --sidebar-w: 240px;
+    --sidebar-w: 260px;
     --sidebar-collapsed-w: 56px;
-    --sidebar-bg: #1c1810;
-    --sidebar-ink: #d4c8b8;
+    --sidebar-bg: rgba(15,15,15,0.97);
+    --sidebar-ink: #a0a0a0;
     --sidebar-ink-active: #ffffff;
     --sidebar-hover: rgba(255,255,255,0.06);
-    --sidebar-active-bg: rgba(168,95,63,0.20);
+    --sidebar-active-bg: rgba(194,120,92,0.18);
+    --transition-fast: 0.15s ease;
+    --transition-med: 0.2s ease;
 }
 [data-theme="dark"] {
-    --bg: #121212;
-    --paper: #1e1e1e;
-    --surface-1: #1e1e1e;
-    --surface-2: #232323;
-    --surface-4: #272727;
+    --bg: #0f0f0f;
+    --paper: #1a1a1a;
+    --surface-1: #1a1a1a;
+    --surface-2: #1f1f1f;
+    --surface-4: #252525;
     --ink: #e5e5e5;
-    --ink-secondary: #a0a0a0;
-    --line: #2e2e2e;
-    --accent: #d4845a;
-    --accent-light: rgba(212,132,90,0.12);
+    --ink-secondary: #888888;
+    --line: #2a2a2a;
+    --accent: #d4956e;
+    --accent-hover: #c07f58;
+    --accent-light: rgba(212,149,110,0.10);
     --accent-2: #e8c99a;
     --sea: #7fa0b0;
     --sky: #1e2a32;
@@ -77,14 +81,14 @@
     --red-bg: #2e1515;
     --blue: #60a5fa;
     --blue-bg: #172040;
-    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
-    --shadow-lg: 0 4px 12px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
-    --shadow-card: 0 1px 2px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.04);
-    --sidebar-bg: #0d0d0d;
-    --sidebar-ink: #a0a0a0;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.03);
+    --sidebar-bg: rgba(10,10,10,0.98);
+    --sidebar-ink: #888888;
     --sidebar-ink-active: #e5e5e5;
     --sidebar-hover: rgba(255,255,255,0.04);
-    --sidebar-active-bg: rgba(212,132,90,0.18);
+    --sidebar-active-bg: rgba(212,149,110,0.15);
 }
 [data-theme="dark"] .card { background: var(--surface-1); }
 [data-theme="dark"] .metric-card { background: var(--surface-2); }
@@ -104,13 +108,20 @@
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
     font-family: var(--font);
+    font-weight: 400;
     background: var(--bg);
     color: var(--ink);
     min-height: 100vh;
     min-height: 100dvh;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+h1, h2, h3, h4, h5, h6, .panel-title, .report-title, .chart-title {
+    letter-spacing: -0.01em;
+    font-weight: 600;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
@@ -130,19 +141,21 @@ body {
     bottom: 0;
     width: var(--sidebar-w);
     background: var(--sidebar-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 200;
     display: flex;
     flex-direction: column;
     transition: width 0.25s ease, transform 0.25s ease;
     overflow: hidden;
-    box-shadow: 2px 0 16px rgba(0,0,0,0.15);
+    box-shadow: 1px 0 0 rgba(255,255,255,0.04);
 }
 .sidebar-brand {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 20px 16px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
     flex-shrink: 0;
 }
 .sidebar-brand-icon {
@@ -166,16 +179,17 @@ body {
 }
 .sidebar-brand-name {
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 600;
     color: #fff;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.02em;
 }
 .sidebar-brand-sub {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--sidebar-ink);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
+    opacity: 0.7;
 }
 
 .sidebar-nav {
@@ -191,18 +205,18 @@ body {
     align-items: center;
     gap: 14px;
     padding: 10px 16px;
-    margin: 2px 8px;
-    border-radius: 10px;
+    margin: 1px 10px;
+    border-radius: 8px;
     border: none;
     background: none;
-    width: calc(100% - 16px);
+    width: calc(100% - 20px);
     text-align: left;
     cursor: pointer;
     font-family: var(--font);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--sidebar-ink);
-    transition: all 0.15s ease;
+    transition: all var(--transition-fast);
     white-space: nowrap;
     overflow: hidden;
     min-height: 44px;
@@ -215,13 +229,14 @@ body {
 .sidebar-item.active {
     background: var(--sidebar-active-bg);
     color: var(--sidebar-ink-active);
+    font-weight: 600;
 }
 .sidebar-item.active::before {
     content: "";
     position: absolute;
-    left: -8px;
-    top: 8px;
-    bottom: 8px;
+    left: -10px;
+    top: 10px;
+    bottom: 10px;
     width: 3px;
     border-radius: 0 3px 3px 0;
     background: var(--accent);
@@ -240,17 +255,17 @@ body {
 .sidebar-item-badge {
     margin-left: auto;
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 600;
     background: var(--accent);
     color: #fff;
-    padding: 1px 7px;
+    padding: 2px 8px;
     border-radius: 10px;
     flex-shrink: 0;
 }
 
 .sidebar-footer {
-    padding: 12px 16px;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+    border-top: 1px solid rgba(255,255,255,0.06);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -295,22 +310,24 @@ body {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: linear-gradient(135deg, #2c1810 0%, var(--accent) 60%, #c47a55 100%);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
     padding: 10px 14px;
     align-items: center;
     justify-content: space-between;
-    color: #fff;
-    box-shadow: 0 2px 12px rgba(44,24,16,0.25);
+    color: var(--ink);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
-.mobile-header h1 { font-size: 17px; font-weight: 800; letter-spacing: -0.5px; }
+.mobile-header h1 { font-size: 17px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
 .mobile-header-right { display: flex; align-items: center; gap: 8px; }
 .hamburger-btn {
-    background: rgba(255,255,255,0.15);
+    background: transparent;
     border: none;
     border-radius: 8px;
     width: 36px;
     height: 36px;
-    color: #fff;
+    color: var(--ink-secondary);
     font-size: 18px;
     cursor: pointer;
     display: flex;
@@ -336,6 +353,7 @@ body {
     padding: 32px;
     max-width: 960px;
     animation: panelFadeIn 0.2s ease;
+    gap: 24px;
 }
 .panel.active {
     display: block;
@@ -349,9 +367,9 @@ body {
 }
 .panel-title {
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--ink);
-    letter-spacing: -0.5px;
+    letter-spacing: -0.02em;
 }
 .panel-subtitle {
     font-size: 12px;
@@ -361,11 +379,11 @@ body {
 
 /* ── Section Titles (within panels) ───────────────────────────────────── */
 .section-title {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: var(--accent);
+    letter-spacing: 0.06em;
+    color: var(--ink-secondary);
     margin: 24px 0 12px;
     display: flex;
     align-items: center;
@@ -377,11 +395,11 @@ body {
     padding: 4px 0;
 }
 .section-title .count-badge {
-    font-size: 11px;
-    font-weight: 700;
-    background: var(--accent);
-    color: #fff;
-    padding: 1px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 2px 8px;
     border-radius: 10px;
 }
 .section-title .section-chevron {
@@ -409,13 +427,19 @@ body {
 /* ── Cards ─────────────────────────────────────────────────────────────── */
 .card {
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
     overflow: hidden;
     margin-bottom: 12px;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
 .card-body {
-    padding: 16px;
+    padding: 20px;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
@@ -425,14 +449,16 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 10px;
-    padding: 12px 16px;
-    border-left: 4px solid var(--line);
+    padding: 14px 16px;
+    border-left: 3px solid var(--line);
     background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--line);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     box-shadow: var(--shadow-card);
     margin-bottom: 8px;
     cursor: default;
-    transition: transform 0.1s;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     flex-wrap: wrap;
 }
 .action-card:active { transform: scale(0.99); }
@@ -472,30 +498,37 @@ body {
 .metrics-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 12px;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 .metric-card {
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
-    padding: 14px 16px;
+    padding: 16px 18px;
     text-align: center;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.metric-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
 .metric-label {
-    font-size: 10px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.04em;
     color: var(--ink-secondary);
     display: block;
     margin-bottom: 4px;
 }
 .metric-value {
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 700;
     display: block;
     line-height: 1.2;
+    letter-spacing: -0.01em;
 }
 .metric-value.positive { color: var(--green); }
 .metric-value.negative { color: var(--red); }
@@ -524,14 +557,19 @@ body {
     flex: 0 0 160px;
     scroll-snap-align: start;
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
-    padding: 14px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 6px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
+}
+.family-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
 .family-card:active { transform: scale(0.97); }
 .family-card.has-alert { border: 1px solid var(--amber); }
@@ -684,12 +722,13 @@ body {
 /*  CONDITIONAL VISIBILITY — empty state placeholders                        */
 /* ══════════════════════════════════════════════════════════════════════════ */
 .section-empty {
-    padding: 16px;
+    padding: 20px;
     text-align: center;
     color: var(--ink-secondary);
     font-size: 12px;
     font-style: italic;
     background: var(--paper);
+    border: 1px dashed var(--line);
     border-radius: var(--radius-sm);
     margin: 4px 0;
 }
@@ -717,15 +756,15 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 12px 14px;
+    padding: 14px 16px;
     border-radius: var(--radius-sm);
     background: var(--paper);
+    border: 1px solid var(--line);
     box-shadow: var(--shadow-card);
-    border: none;
     cursor: pointer;
     font-family: var(--font);
     text-align: left;
-    transition: transform 0.1s, box-shadow 0.15s;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
     min-height: 70px;
     overflow: hidden;
 }
@@ -833,14 +872,14 @@ body {
     padding: 6px 14px;
     border: 1px solid var(--line);
     border-radius: 20px;
-    background: var(--paper);
+    background: transparent;
     font-family: var(--font);
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--ink-secondary);
     cursor: pointer;
     min-height: 36px;
-    transition: all 0.15s;
+    transition: all var(--transition-fast);
 }
 .view-toggle-btn.active {
     background: var(--accent);
@@ -889,8 +928,9 @@ body {
 }
 .kanban-card {
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 10px;
+    padding: 10px 12px;
     margin-bottom: 6px;
     box-shadow: var(--shadow-card);
     cursor: grab;
@@ -898,7 +938,7 @@ body {
     align-items: flex-start;
     gap: 8px;
     flex-wrap: wrap;
-    transition: transform 0.1s, box-shadow 0.1s;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 .kanban-card:active { cursor: grabbing; }
 .kanban-card.dragging {
@@ -1087,26 +1127,27 @@ body {
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  SKELETON LOADERS — pulse animation while content loads                   */
 /* ══════════════════════════════════════════════════════════════════════════ */
-@keyframes skeleton-pulse {
-    0% { opacity: 0.15; }
-    50% { opacity: 0.30; }
-    100% { opacity: 0.15; }
+@keyframes skeleton-shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 .skeleton-loader {
-    background: var(--ink-secondary);
+    background: linear-gradient(90deg, var(--line) 25%, rgba(0,0,0,0.04) 50%, var(--line) 75%);
+    background-size: 200% 100%;
     border-radius: 6px;
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
 }
 .skeleton-line {
     height: 12px;
     margin-bottom: 8px;
     border-radius: 6px;
-    background: var(--ink-secondary);
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    background: linear-gradient(90deg, var(--line) 25%, rgba(0,0,0,0.04) 50%, var(--line) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
 }
 .skeleton-line:nth-child(1) { width: 90%; }
-.skeleton-line:nth-child(2) { width: 75%; animation-delay: 0.15s; }
-.skeleton-line:nth-child(3) { width: 60%; animation-delay: 0.30s; }
+.skeleton-line:nth-child(2) { width: 75%; animation-delay: 0.2s; }
+.skeleton-line:nth-child(3) { width: 60%; animation-delay: 0.4s; }
 .skeleton-card {
     background: var(--paper);
     border-radius: var(--radius);
@@ -1117,8 +1158,9 @@ body {
 .skeleton-chart {
     height: 200px;
     border-radius: var(--radius);
-    background: var(--ink-secondary);
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    background: linear-gradient(90deg, var(--line) 25%, rgba(0,0,0,0.04) 50%, var(--line) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
     margin-bottom: 8px;
 }
 .skeleton-thread {
@@ -1131,11 +1173,12 @@ body {
     height: 32px;
     width: 72px;
     border-radius: 16px;
-    background: var(--ink-secondary);
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
+    background: linear-gradient(90deg, var(--line) 25%, rgba(0,0,0,0.04) 50%, var(--line) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
 }
-.skeleton-thread-pill:nth-child(2) { width: 56px; animation-delay: 0.15s; }
-.skeleton-thread-pill:nth-child(3) { width: 64px; animation-delay: 0.30s; }
+.skeleton-thread-pill:nth-child(2) { width: 56px; animation-delay: 0.2s; }
+.skeleton-thread-pill:nth-child(3) { width: 64px; animation-delay: 0.4s; }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  TIMELINE (Compliance + Calendar)                                         */
@@ -1172,10 +1215,16 @@ body {
 }
 .goal-card {
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-card);
-    padding: 12px 14px;
+    padding: 14px 16px;
     border-left: 3px solid var(--sea);
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.goal-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
 .goal-card.active { border-left-color: var(--green); }
 .goal-card.planning { border-left-color: var(--accent-2); }
@@ -1191,13 +1240,19 @@ body {
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 10px 14px;
-    border-left: 4px solid var(--line);
+    padding: 12px 16px;
+    border-left: 3px solid var(--line);
     background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--line);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     box-shadow: var(--shadow-card);
     margin-bottom: 6px;
     min-height: 44px;
+    transition: box-shadow var(--transition-fast);
+}
+.task-item:hover {
+    box-shadow: var(--shadow-lg);
 }
 .task-item.critical { border-left-color: var(--red); background: var(--red-bg); }
 .task-item.warning  { border-left-color: var(--amber); background: var(--amber-bg); }
@@ -1213,10 +1268,11 @@ body {
 /* ══════════════════════════════════════════════════════════════════════════ */
 .rcfe-card {
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
-    padding: 14px 16px;
-    border-left: 4px solid var(--sea);
+    padding: 16px 20px;
+    border-left: 3px solid var(--sea);
 }
 .rcfe-row { display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
 .rcfe-row:last-child { border-bottom: none; }
@@ -1234,9 +1290,10 @@ body {
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
-    padding: 14px;
+    padding: 16px;
 }
 .sysstat-item { text-align: center; padding: 8px 4px; }
 .sysstat-item.sysstat-wide { grid-column: span 2; border-top: 1px solid var(--line); padding-top: 10px; margin-top: 2px; }
@@ -1247,12 +1304,12 @@ body {
 /*  SHOW MORE / COLLAPSIBLE                                                  */
 /* ══════════════════════════════════════════════════════════════════════════ */
 .show-more-btn {
-    display: block; width: 100%; padding: 8px; font-size: 12px; font-weight: 600;
-    font-family: var(--font); color: var(--accent); background: var(--accent-light);
-    border: 1px solid var(--accent); border-radius: var(--radius-sm); cursor: pointer;
-    margin-top: 6px; min-height: 44px; transition: background 0.15s;
+    display: block; width: 100%; padding: 8px; font-size: 12px; font-weight: 500;
+    font-family: var(--font); color: var(--accent); background: transparent;
+    border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer;
+    margin-top: 6px; min-height: 44px; transition: all var(--transition-fast);
 }
-.show-more-btn:hover { background: var(--accent); color: #fff; }
+.show-more-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 .collapsible-toggle {
     display: flex; align-items: center; justify-content: space-between;
     width: 100%; background: none; border: none; padding: 12px 16px;
@@ -1274,16 +1331,21 @@ body {
 }
 .chart-card {
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
-    padding: 16px;
+    padding: 20px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-med);
+}
+.chart-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
 .chart-card:active { transform: scale(0.98); }
 .chart-card.expanded { grid-column: 1 / -1; padding: 20px; }
 .chart-card.expanded canvas { max-height: 350px; }
-.chart-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.chart-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 10px; letter-spacing: -0.01em; }
 canvas { max-width: 100%; }
 .chart-expand-hint {
     font-size: 10px; color: var(--ink-secondary); text-align: center;
@@ -1299,13 +1361,13 @@ canvas { max-width: 100%; }
 }
 .tab-bar::-webkit-scrollbar { display: none; }
 .tab-btn {
-    flex-shrink: 0; padding: 7px 14px; font-size: 12px; font-weight: 600;
+    flex-shrink: 0; padding: 7px 14px; font-size: 12px; font-weight: 500;
     font-family: var(--font); border: 1px solid var(--line); border-radius: 20px;
-    background: var(--paper); color: var(--ink-secondary); cursor: pointer;
-    transition: all 0.15s; white-space: nowrap;
+    background: transparent; color: var(--ink-secondary); cursor: pointer;
+    transition: all var(--transition-fast); white-space: nowrap;
 }
 .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
-.tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
@@ -1367,21 +1429,32 @@ canvas { max-width: 100%; }
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
     display: none;
     align-items: center; justify-content: space-around;
-    height: 56px; background: var(--paper); border-top: 1px solid var(--line);
-    box-shadow: 0 -2px 12px rgba(40,36,30,0.08);
+    height: 56px; background: rgba(255,255,255,0.85); border-top: 1px solid var(--line);
+    box-shadow: 0 -1px 0 var(--line);
     padding-bottom: env(safe-area-inset-bottom, 0);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
 }
-[data-theme="dark"] .bottom-nav { background: rgba(28,28,28,0.92); box-shadow: 0 -2px 12px rgba(0,0,0,0.3); }
+[data-theme="dark"] .bottom-nav { background: rgba(15,15,15,0.88); box-shadow: 0 -1px 0 var(--line); }
 .nav-tab {
     display: flex; flex-direction: column; align-items: center; gap: 2px;
     padding: 6px 8px; min-width: 44px; min-height: 48px;
     border: none; background: none; cursor: pointer; font-family: var(--font);
-    color: var(--ink-secondary); font-size: 10px; font-weight: 600;
-    text-decoration: none; transition: color 0.15s; justify-content: center; border-radius: 8px;
+    color: var(--ink-secondary); font-size: 10px; font-weight: 500;
+    text-decoration: none; transition: color var(--transition-fast); justify-content: center; border-radius: 8px;
+    position: relative;
 }
 .nav-tab:hover, .nav-tab.active { color: var(--accent); }
-.nav-tab.active { background: var(--accent-light); }
+.nav-tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+}
 .nav-tab-icon { font-size: 18px; line-height: 1; }
 .nav-tab-label { font-size: 9px; line-height: 1; }
 
@@ -1390,11 +1463,11 @@ canvas { max-width: 100%; }
 /* ══════════════════════════════════════════════════════════════════════════ */
 .fab {
     position: fixed; bottom: 24px; right: 24px; z-index: 110;
-    width: 52px; height: 52px; border-radius: 50%; border: none;
+    width: 52px; height: 52px; border-radius: 16px; border: none;
     background: var(--accent); color: #fff; font-size: 24px; font-weight: 700;
-    cursor: pointer; box-shadow: var(--shadow-lg);
+    cursor: pointer; box-shadow: 0 4px 12px rgba(194,120,92,0.3), var(--shadow-lg);
     display: flex; align-items: center; justify-content: center;
-    transition: transform 0.15s, background 0.15s;
+    transition: transform var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
 }
 .fab:hover { transform: scale(1.08); }
 .fab:active { transform: scale(0.95); }
@@ -1854,6 +1927,7 @@ canvas { max-width: 100%; }
     height: calc(100vh - 80px);
     max-height: 700px;
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
     overflow: hidden;
@@ -1965,16 +2039,16 @@ canvas { max-width: 100%; }
 }
 .chat-search-close:hover { background: var(--line); }
 .msg-search-highlight {
-    background: rgba(168, 95, 63, 0.25);
+    background: rgba(194, 120, 92, 0.2);
     border-radius: 2px;
     padding: 0 1px;
 }
 .msg-search-highlight.active {
-    background: rgba(168, 95, 63, 0.5);
+    background: rgba(194, 120, 92, 0.4);
     box-shadow: 0 0 0 1px var(--accent);
 }
-[data-theme="dark"] .msg-search-highlight { background: rgba(212, 132, 90, 0.3); }
-[data-theme="dark"] .msg-search-highlight.active { background: rgba(212, 132, 90, 0.5); }
+[data-theme="dark"] .msg-search-highlight { background: rgba(212, 149, 110, 0.25); }
+[data-theme="dark"] .msg-search-highlight.active { background: rgba(212, 149, 110, 0.45); }
 
 /* ── Thread Tabs ──────────────────────────────────────────────────────── */
 .chat-threads {
@@ -2131,11 +2205,14 @@ canvas { max-width: 100%; }
 .pinned-msg-card {
     background: var(--paper);
     border: 1px solid var(--line);
-    border-radius: var(--radius-sm, 10px);
-    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
     margin-bottom: 8px;
     cursor: pointer;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.pinned-msg-card:hover {
+    transform: translateY(-1px);
 }
 .pinned-msg-card:hover {
     border-color: var(--accent);
@@ -2151,11 +2228,11 @@ canvas { max-width: 100%; }
     font-size: 10px;
     font-weight: 600;
     color: var(--accent);
-    background: rgba(168,95,63,0.1);
+    background: var(--accent-light);
     padding: 2px 8px;
     border-radius: 8px;
 }
-[data-theme="dark"] .pinned-msg-thread { background: rgba(212,132,90,0.15); }
+[data-theme="dark"] .pinned-msg-thread { background: var(--accent-light); }
 .pinned-msg-sender {
     font-size: 11px;
     font-weight: 600;
@@ -2263,7 +2340,7 @@ canvas { max-width: 100%; }
     flex-shrink: 0;
     transition: background 0.15s;
 }
-.voice-play-btn:hover { background: #8b4e33; }
+.voice-play-btn:hover { background: var(--accent-hover); }
 .voice-waveform {
     flex: 1;
     height: 24px;
@@ -2494,8 +2571,8 @@ canvas { max-width: 100%; }
     min-width: 0;
 }
 .gchat-bubble {
-    padding: 8px 12px;
-    border-radius: 12px;
+    padding: 10px 14px;
+    border-radius: 18px;
     font-size: 14px;
     line-height: 1.45;
     word-wrap: break-word;
@@ -2503,17 +2580,18 @@ canvas { max-width: 100%; }
 }
 .gchat-msg:not(.own) .gchat-bubble {
     background: var(--bg);
-    border-top-left-radius: 4px;
+    border: 1px solid var(--line);
+    border-radius: 18px 18px 18px 4px;
     color: var(--ink);
 }
 .gchat-msg.own .gchat-bubble {
-    background: #e3f2fd;
-    border-top-right-radius: 4px;
-    color: #1a1a1a;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 18px 18px 4px 18px;
 }
 [data-theme="dark"] .gchat-msg.own .gchat-bubble {
-    background: #1a3a5c;
-    color: #e5e5e5;
+    background: var(--accent);
+    color: #fff;
 }
 .gchat-msg.thinking .gchat-bubble {
     background: var(--bg);
@@ -2527,14 +2605,15 @@ canvas { max-width: 100%; }
     display: block;
 }
 .gchat-msg:not(.own) .gchat-sender { color: var(--accent); }
-.gchat-msg.own .gchat-sender { color: var(--sea, #5f7f8f); text-align: right; }
+.gchat-msg.own .gchat-sender { color: rgba(255,255,255,0.85); text-align: right; }
 .gchat-time {
     font-size: 10px;
     color: var(--ink-secondary);
-    margin-top: 2px;
+    margin-top: 4px;
     display: block;
+    padding: 0 2px;
 }
-.gchat-msg.own .gchat-time { text-align: right; }
+.gchat-msg.own .gchat-time { text-align: right; color: var(--ink-secondary); }
 .gchat-edited {
     font-size: 10px;
     color: var(--ink-secondary);
@@ -2608,9 +2687,9 @@ canvas { max-width: 100%; }
 .gchat-reaction:hover { border-color: var(--accent); }
 .gchat-reaction.own {
     border-color: var(--accent);
-    background: rgba(168, 95, 63, 0.1);
+    background: var(--accent-light);
 }
-[data-theme="dark"] .gchat-reaction.own { background: rgba(212, 132, 90, 0.15); }
+[data-theme="dark"] .gchat-reaction.own { background: var(--accent-light); }
 .gchat-reaction-count {
     font-size: 11px;
     font-weight: 600;
@@ -2779,7 +2858,7 @@ canvas { max-width: 100%; }
     min-height: 44px;
     transition: background 0.15s, transform 0.1s;
 }
-.chat-input-area button:hover { background: #8b4e33; }
+.chat-input-area button:hover { background: var(--accent-hover); }
 .chat-input-area button:active { transform: scale(0.95); }
 .chat-input-area button:disabled {
     opacity: 0.5;
@@ -3038,10 +3117,11 @@ canvas { max-width: 100%; }
 }
 .report-card {
     background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
-    padding: 20px;
-    border-left: 4px solid var(--accent);
+    padding: 24px;
+    border-left: 3px solid var(--accent);
 }
 .report-title {
     font-size: 16px;
@@ -3060,11 +3140,11 @@ canvas { max-width: 100%; }
     line-height: 1.6;
 }
 .report-section-title {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--accent);
+    letter-spacing: 0.06em;
+    color: var(--ink-secondary);
     margin: 16px 0 8px;
     padding-bottom: 4px;
     border-bottom: 1px solid var(--line);
@@ -3105,32 +3185,41 @@ canvas { max-width: 100%; }
 }
 .login-card {
     text-align: center;
-    padding: 40px;
-    background: var(--paper);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    max-width: 320px;
+    padding: 48px 40px 40px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    max-width: 340px;
     width: 90%;
 }
+[data-theme="dark"] .login-card {
+    background: rgba(26,26,26,0.85);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
 .login-icon {
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     background: var(--accent);
     color: white;
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 16px;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 12px rgba(194,120,92,0.3);
 }
 .login-card h2 {
-    font-size: 22px;
-    font-weight: 800;
+    font-size: 24px;
+    font-weight: 600;
     color: var(--ink);
     margin: 0 0 4px;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.02em;
 }
 .login-card > p {
     font-size: 13px;
@@ -3145,20 +3234,21 @@ canvas { max-width: 100%; }
     width: 100%;
     padding: 12px 24px;
     border: 1px solid var(--line);
-    border-radius: 24px;
+    border-radius: 12px;
     background: var(--paper);
     color: var(--ink);
     font-size: 15px;
     font-weight: 500;
     font-family: var(--font);
     cursor: pointer;
-    transition: background 0.2s, box-shadow 0.2s;
-    margin: 24px 0 8px;
+    transition: all var(--transition-fast);
+    margin: 28px 0 8px;
     min-height: 48px;
 }
 .google-signin-btn:hover {
     background: var(--bg);
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
 }
 .google-signin-btn:disabled {
     opacity: 0.5;
@@ -3245,8 +3335,8 @@ canvas { max-width: 100%; }
 <div id="login-screen" class="login-screen">
     <div class="login-card">
         <div class="login-icon">P</div>
-        <h2>Phoebe</h2>
-        <p>Family Intelligence Dashboard</p>
+        <h2>Phoebe J.</h2>
+        <p>Your family intelligence companion</p>
         <button id="google-signin-btn" class="google-signin-btn" onclick="signInWithGoogle()">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" height="20" alt="">
             Sign in with Google
@@ -3318,7 +3408,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 17:48</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 22:11</span>
     </div>
 </aside>
 
@@ -3364,10 +3454,10 @@ canvas { max-width: 100%; }
             <span class="sc-label">Money</span>
             <span class="sc-detail">&#8599; Cash flow moderate</span>
         </button>
-<button class="summary-card sc-info" data-panel="panel-calendar" onclick="showPanel('panel-calendar')" data-persona-min="housemate">
-            <span class="sc-value">2026-03-28</span>
+<button class="summary-card sc-info" data-panel="panel-calendar" onclick="showPanel('panel-calendar')" style="display:none" data-persona-min="housemate">
+            <span class="sc-value">No events</span>
             <span class="sc-label">Calendar</span>
-            <span class="sc-detail">Wedding Anniversary</span>
+            <span class="sc-detail">Calendar is clear</span>
         </button>
 <button class="summary-card sc-warning" data-panel="panel-family" onclick="showPanel('panel-family')" data-persona-min="partner">
             <span class="sc-value">2</span>
@@ -3377,7 +3467,7 @@ canvas { max-width: 100%; }
 <button class="summary-card sc-info" data-panel="panel-system" onclick="showPanel('panel-system')" data-persona-min="admin">
             <span class="sc-value">Live</span>
             <span class="sc-label">Phoebe</span>
-            <span class="sc-detail">45,000 nodes | 44 timers active</span>
+            <span class="sc-detail">45,000 nodes | 54 timers active</span>
         </button>
 
         </div>
@@ -3527,7 +3617,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 25, 2026 at 05:48 PM &middot;
+            Generated March 25, 2026 at 10:11 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -3852,7 +3942,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div class="task-view" id="taskViewCalendar">
-            <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day today" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31</div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
+            <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day today" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28</div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30</div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31</div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
         </div>
     </div>
 
@@ -3871,97 +3961,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="card">
             <div class="card-body tab-panel active" id="tab-calendar-events">
-                <div class="timeline-item info">
-            <div class="timeline-date">2026-03-28</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Wedding Anniversary</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-03-30</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-05</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Easter Sunday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 08:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Trim Hair</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 09:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Prepare tithe</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-06</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Easter Monday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 10, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-11</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Grandpa Han's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-12</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Chris Eun's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 12, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Vacuum all filters for air purifiers</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-15</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Tax Day</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-21</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Plan for Summer Trip</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-24</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Atum Hyung's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-25</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Happy birthday!</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-26</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Hawaii Wedding Anniversary</span>
-            </div>
-        </div>
-
+                <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
             </div>
             <div class="card-body tab-panel" id="tab-calendar-deadlines" data-persona-min="admin">
                 <div class="timeline-item critical">
@@ -4147,14 +4147,7 @@ canvas { max-width: 100%; }
             <span class="family-notes">IEP needed, RCOC: swimming + TKD</span>
             <div class="family-detail">
                 <div class="family-detail-row">IEP needed</div><div class="family-detail-row">RCOC: swimming + TKD</div>
-                <div class="person-timeline"><div class="person-tl-item">
-                <span class="person-tl-dot">&#128197;</span>
-                <div class="person-tl-body">
-                    <span class="person-tl-date">2026-04-10</span>
-                    <span class="person-tl-text">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (</span>
-                </div>
-            </div>
-</div>
+                <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
             </div>
         </div>
 <div class="family-card" onclick="toggleFamilyDetail(this)">
@@ -4171,13 +4164,6 @@ canvas { max-width: 100%; }
             <div class="family-detail">
                 <div class="family-detail-row">FAST 6e</div><div class="family-detail-row">93.8 lbs</div><div class="family-detail-row">RCFE decision made</div>
                 <div class="person-timeline"><div class="person-tl-item">
-                <span class="person-tl-dot">&#128197;</span>
-                <div class="person-tl-body">
-                    <span class="person-tl-date">2026-05-10</span>
-                    <span class="person-tl-text">Mother's Day</span>
-                </div>
-            </div>
-<div class="person-tl-item">
                 <span class="person-tl-dot">&#9889;</span>
                 <div class="person-tl-body">
                     <span class="person-tl-date">2026-03-25</span>
@@ -4539,7 +4525,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 25, 2026 at 05:48 PM</div>
+            <div class="report-meta">Generated March 25, 2026 at 10:11 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -4551,7 +4537,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 25, 2026 at 05:48 PM</div>
+            <div class="report-meta">Last updated: March 25, 2026 at 10:11 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -4585,10 +4571,10 @@ canvas { max-width: 100%; }
         <div class="sysstat-grid">
         <div class="sysstat-item"><span class="sysstat-val">37</span><span class="sysstat-lbl">Agents</span></div>
         <div class="sysstat-item"><span class="sysstat-val">30</span><span class="sysstat-lbl">Skills</span></div>
-        <div class="sysstat-item"><span class="sysstat-val">84</span><span class="sysstat-lbl">Tools</span></div>
-        <div class="sysstat-item"><span class="sysstat-val">44</span><span class="sysstat-lbl">Timers</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">91</span><span class="sysstat-lbl">Tools</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 17:48</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 22:11</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -6021,7 +6007,7 @@ function initTaskSwipe() {
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  11c. BATCH 5 — TASK MULTI-VIEW: List/Kanban/Calendar (Item 12)          */
 /* ══════════════════════════════════════════════════════════════════════════ */
-var _calEventsData = {"2026-03-28": ["Wedding Anniversary"], "2026-03-30": ["Stay at The Hadsten Solvang, Tapestry Collection by Hilton"], "2026-04-05": ["Easter Sunday", "Trim Hair", "Prepare tithe"], "2026-04-06": ["Easter Monday"], "2026-04-10": ["Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)"], "2026-04-11": ["Grandpa Han's Birthday"], "2026-04-12": ["Chris Eun's Birthday", "Vacuum all filters for air purifiers"], "2026-04-15": ["Tax Day"], "2026-04-21": ["Plan for Summer Trip"], "2026-04-24": ["Atum Hyung's Birthday"], "2026-04-25": ["Happy birthday!"], "2026-04-26": ["Hawaii Wedding Anniversary"], "2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
+var _calEventsData = {"2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
 
 function switchTaskView(view, btn) {
     /* Update toggle buttons */
