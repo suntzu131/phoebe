@@ -3715,6 +3715,731 @@ canvas { max-width: 100%; }
 #install-banner .dismiss:hover {
     opacity: 1;
 }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  HOME CARDS — 10-card grid for the Home panel                            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.home-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+}
+.home-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    animation: hcFadeIn 0.35s ease both;
+}
+.home-card:nth-child(2) { animation-delay: 0.03s; }
+.home-card:nth-child(3) { animation-delay: 0.06s; }
+.home-card:nth-child(4) { animation-delay: 0.09s; }
+.home-card:nth-child(5) { animation-delay: 0.12s; }
+.home-card:nth-child(6) { animation-delay: 0.15s; }
+.home-card:nth-child(7) { animation-delay: 0.18s; }
+.home-card:nth-child(8) { animation-delay: 0.21s; }
+.home-card:nth-child(9) { animation-delay: 0.24s; }
+.home-card:nth-child(10) { animation-delay: 0.27s; }
+@keyframes hcFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.home-card-full {
+    grid-column: 1 / -1;
+}
+[data-theme="dark"] .home-card {
+    background: var(--surface-1);
+}
+.hc-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px;
+}
+.hc-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+}
+.hc-title {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font);
+    color: var(--ink);
+    flex: 1;
+}
+.hc-chevron {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    transition: transform 0.2s ease;
+    margin-left: auto;
+}
+.home-card.collapsed .hc-chevron {
+    transform: rotate(-90deg);
+}
+.home-card.collapsed .hc-body {
+    display: none;
+}
+.hc-body {
+    padding: 0 16px 14px;
+}
+.hc-collapsible {
+    /* visible by default on desktop, collapsed by JS on mobile */
+}
+
+/* Status/Badge elements */
+.hc-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font);
+    line-height: 1.5;
+}
+.hc-badge-sage { background: rgba(122,158,126,0.15); color: var(--accent); }
+.hc-badge-amber { background: var(--amber-bg); color: #92400e; }
+.hc-badge-red { background: var(--red-bg); color: var(--red); }
+.hc-badge-green { background: var(--green-bg); color: var(--green); }
+[data-theme="dark"] .hc-badge-sage { color: var(--accent); }
+[data-theme="dark"] .hc-badge-amber { color: var(--amber); }
+[data-theme="dark"] .hc-badge-red { color: var(--red); }
+
+.hc-status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.hc-meta {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+}
+
+/* Metric rows */
+.hc-metrics-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+.hc-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.hc-metric-wide {
+    flex: 1;
+    min-width: 120px;
+}
+.hc-metric-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+}
+.hc-metric-value {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    font-family: var(--font);
+}
+
+/* Progress bar */
+.hc-progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.hc-progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    overflow: hidden;
+}
+.hc-progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+    transition: width 0.6s ease;
+}
+.hc-progress-fill.hc-progress-accent {
+    background: var(--accent);
+}
+.hc-progress-text {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    white-space: nowrap;
+}
+
+/* Dots */
+.hc-dot-green {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); margin-right: 4px; vertical-align: middle;
+}
+.hc-dot-amber {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--amber); margin-right: 4px; vertical-align: middle;
+}
+.hc-dot-red {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--red); margin-right: 4px; vertical-align: middle;
+}
+
+/* Detail sections */
+.hc-detail-section {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+}
+.hc-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    gap: 8px;
+}
+.hc-detail-label {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    font-weight: 600;
+    min-width: 60px;
+    flex-shrink: 0;
+}
+.hc-detail-value {
+    font-size: 12px;
+    color: var(--ink);
+    font-family: var(--font);
+    text-align: right;
+}
+.hc-detail-value a {
+    color: var(--accent);
+    text-decoration: none;
+}
+.hc-detail-value a:hover {
+    text-decoration: underline;
+}
+.hc-sub-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    margin-bottom: 6px;
+}
+.hc-muted {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    line-height: 1.4;
+}
+.hc-empty {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    text-align: center;
+    padding: 12px 0;
+    opacity: 0.7;
+}
+.hc-subtitle {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    margin-bottom: 8px;
+}
+
+/* Big number display */
+.hc-big-number {
+    font-size: 28px;
+    font-weight: 900;
+    font-family: var(--font);
+    line-height: 1.1;
+    margin-bottom: 8px;
+}
+.hc-big-number.hc-positive { color: var(--green); }
+.hc-big-number.hc-negative { color: var(--red); }
+.hc-big-unit {
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0.6;
+    margin-left: 2px;
+}
+
+/* Bills */
+.hc-bill-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    font-size: 12px;
+    font-family: var(--font);
+}
+.hc-bill-name {
+    flex: 1;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hc-bill-amount {
+    font-weight: 700;
+    color: var(--ink);
+    min-width: 50px;
+    text-align: right;
+}
+.hc-bill-due {
+    color: var(--ink-secondary);
+    font-size: 11px;
+    min-width: 50px;
+    text-align: right;
+}
+
+/* Count badges */
+.hc-count-badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--font);
+    background: var(--surface-2);
+    color: var(--ink-secondary);
+}
+.hc-count-red { background: var(--red-bg); color: var(--red); }
+.hc-count-amber { background: var(--amber-bg); color: #92400e; }
+[data-theme="dark"] .hc-count-amber { color: var(--amber); }
+
+/* Timeline (schedule) */
+.hc-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.hc-timeline-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-family: var(--font);
+    min-height: 28px;
+}
+.hc-timeline-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+}
+.hc-timeline-time {
+    color: var(--ink-secondary);
+    font-weight: 600;
+    min-width: 60px;
+    font-size: 11px;
+}
+.hc-timeline-text {
+    color: var(--ink);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hc-person-chip {
+    padding: 1px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Countdown chips (deadlines) */
+.hc-deadline-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    font-family: var(--font);
+}
+.hc-deadline-row:last-child { border-bottom: none; }
+.hc-deadline-name {
+    color: var(--ink);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 8px;
+}
+.hc-countdown-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font);
+    white-space: nowrap;
+}
+.hc-chip-red { background: var(--red-bg); color: var(--red); }
+.hc-chip-amber { background: var(--amber-bg); color: #92400e; }
+.hc-chip-green { background: var(--green-bg); color: var(--green); }
+[data-theme="dark"] .hc-chip-amber { color: var(--amber); }
+
+/* Weather */
+.hc-wx-main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+.hc-wx-temp {
+    font-size: 36px;
+    font-weight: 900;
+    font-family: var(--font);
+    color: var(--ink);
+    line-height: 1;
+}
+.hc-wx-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.hc-wx-cond {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: var(--font);
+}
+.hc-wx-hilo {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+}
+.hc-wx-forecast {
+    display: flex;
+    gap: 0;
+}
+.hc-wx-day {
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
+    border-right: 1px solid var(--line);
+}
+.hc-wx-day:last-child { border-right: none; }
+.hc-wx-day-label {
+    display: block;
+    font-size: 10px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    font-weight: 600;
+}
+.hc-wx-day-temp {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    font-family: var(--font);
+}
+.hc-wx-rec {
+    font-size: 12px;
+    color: var(--accent);
+    font-family: var(--font);
+    font-weight: 600;
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
+}
+
+/* Kids */
+.hc-kid-section {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+}
+.hc-kid-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.hc-kid-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+.hc-kid-header strong {
+    font-size: 13px;
+    font-family: var(--font);
+    color: var(--ink);
+}
+.hc-age-chip {
+    display: inline-block;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    text-align: center;
+    line-height: 20px;
+    font-family: var(--font);
+}
+.hc-stars { font-size: 12px; margin-left: auto; }
+.hc-kid-school {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    margin-bottom: 4px;
+}
+.hc-kid-activities { margin-bottom: 4px; }
+.hc-act-item {
+    font-size: 12px;
+    color: var(--ink);
+    font-family: var(--font);
+    padding: 2px 0;
+}
+.hc-act-time {
+    font-weight: 700;
+    color: var(--ink-secondary);
+    margin-right: 4px;
+    font-size: 11px;
+}
+.hc-chore {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-family: var(--font);
+    color: var(--ink);
+    padding: 3px 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.hc-chore input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.hc-chore input:checked + span {
+    text-decoration: line-through;
+    color: var(--ink-secondary);
+}
+.hc-kid-health {
+    margin-top: 6px;
+    font-size: 11px;
+    padding: 4px 8px;
+    background: var(--amber-bg);
+    border-radius: 6px;
+}
+
+/* Faith */
+.hc-verse {
+    margin: 0 0 6px 0;
+    padding: 10px 14px;
+    border-left: 3px solid var(--accent-warm);
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink);
+    font-family: Georgia, "Times New Roman", serif;
+    background: linear-gradient(135deg, rgba(212,168,67,0.04), transparent);
+    border-radius: 0 8px 8px 0;
+}
+.hc-verse-ref {
+    display: block;
+    text-align: right;
+    font-size: 11px;
+    color: var(--accent-warm);
+    font-family: var(--font);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Household */
+.hc-hh-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+.hc-hh-person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+.hc-hh-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+.hc-hh-name {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+}
+
+/* Emergency */
+.home-card-emergency {
+    border-color: var(--red);
+    border-width: 1px;
+}
+.home-card-emergency .hc-header {
+    cursor: default;
+}
+.home-card-emergency .hc-icon {
+    color: var(--red);
+}
+.hc-em-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 8px;
+}
+.hc-em-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 10px;
+    background: var(--surface-1);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    text-align: center;
+    min-height: 56px;
+    transition: background 0.15s, box-shadow 0.15s;
+    border: 1px solid var(--line);
+}
+.hc-em-btn:hover {
+    background: var(--surface-2);
+    box-shadow: var(--shadow);
+}
+.hc-em-btn:active {
+    transform: scale(0.98);
+}
+.hc-em-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    font-family: var(--font);
+}
+.hc-em-role {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    margin-top: 2px;
+}
+.hc-em-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 12px;
+    font-family: var(--font);
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+}
+.hc-em-row:last-child { border-bottom: none; }
+.hc-em-call {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+    padding: 4px 12px;
+    background: rgba(122,158,126,0.1);
+    border-radius: 6px;
+    font-size: 11px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+}
+.hc-em-call:hover {
+    background: rgba(122,158,126,0.2);
+}
+
+/* Alert banners */
+.hc-alert-banner {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font);
+    margin-top: 8px;
+}
+.hc-alert-red {
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid rgba(199,84,80,0.2);
+}
+.hc-alert-amber {
+    background: var(--amber-bg);
+    color: #92400e;
+    border: 1px solid rgba(212,168,67,0.2);
+}
+[data-theme="dark"] .hc-alert-amber { color: var(--amber); }
+
+/* ── HOME CARDS MOBILE (<=480px) ──────────────────────────────────────── */
+@media (max-width: 480px) {
+    .home-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .home-card-full {
+        grid-column: 1;
+    }
+    .hc-body {
+        padding: 0 12px 12px;
+    }
+    .hc-header {
+        padding: 10px 12px;
+    }
+    .hc-big-number {
+        font-size: 24px;
+    }
+    .hc-wx-temp {
+        font-size: 28px;
+    }
+    .hc-metrics-row {
+        gap: 10px;
+    }
+    .hc-em-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hc-em-btn {
+        min-height: 52px;
+        padding: 10px 6px;
+    }
+    .hc-em-name {
+        font-size: 13px;
+    }
+    .hc-collapsible {
+        display: none;
+    }
+    .home-card.expanded .hc-collapsible {
+        display: block;
+    }
+    /* Always show emergency secondary on mobile */
+    .home-card-emergency .hc-collapsible {
+        display: block;
+    }
+}
+
+/* ── HOME CARDS TABLET (481-768px) ────────────────────────────────────── */
+@media (max-width: 768px) and (min-width: 481px) {
+    .home-cards-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+}
 </style>
 </head>
 <body>
@@ -3783,7 +4508,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 00:08</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 00:36</span>
     </div>
 </aside>
 
@@ -3829,10 +4554,10 @@ canvas { max-width: 100%; }
             <span class="sc-label">Money</span>
             <span class="sc-detail">&#8599; Cash flow moderate</span>
         </button>
-<button class="summary-card sc-info" data-panel="panel-family" onclick="showPanel('panel-family')" data-persona-min="housemate">
-            <span class="sc-value">2026-03-28</span>
+<button class="summary-card sc-info" data-panel="panel-family" onclick="showPanel('panel-family')" style="display:none" data-persona-min="housemate">
+            <span class="sc-value">No events</span>
             <span class="sc-label">Calendar</span>
-            <span class="sc-detail">Wedding Anniversary</span>
+            <span class="sc-detail">Calendar is clear</span>
         </button>
 <button class="summary-card sc-warning" data-panel="panel-family" onclick="showPanel('panel-family')" data-persona-min="partner">
             <span class="sc-value">2</span>
@@ -3847,378 +4572,324 @@ canvas { max-width: 100%; }
 
         </div>
 
-        <div class="section-title" id="sec-pinned-messages" onclick="toggleSectionCollapse(this)">Pinned Messages <span class="count-badge zero" id="pinned-count-badge">0</span> <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content pinned-messages-section" data-section="sec-pinned-messages" id="pinned-messages-container">
-            <div class="section-empty"><span class="section-empty-icon">&#128204;</span>No pinned messages</div>
+        <!-- ═══ HOME CARDS GRID ═══ -->
+        <div class="home-cards-grid">
+        <div class="home-card home-card-full" data-persona-min="partner">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#10084;&#65039;</span>
+            <span class="hc-title">Mother&#39;s Care</span>
+            <span class="hc-chevron">&#9660;</span>
         </div>
-
-        <div class="section-title" id="sec-metrics" onclick="toggleSectionCollapse(this)">Key Metrics <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-metrics">
-        <div class="metrics-grid">
-            <div class="metric-card" data-persona-min="admin" data-generalize="cashflow">
-                <span class="metric-label">Cash Flow</span>
-                <div class="metric-ring-wrap">
-            <svg width="64" height="64" viewBox="0 0 64 64">
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="4"/>
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--green)" stroke-width="4"
-                    stroke-dasharray="175.93" stroke-dashoffset="116.6"
-                    stroke-linecap="round" transform="rotate(-90 32 32)"/>
-            </svg>
-            <span class="metric-ring-value"><span class="metric-value positive" style="font-size:inherit">+$4,402</span></span>
-        </div>
-                <span class="metric-detail">Income $13,059</span>
+        <div class="hc-body">
+            <div class="hc-status-row">
+                <span class="hc-badge hc-badge-sage">Dan &amp; Minako</span>
+                <span class="hc-meta">Evening/night (family care)</span>
             </div>
-            <div class="metric-card" data-persona-min="partner" data-generalize="care-stage">
-                <span class="metric-label">Care Stage</span>
-                <div class="metric-ring-wrap">
-            <svg width="64" height="64" viewBox="0 0 64 64">
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="4"/>
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--amber)" stroke-width="4"
-                    stroke-dasharray="175.93" stroke-dashoffset="124.9"
-                    stroke-linecap="round" transform="rotate(-90 32 32)"/>
-            </svg>
-            <span class="metric-ring-value"><span class="metric-value warning" style="font-size:inherit">2/7</span></span>
-        </div>
-                <span class="metric-detail">FAST 6e &middot; RCFE 29%</span>
+            <div class="hc-metrics-row">
+                <div class="hc-metric">
+                    <span class="hc-metric-label">FAST</span>
+                    <span class="hc-metric-value hc-badge hc-badge-amber">6e</span>
+                </div>
+                <div class="hc-metric">
+                    <span class="hc-metric-label">Weight</span>
+                    <span class="hc-metric-value">93.8 lbs</span>
+                </div>
+                <div class="hc-metric hc-metric-wide">
+                    <span class="hc-metric-label">IHSS Hours</span>
+                    <div class="hc-progress-wrap">
+                        <div class="hc-progress-bar">
+                            <div class="hc-progress-fill" style="width:87%"></div>
+                        </div>
+                        <span class="hc-progress-text">245/283 hrs</span>
+                    </div>
+                </div>
             </div>
-            <div class="metric-card" data-persona-min="admin" data-generalize="runway">
-                <span class="metric-label">Runway</span>
-                <div class="metric-ring-wrap">
-            <svg width="64" height="64" viewBox="0 0 64 64">
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="4"/>
-                <circle cx="32" cy="32" r="28" fill="none" stroke="var(--green)" stroke-width="4"
-                    stroke-dasharray="175.93" stroke-dashoffset="65.1"
-                    stroke-linecap="round" transform="rotate(-90 32 32)"/>
-            </svg>
-            <span class="metric-ring-value"><span class="metric-value positive" style="font-size:inherit">38mo</span></span>
-        </div>
-                <span class="metric-detail">of 60 month target</span>
-            </div>
-        </div>
-        </div>
-
-        <div class="section-title" id="sec-home-priorities" onclick="toggleSectionCollapse(this)">Today's Priorities <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-home-priorities">
-        <div class="swipeable-wrap" data-swipe-id="action-0">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card urgent" data-index="action-0" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">URGENT</span>
-                <span class="action-text summary-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">CPA fees ~$1K-$3K &middot; 1 phone call</span>
+            <div class="hc-detail-section hc-collapsible">
+                <div class="hc-detail-row">
+                    <span class="hc-detail-label">RCFE</span>
+                    <span class="hc-detail-value">Anaheim Villa — application submitted, awaiting response</span>
+                </div>
+                <div class="hc-detail-row">
+                    <span class="hc-detail-label">Contact</span>
+                    <span class="hc-detail-value">Yumi Kim: <a href="tel:7143089800">(714) 308-9800</a></span>
+                </div>
+                <div class="hc-detail-row">
+                    <span class="hc-detail-label">Meds</span>
+                    <span class="hc-detail-value"><span class="hc-dot-green"></span> On schedule</span>
+                </div>
+                <div class='hc-detail-row hc-alert-amber'><span class='hc-detail-label'>Incident</span><span class='hc-detail-value'>Falling off couch, tilting (Mar 2026)</span></div>
             </div>
         </div>
-<div class="swipeable-wrap" data-swipe-id="action-1">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card high" data-index="action-1" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">HIGH</span>
-                <span class="action-text summary-text">Pause distributions via Security Benefit</span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">Free &middot; 1 phone call</span>
+    </div>
+        <div class="home-card" data-persona-min="housemate">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#128197;</span>
+            <span class="hc-title">Today&#39;s Schedule</span>
+            <span class="hc-count-badge">4</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body">
+            <div class="hc-subtitle">Thursday, March 26</div>
+            <div class="hc-timeline"><div class="hc-timeline-item">
+                <span class="hc-timeline-dot" style="background:#7A9E7E"></span>
+                <span class="hc-timeline-time">6:00 AM</span>
+                <span class="hc-timeline-text">Weights</span>
+                <span class="hc-person-chip" style="background:#7A9E7E22;color:#7A9E7E">Dan</span>
+            </div><div class="hc-timeline-item">
+                <span class="hc-timeline-dot" style="background:#7A9E7E"></span>
+                <span class="hc-timeline-time">6:30 PM</span>
+                <span class="hc-timeline-text">TKD Class</span>
+                <span class="hc-person-chip" style="background:#7A9E7E22;color:#7A9E7E">Dan</span>
+            </div><div class="hc-timeline-item">
+                <span class="hc-timeline-dot" style="background:#5B8FB9"></span>
+                <span class="hc-timeline-time">8:00 AM</span>
+                <span class="hc-timeline-text">School</span>
+                <span class="hc-person-chip" style="background:#5B8FB922;color:#5B8FB9">Koko</span>
+            </div><div class="hc-timeline-item">
+                <span class="hc-timeline-dot" style="background:#9B7ED8"></span>
+                <span class="hc-timeline-time">8:30 AM</span>
+                <span class="hc-timeline-text">Preschool at Cadenza</span>
+                <span class="hc-person-chip" style="background:#9B7ED822;color:#9B7ED8">Issa</span>
+            </div></div>
+        </div>
+    </div>
+        <div class="home-card" data-persona-min="admin" data-generalize="cashflow">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#128176;</span>
+            <span class="hc-title">Financial Pulse</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body">
+            <div class="hc-big-number hc-positive">+$4,402<span class="hc-big-unit">/mo</span></div>
+            <div class="hc-detail-section hc-collapsible">
+                <div class="hc-sub-title">Upcoming Bills</div>
+                <div class="hc-bill-row">
+            <span class="hc-dot-amber"></span>
+            <span class="hc-bill-name">Rent</span>
+            <span class="hc-bill-amount">$5,745</span>
+            <span class="hc-bill-due">Apr 01</span>
+        </div><div class="hc-bill-row">
+            <span class="hc-dot-amber"></span>
+            <span class="hc-bill-name">Hannah (caregiver)</span>
+            <span class="hc-bill-amount">$5,413</span>
+            <span class="hc-bill-due">Biweekly</span>
+        </div><div class="hc-bill-row">
+            <span class="hc-dot-amber"></span>
+            <span class="hc-bill-name">Cadenza Tuition</span>
+            <span class="hc-bill-amount">$2,100</span>
+            <span class="hc-bill-due">Apr 01</span>
+        </div><div class="hc-bill-row">
+            <span class="hc-dot-amber"></span>
+            <span class="hc-bill-name">Geico Auto</span>
+            <span class="hc-bill-amount">$250</span>
+            <span class="hc-bill-due">Apr 15</span>
+        </div><div class="hc-bill-row">
+            <span class="hc-dot-green"></span>
+            <span class="hc-bill-name">Kaiser Health</span>
+            <span class="hc-bill-amount">$0</span>
+            <span class="hc-bill-due">Employer-covered</span>
+        </div>
+                <div class="hc-detail-row" style="margin-top:8px">
+                    <span class="hc-detail-label">IHSS</span>
+                    <span class="hc-detail-value hc-badge hc-badge-sage">Received ~Mar 15</span>
+                </div>
             </div>
         </div>
-<div class="swipeable-wrap" data-swipe-id="action-2">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card high" data-index="action-2" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">HIGH</span>
-                <span class="action-text summary-text">Schedule Minako appointment via Kaiser</span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+    </div>
+        <div class="home-card" data-persona-min="partner">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#11088;</span>
+            <span class="hc-title">Kids</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body"><div class="hc-kid-section">
+            <div class="hc-kid-header">
+                <strong>Koko (Daniel)</strong>
+                <span class="hc-age-chip">6</span>
+                <span class="hc-stars" title="Stars earned"></span>
+            </div>
+            <div class="hc-kid-school">Westpark Elementary</div>
+            <div class="hc-kid-activities"><div class="hc-act-item"><span class="hc-act-time">4:00 PM</span> TKD Class</div></div>
+            <div class="hc-collapsible">
+                <div class="hc-sub-title">Chores</div>
+                <label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Make bed</span></label><label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put dishes in sink</span></label><label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Pick up toys</span></label>
+                <div class='hc-kid-health hc-muted'>Klinefelter+SMC3 — endocrinology follow-up pending</div>
+            </div>
+        </div><div class="hc-kid-section">
+            <div class="hc-kid-header">
+                <strong>Issa (Isaac)</strong>
+                <span class="hc-age-chip">4</span>
+                <span class="hc-stars" title="Stars earned"></span>
+            </div>
+            <div class="hc-kid-school">Cadenza Music Preschool</div>
+            <div class="hc-kid-activities"><div class="hc-act-item hc-muted">No activities today</div></div>
+            <div class="hc-collapsible">
+                <div class="hc-sub-title">Chores</div>
+                <label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put shoes away</span></label><label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Help pick up toys</span></label>
+                
+            </div>
+        </div></div>
+    </div>
+        <div class="home-card" data-persona-min="partner">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#9200;</span>
+            <span class="hc-title">Deadlines</span>
+            <span class='hc-count-badge hc-count-red'>21 overdue</span>
+            <span class='hc-count-badge hc-count-amber'>2 upcoming</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body"><div class="hc-deadline-row">
+            <span class="hc-deadline-name">CCW license renewal</span>
+            <span class="hc-countdown-chip hc-chip-red">1094d overdue</span>
+        </div><div class="hc-deadline-row">
+            <span class="hc-deadline-name">Nanny status — is the nanny still employed? What's the monthly cost?</span>
+            <span class="hc-countdown-chip hc-chip-red">1046d overdue</span>
+        </div><div class="hc-deadline-row">
+            <span class="hc-deadline-name">Dental work — receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?</span>
+            <span class="hc-countdown-chip hc-chip-red">557d overdue</span>
+        </div><div class="hc-deadline-row">
+            <span class="hc-deadline-name">Lease renewal — Irvine house at $5,745/mo, lease start Oct 2024</span>
+            <span class="hc-countdown-chip hc-chip-red">532d overdue</span>
+        </div><div class="hc-deadline-row">
+            <span class="hc-deadline-name">IHSS back-tracking application (Dan as joint provider)</span>
+            <span class="hc-countdown-chip hc-chip-red">466d overdue</span>
+        </div><div class="hc-deadline-row">
+            <span class="hc-deadline-name">Funeral pre-payment reimbursement from mother's account</span>
+            <span class="hc-countdown-chip hc-chip-red">447d overdue</span>
+        </div><div class="hc-deadline-row">
+            <span class="hc-deadline-name">Father's van title transfer to aunt (gomo)</span>
+            <span class="hc-countdown-chip hc-chip-red">435d overdue</span>
+        </div></div>
+    </div>
+        <div class="home-card">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#9729;&#65039;</span>
+            <span class="hc-title">Weather</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body">
+            <div class="hc-wx-main">
+                <span class="hc-wx-temp">62&#176;</span>
+                <div class="hc-wx-info">
+                    <span class="hc-wx-cond">Cloudy</span>
+                    <span class="hc-wx-hilo">H 76&#176; / L 59&#176;</span>
+                    <span class="hc-muted">Irvine, CA</span>
+                </div>
+            </div>
+            <div class="hc-wx-forecast"><div class="hc-wx-day">
+            <span class="hc-wx-day-label">03-26</span>
+            <span class="hc-wx-day-temp">76/59</span>
+        </div><div class="hc-wx-day">
+            <span class="hc-wx-day-label">03-27</span>
+            <span class="hc-wx-day-temp">75/59</span>
+        </div><div class="hc-wx-day">
+            <span class="hc-wx-day-label">03-28</span>
+            <span class="hc-wx-day-temp">86/58</span>
+        </div></div>
+            <div class="hc-collapsible">
+                <div class="hc-wx-rec">Mild conditions — outdoor activity OK</div>
             </div>
         </div>
-<div class="swipeable-wrap" data-swipe-id="action-3">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card high" data-index="action-3" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">HIGH</span>
-                <span class="action-text summary-text">Schedule Minako pelvic ultrasound via Kaiser</span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">Covered by Kaiser &middot; 1 call</span>
+    </div>
+        <div class="home-card" data-persona-min="partner">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#128154;</span>
+            <span class="hc-title">Health</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body">
+            <div class="hc-sub-title">Dan</div>
+            <div class="hc-metrics-row">
+                <div class="hc-metric">
+                    <span class="hc-metric-label">Weight</span>
+                    <span class="hc-metric-value">165 lbs</span>
+                </div>
+                <div class="hc-metric">
+                    <span class="hc-metric-label">Goal</span>
+                    <span class="hc-metric-value">145 lbs</span>
+                </div>
+                <div class="hc-metric">
+                    <span class="hc-metric-label">TKD</span>
+                    <span class="hc-metric-value">159d</span>
+                </div>
+            </div>
+            <div class="hc-progress-wrap" style="margin:4px 0 8px">
+                <div class="hc-progress-bar">
+                    <div class="hc-progress-fill hc-progress-accent" style="width:64%"></div>
+                </div>
+                <span class="hc-progress-text">165 / 145 lbs</span>
+            </div>
+            <div class="hc-collapsible">
+                <div class="hc-muted">Weights M/T/Th/F, TKD T/Th</div>
+                <div class="hc-sub-title" style="margin-top:10px">Minako</div>
+                <div class="hc-detail-row">
+                    <span class="hc-detail-label">Risk Score</span>
+                    <span class="hc-detail-value hc-badge hc-badge-red">88/100</span>
+                </div>
+                <div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px"><span class="hc-countdown-chip hc-chip-red">Pelvic ultrasound</span> <span class="hc-countdown-chip hc-chip-red">Echocardiogram</span> <span class="hc-countdown-chip hc-chip-amber">Hand specialist</span> </div>
+                <div class="hc-alert-banner hc-alert-red">3 overdue appointments — risk score 88/100</div><div class="hc-alert-banner hc-alert-amber">20 lbs over target — 159 days to black belt</div>
             </div>
         </div>
-<div class="swipeable-wrap" data-swipe-id="action-4">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card high" data-index="action-4" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">HIGH</span>
-                <span class="action-text summary-text">Submit bond for mother's assets</span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">Bond premium ~$500-$1K &middot; 1-2 weeks</span>
+    </div>
+        <div class="home-card">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#128214;</span>
+            <span class="hc-title">Faith</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body">
+            <blockquote class="hc-verse">Finally, all of you, be like-minded, be sympathetic, love one another, be compassionate and humble.</blockquote>
+            <cite class="hc-verse-ref">&mdash; 1 Peter 3:8</cite>
+            <div class="hc-collapsible">
+                <div class="hc-sub-title">Prayer Focus</div>
+                <div class="hc-muted">Wisdom — RCFE decision, SNT, legal matters, conservatorship</div>
+                
             </div>
         </div>
-<div class="swipeable-wrap" data-swipe-id="action-5">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card high" data-index="action-5" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">HIGH</span>
-                <span class="action-text summary-text">Provide 7 expense amounts + 4 balances</span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">Free &middot; 20 min of Dan's time</span>
+    </div>
+        <div class="home-card" data-persona-min="housemate">
+        <div class="hc-header" onclick="toggleHomeCard(this)">
+            <span class="hc-icon">&#127968;</span>
+            <span class="hc-title">Household</span>
+            <span class="hc-chevron">&#9660;</span>
+        </div>
+        <div class="hc-body">
+            <div class="hc-hh-grid"><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Dan</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Minako</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Koko</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Issa</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#128153;</span><span class="hc-hh-name">Mother</span></div></div>
+            <div class="hc-collapsible">
+                <div class="hc-sub-title">Shopping List </div>
+                <div class="hc-muted">Shopping list empty</div>
             </div>
         </div>
-<div class="swipeable-wrap" data-swipe-id="action-6">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card high" data-index="action-6" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">HIGH</span>
-                <span class="action-text summary-text">Pause IRA (requires conservatorship)</span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">Free &middot; Blocked</span>
+    </div>
+        <div class="home-card home-card-full home-card-emergency" data-persona-min="housemate">
+        <div class="hc-header">
+            <span class="hc-icon">&#127384;</span>
+            <span class="hc-title">Emergency</span>
+        </div>
+        <div class="hc-body">
+            <div class="hc-em-grid"><a href="tel:911" class="hc-em-btn">
+                <span class="hc-em-name">911</span>
+                <span class="hc-em-role">Emergency</span>
+            </a><a href="tel:2133803344" class="hc-em-btn">
+                <span class="hc-em-name">Emmanuel Han</span>
+                <span class="hc-em-role">Attorney (Han &amp; Park)</span>
+            </a><a href="tel:8003903510" class="hc-em-btn">
+                <span class="hc-em-name">Kaiser Permanente</span>
+                <span class="hc-em-role">Health Insurance</span>
+            </a><a href="tel:7142468500" class="hc-em-btn">
+                <span class="hc-em-name">CalOptima</span>
+                <span class="hc-em-role">Mother's Medi-Cal</span>
+            </a></div>
+            <div class="hc-collapsible" style="margin-top:8px">
+                <div class="hc-em-row"><span>Osamu Hashizu — CPA</span><a href="tel:7142582819" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Yumi Kim — Anaheim Villa RCFE</span><a href="tel:7143089800" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Danny Lee — Surety Bond</span></div><div class="hc-em-row"><span>Yujin Park — SNT Attorney</span></div><div class="hc-em-row"><span>Tyler Joseph/AJG — Insurance Broker</span></div><div class="hc-em-row"><span>CANHR — Medi-Cal Legal Advice</span><a href="tel:4159745171" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Disability Rights CA — IHSS Advocate (free)</span></div><div class="hc-em-row"><span>Lifeway Irvine — Mobility Equipment</span><a href="tel:8887141930" class="hc-em-call">Call</a></div>
             </div>
+            <div class="hc-alert-banner hc-alert-red">Missing: Advance Directives</div>
         </div>
-<div class="swipeable-wrap" data-swipe-id="action-7">
-            <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
-            <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
-            <div class="action-card high" data-index="action-7" data-checkable="true">
-                <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
-                <span class="action-badge">HIGH</span>
-                <span class="action-text summary-text">Install ramp + DME wheelchair</span>
-                <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-                <span class="action-meta">$2K-$5K &middot; 2-4 weeks</span>
-            </div>
-        </div>
-
-        <button class="clear-completed-btn" id="clearCompleted" onclick="clearChecked()">Clear completed</button>
-        </div>
-
-        <!-- Merged: Anomaly alerts from Intel/Risks (conditional) -->
-        <div class="section-title" id="sec-home-anomalies" onclick="toggleSectionCollapse(this)" style="">Anomalies <span class="count-badge">19</span> <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-home-anomalies" style="">
-        <div class="card"><div class="card-body anomalies-list"><div class="anomaly-item warning" data-anomaly-id="anomaly-0">
-            <span class="anomaly-severity">WARNING</span>
-            <span class="anomaly-domain">calendar</span>
-            <span class="anomaly-title">TKD Black Belt test ~7 months away — ZERO training events in 30 days</span>
-            <span class="anomaly-action summary-text">Schedule TKD classes immediately. Minimum 3x/week to build toward black belt test. Contact dojang.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item warning" data-anomaly-id="anomaly-1">
-            <span class="anomaly-severity">WARNING</span>
-            <span class="anomaly-domain">care</span>
-            <span class="anomaly-title">Anaheim Villa RCFE application follow-up — due in 20 days (2026-04-15)</span>
-            <span class="anomaly-action summary-text">Call Yumi Kim <a href="tel:7143089800">(714) 308-9800</a>. Get current status.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item warning" data-anomaly-id="anomaly-2">
-            <span class="anomaly-severity">WARNING</span>
-            <span class="anomaly-domain">health</span>
-            <span class="anomaly-title">Missed medication pattern detected</span>
-            <span class="anomaly-action summary-text">Review medication adherence pattern. If systemic, discuss with psychiatrist.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item warning" data-anomaly-id="anomaly-3">
-            <span class="anomaly-severity">WARNING</span>
-            <span class="anomaly-domain">calendar</span>
-            <span class="anomaly-title">Weight Loss: ZERO calendar events in 30 days</span>
-            <span class="anomaly-action summary-text">Schedule recurring time blocks for 'Weight Loss'. This goal is invisible in your calendar.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item warning" data-anomaly-id="anomaly-4">
-            <span class="anomaly-severity">WARNING</span>
-            <span class="anomaly-domain">finances</span>
-            <span class="anomaly-title">Financial balance facts (6 items) last updated 268+ days ago</span>
-            <span class="anomaly-action summary-text">Update financial balances — request latest bank/account statements.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<button class="show-more-btn" onclick="toggleAnomalyExpand(this)">
-            Show all 19 anomalies
-        </button>
-        <div id="anomaly-extra" style="display:none"><div class="anomaly-item warning" data-anomaly-id="anomaly-5">
-            <span class="anomaly-severity">WARNING</span>
-            <span class="anomaly-domain">health</span>
-            <span class="anomaly-title">Dan's weight (165 lbs) — no downward progress toward 145 lb target</span>
-            <span class="anomaly-action summary-text">Log current weight. If still 165+, flag as goal deviation. Schedule gym 3x/week minimum.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item warning" data-anomaly-id="anomaly-6">
-            <span class="anomaly-severity">WARNING</span>
-            <span class="anomaly-domain">relationships</span>
-            <span class="anomaly-title">No recent email contact with Hannah in 30+ days</span>
-            <span class="anomaly-action summary-text">Reach out to Hannah. Primary caregiver — should have regular contact.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-7">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">health</span>
-            <span class="anomaly-title">Medical follow-up status unclear: Eustachian tube balloon dilation (Dr. Keschner)</span>
-            <span class="anomaly-action summary-text">Check if ET balloon dilation was scheduled and completed. If not, schedule with Dr. Keschner.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-8">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">calendar</span>
-            <span class="anomaly-title">Retire at 55 / Business Exit: ZERO calendar events in 30 days</span>
-            <span class="anomaly-action summary-text">Schedule recurring time blocks for 'Retire at 55 / Business Exit'. This goal is invisible in your calendar.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-9">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">care</span>
-            <span class="anomaly-title">Single active caregiver (Hannah) — backup: Angela Seo</span>
-            <span class="anomaly-action summary-text">Verify backup availability monthly. Consider recruiting a second backup.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-10">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">health</span>
-            <span class="anomaly-title">Minako pelvic ultrasound — due in 67 days (2026-06-01)</span>
-            <span class="anomaly-action summary-text">Schedule Kaiser appointment immediately. GI scheduling: 714-279-4200.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-11">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">health</span>
-            <span class="anomaly-title">Minako echocardiogram — due in 35 days (2026-04-30)</span>
-            <span class="anomaly-action summary-text">Schedule Kaiser cardiology appointment. Should have been done 10+ months ago.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-12">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">care</span>
-            <span class="anomaly-title">IHSS reassessment request — mother mobility decline — due in 50 days (2026-05-15)</span>
-            <span class="anomaly-action summary-text">Request IHSS reassessment through county social worker.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-13">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">health</span>
-            <span class="anomaly-title">Medical follow-up status unclear: GI follow-up post-colonoscopy (Dr. Niho)</span>
-            <span class="anomaly-action summary-text">Confirm if GI follow-up was scheduled and attended after Jan 30, 2026 colonoscopy.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-14">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">health</span>
-            <span class="anomaly-title">Medical follow-up status unclear: Fatty liver weight loss follow-up</span>
-            <span class="anomaly-action summary-text">Schedule liver function follow-up if weight loss goal not achieved (165 → target 145 lbs).</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-15">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">relationships</span>
-            <span class="anomaly-title">No recent email contact with Eddie in 30+ days</span>
-            <span class="anomaly-action summary-text">Reach out to Eddie. Close friend since 1999.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-16">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">relationships</span>
-            <span class="anomaly-title">No recent email contact with Calvin in 30+ days</span>
-            <span class="anomaly-action summary-text">Reach out to Calvin. Close friend, yokly colleague.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-17">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">relationships</span>
-            <span class="anomaly-title">No recent email contact with Angela Seo in 30+ days</span>
-            <span class="anomaly-action summary-text">Reach out to Angela Seo. Backup caregiver.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="anomaly-item info" data-anomaly-id="anomaly-18">
-            <span class="anomaly-severity">INFO</span>
-            <span class="anomaly-domain">relationships</span>
-            <span class="anomaly-title">No recent email contact with Pastor Samuel in 30+ days</span>
-            <span class="anomaly-action summary-text">Reach out to Pastor Samuel. Church leadership.</span>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-</div></div></div>
-        </div>
-
-        <!-- Merged: Top Risk Clusters (conditional) -->
-        <div class="section-title" id="sec-home-risks" onclick="toggleSectionCollapse(this)" data-persona-min="admin" style="">Risk Clusters <span class="count-badge">6</span> <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-home-risks" data-persona-min="admin" style="">
-        <div class="card"><div class="card-body"><div class="cluster-row">
-            <div class="cluster-header">
-                <span class="cluster-name">MINAKO HEALTH BACKLOG</span>
-                <span class="cluster-score">88/100</span>
-            </div>
-            <div class="cluster-bar-track">
-                <div class="cluster-bar bar-critical" style="width:88.0%"></div>
-            </div>
-            <div class="cluster-meta summary-text">health, family &middot; 100% compound probability</div>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="cluster-row">
-            <div class="cluster-header">
-                <span class="cluster-name">IMMEDIATE LEGAL DEADLINES</span>
-                <span class="cluster-score">71/100</span>
-            </div>
-            <div class="cluster-bar-track">
-                <div class="cluster-bar bar-critical" style="width:71.3%"></div>
-            </div>
-            <div class="cluster-meta summary-text">legal, finances &middot; 98% compound probability</div>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="cluster-row">
-            <div class="cluster-header">
-                <span class="cluster-name">FINANCIAL VISIBILITY GAP</span>
-                <span class="cluster-score">65/100</span>
-            </div>
-            <div class="cluster-bar-track">
-                <div class="cluster-bar bar-warning" style="width:65.0%"></div>
-            </div>
-            <div class="cluster-meta summary-text">finances &middot; 100% compound probability</div>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="cluster-row">
-            <div class="cluster-header">
-                <span class="cluster-name">MEDI-CAL / IRA CHAIN</span>
-                <span class="cluster-score">63/100</span>
-            </div>
-            <div class="cluster-bar-track">
-                <div class="cluster-bar bar-warning" style="width:62.8%"></div>
-            </div>
-            <div class="cluster-meta summary-text">finances, care, legal &middot; 99% compound probability</div>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="cluster-row">
-            <div class="cluster-header">
-                <span class="cluster-name">CARE CRISIS CLUSTER</span>
-                <span class="cluster-score">58/100</span>
-            </div>
-            <div class="cluster-bar-track">
-                <div class="cluster-bar bar-warning" style="width:58.3%"></div>
-            </div>
-            <div class="cluster-meta summary-text">care, health, finances &middot; 99% compound probability</div>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-<div class="cluster-row">
-            <div class="cluster-header">
-                <span class="cluster-name">PERSONAL GUARANTEE EXPOSURE</span>
-                <span class="cluster-score">12/100</span>
-            </div>
-            <div class="cluster-bar-track">
-                <div class="cluster-bar bar-info" style="width:12.4%"></div>
-            </div>
-            <div class="cluster-meta summary-text">legal, finances, goals &middot; 24% compound probability</div>
-            <button class="detail-toggle" onclick="toggleDetailExpand(this.previousElementSibling)" aria-label="Show more">Show more</button>
-        </div>
-</div></div>
-        </div>
-
-        <!-- Merged: RCFE status (conditional) -->
-        <div class="section-title" id="sec-home-rcfe" onclick="toggleSectionCollapse(this)" data-persona-min="partner">RCFE Status <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-home-rcfe" data-persona-min="partner">
-        <div class="card"><div class="card-body"><div class="rcfe-card">
-        <div class="rcfe-row"><span class="rcfe-label">Facility</span><span class="rcfe-value">Anaheim Villa</span></div>
-        <div class="rcfe-row"><span class="rcfe-label">Status</span><span class="rcfe-value rcfe-active">Application in progress</span></div>
-        <div class="rcfe-row"><span class="rcfe-label">Contact</span><span class="rcfe-value"><a href="tel:7143089800">Yumi Kim (714) 308-9800</a></span></div>
-        <div class="rcfe-row"><span class="rcfe-label">Next Step</span><span class="rcfe-value">Medication list from Dr. Chang</span></div>
-        <div class="rcfe-row"><span class="rcfe-label">Timeline</span><span class="rcfe-value">~3 months (Korean-run, CalOptima)</span></div>
-    </div></div></div>
-        </div>
+    </div>
+    </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 26, 2026 at 12:08 AM &middot;
+            Generated March 26, 2026 at 12:36 AM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -4399,14 +5070,7 @@ canvas { max-width: 100%; }
             <span class="family-notes">IEP needed, RCOC: swimming + TKD</span>
             <div class="family-detail">
                 <div class="family-detail-row">IEP needed</div><div class="family-detail-row">RCOC: swimming + TKD</div>
-                <div class="person-timeline"><div class="person-tl-item">
-                <span class="person-tl-dot">&#128197;</span>
-                <div class="person-tl-body">
-                    <span class="person-tl-date">2026-04-10</span>
-                    <span class="person-tl-text">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (</span>
-                </div>
-            </div>
-</div>
+                <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
             </div>
         </div>
 <div class="family-card" onclick="toggleFamilyDetail(this)">
@@ -4423,13 +5087,6 @@ canvas { max-width: 100%; }
             <div class="family-detail">
                 <div class="family-detail-row">FAST 6e</div><div class="family-detail-row">93.8 lbs</div><div class="family-detail-row">RCFE decision made</div>
                 <div class="person-timeline"><div class="person-tl-item">
-                <span class="person-tl-dot">&#128197;</span>
-                <div class="person-tl-body">
-                    <span class="person-tl-date">2026-05-10</span>
-                    <span class="person-tl-text">Mother's Day</span>
-                </div>
-            </div>
-<div class="person-tl-item">
                 <span class="person-tl-dot">&#9889;</span>
                 <div class="person-tl-body">
                     <span class="person-tl-date">2026-03-26</span>
@@ -4456,97 +5113,7 @@ canvas { max-width: 100%; }
             </div>
             <div class="card">
                 <div class="card-body tab-panel active" id="tab-calendar-events">
-                    <div class="timeline-item info">
-            <div class="timeline-date">2026-03-28</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Wedding Anniversary</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-03-30</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-05</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Easter Sunday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 08:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Trim Hair</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 09:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Prepare tithe</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-06</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Easter Monday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 10, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-11</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Grandpa Han's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-12</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Chris Eun's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 12, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Vacuum all filters for air purifiers</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-15</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Tax Day</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-21</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Plan for Summer Trip</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-24</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Atum Hyung's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-25</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Happy birthday!</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-26</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Hawaii Wedding Anniversary</span>
-            </div>
-        </div>
-
+                    <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
                 </div>
                 <div class="card-body tab-panel" id="tab-calendar-deadlines" data-persona-min="admin">
                     <div class="timeline-item critical">
@@ -4701,7 +5268,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 26, 2026 at 12:08 AM</div>
+            <div class="report-meta">Generated March 26, 2026 at 12:36 AM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$4,402/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -4713,7 +5280,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 26, 2026 at 12:08 AM</div>
+            <div class="report-meta">Last updated: March 26, 2026 at 12:36 AM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -5004,7 +5571,7 @@ canvas { max-width: 100%; }
             </div>
 
             <div class="task-view" id="taskViewCalendar">
-                <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day today" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31</div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
+                <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day today" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28</div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30</div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31</div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
             </div>
         </div>
     </div>
@@ -5020,10 +5587,10 @@ canvas { max-width: 100%; }
         <div class="sysstat-grid">
         <div class="sysstat-item"><span class="sysstat-val">37</span><span class="sysstat-lbl">Agents</span></div>
         <div class="sysstat-item"><span class="sysstat-val">30</span><span class="sysstat-lbl">Skills</span></div>
-        <div class="sysstat-item"><span class="sysstat-val">91</span><span class="sysstat-lbl">Tools</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">92</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 00:08</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 00:36</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -5549,6 +6116,28 @@ function toggleSectionCollapse(titleEl) {
         if (collapsed.indexOf(sectionId) === -1) collapsed.push(sectionId);
     }
     saveCollapsedSections(collapsed);
+}
+/* ── Home Card collapse/expand ── */
+function toggleHomeCard(headerEl) {
+    var card = headerEl.closest('.home-card');
+    if (!card) return;
+    // On mobile, toggle expand for collapsible sections
+    if (window.innerWidth <= 480) {
+        card.classList.toggle('expanded');
+    } else {
+        card.classList.toggle('collapsed');
+    }
+}
+function handleChoreCheck(checkbox) {
+    // Visual feedback only — future: persist to Firebase
+    var label = checkbox.closest('.hc-chore');
+    if (label) {
+        if (checkbox.checked) {
+            label.style.opacity = '0.6';
+        } else {
+            label.style.opacity = '1';
+        }
+    }
 }
 function restoreCollapsedSections() {
     storageGet("phoebe_collapsed_sections", []).then(function(collapsed) {
@@ -6535,7 +7124,7 @@ function initTaskSwipe() {
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  11c. BATCH 5 — TASK MULTI-VIEW: List/Kanban/Calendar (Item 12)          */
 /* ══════════════════════════════════════════════════════════════════════════ */
-var _calEventsData = {"2026-03-28": ["Wedding Anniversary"], "2026-03-30": ["Stay at The Hadsten Solvang, Tapestry Collection by Hilton"], "2026-04-05": ["Easter Sunday", "Trim Hair", "Prepare tithe"], "2026-04-06": ["Easter Monday"], "2026-04-10": ["Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)"], "2026-04-11": ["Grandpa Han's Birthday"], "2026-04-12": ["Chris Eun's Birthday", "Vacuum all filters for air purifiers"], "2026-04-15": ["Tax Day"], "2026-04-21": ["Plan for Summer Trip"], "2026-04-24": ["Atum Hyung's Birthday"], "2026-04-25": ["Happy birthday!"], "2026-04-26": ["Hawaii Wedding Anniversary"], "2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
+var _calEventsData = {"2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
 
 function switchTaskView(view, btn) {
     /* Update toggle buttons */
