@@ -2003,10 +2003,10 @@ canvas { max-width: 100%; }
         display: flex;
     }
 
-    /* ── 4. BOTTOM NAV: visible, 5-col grid for equal sizing ────────── */
+    /* ── 4. BOTTOM NAV: visible, 4-col grid for equal sizing ────────── */
     .bottom-nav {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         z-index: 100;
         height: 56px;
         padding-left: 0;
@@ -3522,6 +3522,644 @@ canvas { max-width: 100%; }
 .report-item-bullet.info { background: var(--blue); }
 .report-item-bullet.good { background: var(--green); }
 .report-item-text { flex: 1; min-width: 0; }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  BENTO GRID — Home panel redesign                                        */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.home-bento {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-auto-rows: minmax(180px, auto);
+    gap: 16px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.bento-tile {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+    animation: hcFadeIn 0.35s ease both;
+    display: flex;
+    flex-direction: column;
+}
+.bento-tile:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+[data-theme="dark"] .bento-tile { background: var(--surface-1); }
+
+.bento-priorities { grid-column: 1 / 2; grid-row: 1 / 3; }
+.bento-kids       { grid-column: 3 / 4; grid-row: 1 / 3; }
+.bento-care       { grid-column: 2 / 3; grid-row: 1 / 2; }
+.bento-money      { grid-column: 2 / 3; grid-row: 2 / 3; }
+.bento-schedule   { grid-column: 1 / 3; grid-row: 3 / 4; }
+
+.bento-tile-header {
+    padding: 14px 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.bento-tile-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-secondary);
+}
+.bento-tile-summary {
+    display: none;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-secondary);
+    margin-left: auto;
+    text-transform: none;
+    letter-spacing: 0;
+}
+.bento-tile-summary.bento-positive { color: var(--green); }
+.bento-tile-summary.bento-negative { color: var(--red); }
+.bento-tile-body {
+    padding: 10px 16px 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Bento action items (Priorities tile) */
+.bento-action-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-1);
+    border-left: 3px solid var(--blue);
+    font-size: 13px;
+    line-height: 1.4;
+}
+.bento-action-urgent { border-left-color: var(--red); background: var(--red-bg); }
+.bento-action-high { border-left-color: var(--amber); background: var(--amber-bg); }
+.bento-action-medium { border-left-color: var(--blue); background: var(--blue-bg); }
+[data-theme="dark"] .bento-action-item { background: var(--surface-2); }
+.bento-action-text { flex: 1; min-width: 0; }
+.bento-action-text a { color: var(--accent); }
+.bento-more-link {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: auto;
+    padding-top: 4px;
+}
+.bento-all-clear {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--green);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 16px 0;
+}
+.bento-check-icon { font-size: 24px; }
+
+/* Bento Kids tile */
+.bento-kid-section {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+}
+.bento-kid-section:last-child { border-bottom: none; }
+.bento-kid-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.bento-kid-activity {
+    font-size: 12px;
+    color: var(--ink-secondary);
+}
+.bento-kid-chores {
+    font-size: 12px;
+    color: var(--ink-secondary);
+}
+
+/* Bento Care tile */
+.bento-care-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+.bento-care-line {
+    font-size: 12px;
+    color: var(--ink-secondary);
+}
+.bento-dot-green {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); flex-shrink: 0;
+}
+.bento-dot-amber {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--amber); flex-shrink: 0;
+}
+
+/* Bento Money tile */
+.bento-big-number {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+.bento-big-number.bento-positive { color: var(--green); }
+.bento-big-number.bento-negative { color: var(--red); }
+.bento-unit {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-secondary);
+    margin-left: 2px;
+}
+.bento-money-next {
+    font-size: 12px;
+    color: var(--ink-secondary);
+}
+
+/* Bento Schedule tile */
+.bento-sched-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 13px;
+}
+.bento-sched-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+}
+.bento-sched-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    min-width: 50px;
+}
+.bento-sched-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Expandable sections in bento tiles */
+.bento-expandable {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.bento-tile.expanded .bento-expandable,
+.bento-tile.expanded .bento-kid-detail {
+    max-height: 500px;
+}
+.bento-expand-content {
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    margin-top: 8px;
+}
+.bento-detail-row {
+    font-size: 12px;
+    color: var(--ink-secondary);
+    padding: 3px 0;
+    line-height: 1.5;
+}
+.bento-detail-row strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+/* Deadlines chip row */
+.bento-deadlines-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.bento-deadline-chip {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+/* Alert banner */
+.bento-alert-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--red-bg);
+    border: 1px solid var(--red);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.bento-alert-icon { font-size: 18px; flex-shrink: 0; }
+.bento-alert-text { flex: 1; min-width: 0; }
+.bento-alert-text a { color: var(--red); font-weight: 600; }
+.bento-alert-dismiss {
+    background: none;
+    border: none;
+    color: var(--ink-secondary);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+}
+
+/* Mobile bento: single column */
+@media (max-width: 480px) {
+    .home-bento {
+        grid-template-columns: 1fr;
+    }
+    .home-bento > * {
+        grid-column: 1 / -1 !important;
+        grid-row: auto !important;
+    }
+    /* Show summary text on collapsed mobile tiles */
+    .bento-care .bento-tile-summary,
+    .bento-money .bento-tile-summary,
+    .bento-schedule .bento-tile-summary {
+        display: inline;
+    }
+    /* Collapsed by default on mobile except priorities and kids */
+    .bento-care .bento-tile-body,
+    .bento-money .bento-tile-body,
+    .bento-schedule .bento-tile-body {
+        display: none;
+    }
+    .bento-care .bento-tile-header,
+    .bento-money .bento-tile-header,
+    .bento-schedule .bento-tile-header {
+        padding-bottom: 14px;
+        cursor: pointer;
+    }
+    .bento-care.mobile-expanded .bento-tile-body,
+    .bento-money.mobile-expanded .bento-tile-body,
+    .bento-schedule.mobile-expanded .bento-tile-body {
+        display: flex;
+    }
+    .bento-care.mobile-expanded .bento-tile-summary,
+    .bento-money.mobile-expanded .bento-tile-summary,
+    .bento-schedule.mobile-expanded .bento-tile-summary {
+        display: none;
+    }
+    .bento-big-number { font-size: 24px; }
+}
+
+/* Tablet bento: 2 columns */
+@media (max-width: 768px) and (min-width: 481px) {
+    .home-bento {
+        grid-template-columns: 1fr 1fr;
+    }
+    .bento-priorities { grid-column: 1 / -1; grid-row: auto; }
+    .bento-kids { grid-column: 1 / -1; grid-row: auto; }
+    .bento-schedule { grid-column: 1 / -1; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  MONEY PANEL — Plain text redesign                                       */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.money-snapshot {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 24px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast);
+}
+.money-snapshot:hover { box-shadow: var(--shadow-lg); }
+[data-theme="dark"] .money-snapshot { background: var(--surface-1); }
+.money-snapshot-top {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+.money-big-surplus {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+.money-big-surplus.positive { color: var(--green); }
+.money-big-surplus.negative { color: var(--red); }
+.money-big-unit {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-secondary);
+}
+.money-snapshot-meta {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    line-height: 1.6;
+}
+.money-meta-row { padding: 1px 0; }
+.money-stress-detail { margin-top: 12px; }
+
+.money-lists {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+.money-list-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 20px;
+}
+[data-theme="dark"] .money-list-card { background: var(--surface-1); }
+.money-list-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-secondary);
+    margin-bottom: 12px;
+}
+.money-list-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 13px;
+    border-bottom: 1px dotted var(--line);
+}
+.money-list-row:last-of-type { border-bottom: none; }
+.money-list-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.money-list-amount { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.money-list-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0 0;
+    margin-top: 8px;
+    border-top: 2px solid var(--line);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.money-bills-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 20px;
+    margin-bottom: 16px;
+}
+[data-theme="dark"] .money-bills-card { background: var(--surface-1); }
+.money-bill-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 13px;
+    border-bottom: 1px solid var(--line);
+}
+.money-bill-row:last-child { border-bottom: none; }
+.money-bill-name { flex: 1; min-width: 0; }
+.money-bill-amt { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.money-bill-due { font-size: 11px; color: var(--ink-secondary); white-space: nowrap; }
+
+.money-charts-toggle {
+    display: block;
+    background: var(--surface-1);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 10px 20px;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-secondary);
+    cursor: pointer;
+    margin: 8px 0 16px;
+    transition: background 0.15s;
+}
+.money-charts-toggle:hover { background: var(--surface-2); }
+[data-theme="dark"] .money-charts-toggle { background: var(--surface-2); border-color: var(--line); }
+
+@media (max-width: 480px) {
+    .money-lists { grid-template-columns: 1fr; }
+    .money-big-surplus { font-size: 28px; }
+    .money-snapshot { padding: 16px; }
+    .money-list-card { padding: 14px; }
+    .money-bills-card { padding: 14px; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FAMILY PANEL — Large person card bento                                  */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.family-bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+.fp-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 20px;
+    min-height: 200px;
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+    overflow: hidden;
+}
+.fp-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+[data-theme="dark"] .fp-card { background: var(--surface-1); }
+.fp-card-alert { border-left: 3px solid var(--amber); }
+.fp-card-wide { min-height: 220px; }
+.fp-card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+.fp-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.fp-info { flex: 1; min-width: 0; }
+.fp-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.fp-age-chip {
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+.fp-status {
+    font-size: 13px;
+    color: var(--ink-secondary);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+.fp-event-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--ink-secondary);
+    padding: 3px 0;
+}
+.fp-event-icon { flex-shrink: 0; }
+
+@media (max-width: 480px) {
+    .family-bento { grid-template-columns: 1fr; }
+    .fp-card { min-height: auto; padding: 14px; }
+    .fp-card-wide { min-height: auto; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  SIDEBAR — Grouped navigation                                            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.sidebar-group {
+    margin: 4px 0;
+}
+.sidebar-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 16px;
+    margin: 0 10px;
+    border: none;
+    background: none;
+    width: calc(100% - 20px);
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sidebar-ink);
+    opacity: 0.5;
+    transition: opacity 0.15s;
+}
+.sidebar-group-header:hover { opacity: 0.8; }
+.sidebar-group-chevron {
+    font-size: 8px;
+    transition: transform 0.2s ease;
+}
+.sidebar-group.collapsed .sidebar-group-chevron {
+    transform: rotate(-90deg);
+}
+.sidebar-group.collapsed .sidebar-group-items {
+    display: none;
+}
+.sidebar-group-items {
+    padding-left: 0;
+}
+.sidebar-sub {
+    padding-left: 28px !important;
+}
+.sidebar-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 8px 16px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  SETTINGS PANEL                                                          */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.settings-section {
+    margin-bottom: 20px;
+}
+.settings-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 8px 0;
+}
+[data-theme="dark"] .settings-card { background: var(--surface-1); }
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    min-height: 52px;
+    border-bottom: 1px solid var(--line);
+}
+.settings-row:last-child { border-bottom: none; }
+.settings-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+}
+.settings-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+.settings-toggle-track {
+    display: block;
+    width: 44px;
+    height: 24px;
+    border-radius: 12px;
+    background: var(--line);
+    position: relative;
+    transition: background 0.2s;
+}
+.settings-toggle.active .settings-toggle-track {
+    background: var(--accent);
+}
+.settings-toggle-thumb {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: left 0.2s;
+}
+.settings-toggle.active .settings-toggle-thumb {
+    left: 22px;
+}
 
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  LOGIN SCREEN                                                            */
@@ -5092,29 +5730,63 @@ canvas { max-width: 100%; }
             <span class="sidebar-item-icon">&#127968;</span>
             <span class="sidebar-item-label">Home</span>
         </button>
-        <button class="sidebar-item" data-panel="panel-family" data-label="Family" onclick="showPanel('panel-family', this)">
-            <span class="sidebar-item-icon">&#128106;</span>
-            <span class="sidebar-item-label">Family</span>
-        </button>
-        <button class="sidebar-item" data-panel="panel-money" data-label="Money" onclick="showPanel('panel-money', this)">
-            <span class="sidebar-item-icon">&#128176;</span>
-            <span class="sidebar-item-label">Money</span>
-        </button>
-        <button class="sidebar-item" data-panel="panel-goals" data-label="Goals" onclick="showPanel('panel-goals', this)">
-            <span class="sidebar-item-icon">&#127919;</span>
-            <span class="sidebar-item-label">Goals</span>
-            <span class="sidebar-item-badge">12</span>
-        </button>
-        <button class="sidebar-item" data-panel="panel-more" data-label="More" onclick="showPanel('panel-more', this)">
+
+        <div class="sidebar-group">
+            <button class="sidebar-group-header" onclick="toggleSidebarGroup(this)">
+                <span class="sidebar-group-label">Family</span>
+                <span class="sidebar-group-chevron">&#9660;</span>
+            </button>
+            <div class="sidebar-group-items">
+                <button class="sidebar-item sidebar-sub" data-panel="panel-family" data-label="People" onclick="showPanel('panel-family', this)">
+                    <span class="sidebar-item-icon">&#128106;</span>
+                    <span class="sidebar-item-label">People</span>
+                </button>
+                <button class="sidebar-item sidebar-sub" data-panel="panel-family" data-label="Calendar" onclick="showPanel('panel-family', this); setTimeout(function(){ switchMergedTab(null,'family-tab-calendar') }, 50)">
+                    <span class="sidebar-item-icon">&#128197;</span>
+                    <span class="sidebar-item-label">Calendar</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="sidebar-group">
+            <button class="sidebar-group-header" onclick="toggleSidebarGroup(this)">
+                <span class="sidebar-group-label">Finances</span>
+                <span class="sidebar-group-chevron">&#9660;</span>
+            </button>
+            <div class="sidebar-group-items">
+                <button class="sidebar-item sidebar-sub" data-panel="panel-money" data-label="Overview" onclick="showPanel('panel-money', this)">
+                    <span class="sidebar-item-icon">&#128176;</span>
+                    <span class="sidebar-item-label">Overview</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="sidebar-group">
+            <button class="sidebar-group-header" onclick="toggleSidebarGroup(this)">
+                <span class="sidebar-group-label">Planning</span>
+                <span class="sidebar-group-chevron">&#9660;</span>
+            </button>
+            <div class="sidebar-group-items">
+                <button class="sidebar-item sidebar-sub" data-panel="panel-goals" data-label="Goals" onclick="showPanel('panel-goals', this)">
+                    <span class="sidebar-item-icon">&#127919;</span>
+                    <span class="sidebar-item-label">Goals</span>
+                    <span class="sidebar-item-badge">12</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <button class="sidebar-item" data-panel="panel-more" data-label="Settings" onclick="showPanel('panel-more', this)">
             <span class="sidebar-item-icon">&#9881;&#65039;</span>
-            <span class="sidebar-item-label">More</span>
+            <span class="sidebar-item-label">Settings</span>
         </button>
     </nav>
     <div class="sidebar-footer">
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 09:00</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 09:23</span>
     </div>
 </aside>
 
@@ -5153,378 +5825,124 @@ canvas { max-width: 100%; }
             </div>
         </div>
 
-        <!-- ═══ EMAIL ACTIONS STUB ═══ -->
-        <div class="section-title email-actions-section" id="sec-email-actions" onclick="toggleSectionCollapse(this)" style="display:none">
-            Email Actions <span class="count-badge zero" id="email-action-count">0</span>
+        <!-- ═══ BENTO GRID ═══ -->
+        
+        <div class="bento-alert-banner" id="bentoAlertBanner">
+            <span class="bento-alert-icon">&#9888;&#65039;</span>
+            <span class="bento-alert-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
+            <button class="bento-alert-dismiss" onclick="dismissAlertBanner()" aria-label="Dismiss">&times;</button>
         </div>
-        <div class="email-actions-list" id="email-actions-list" data-section="sec-email-actions" style="display:none"></div>
-
-        <div class="summary-cards">
-            <button class="summary-card sc-critical" data-panel="panel-goals" onclick="showPanel('panel-goals')" data-persona-min="partner">
-            <span class="sc-value">12</span>
-            <span class="sc-label">12 items need attention</span>
-            <span class="sc-detail">Call Osamu Hashizu (714) 258-2819</span>
-        </button>
-<button class="summary-card sc-positive" data-panel="panel-money" onclick="showPanel('panel-money')" data-persona-min="admin" data-generalize="money-card">
-            <span class="sc-value">+$100</span>
-            <span class="sc-label">+$100/mo surplus</span>
-            <span class="sc-detail">&#8594; Cash flow moderate</span>
-        </button>
-<button class="summary-card sc-info" data-panel="panel-family" onclick="showPanel('panel-family')" style="display:none" data-persona-min="housemate">
-            <span class="sc-value">No events</span>
-            <span class="sc-label">Next Up</span>
-            <span class="sc-detail">Calendar is clear</span>
-        </button>
-<button class="summary-card sc-warning" data-panel="panel-family" onclick="showPanel('panel-family')" data-persona-min="partner">
-            <span class="sc-value">2</span>
-            <span class="sc-label">2 alerts</span>
-            <span class="sc-detail">Minako, Mother need attention</span>
-        </button>
-
+        <div class="home-bento">
+            <div class="bento-tile bento-priorities" onclick="if(event.target.tagName!=='INPUT')showPanel('panel-goals')">
+        <div class="bento-tile-header">
+            <span class="bento-tile-title">Today&#39;s Priorities</span>
         </div>
-
-        <!-- ═══ HOME CARDS GRID ═══ -->
-        <div class="home-cards-grid">
-        <div class="home-card home-card-full" data-persona-min="partner">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#10084;&#65039;</span>
-            <span class="hc-title">Mother&#39;s Care</span>
-            <span class="hc-chevron">&#9660;</span>
+        <div class="bento-tile-body">
+            <div class="bento-action-item bento-action-urgent">
+            <input type="checkbox" class="task-checkbox" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="bento-action-text">Call Osamu Hashizu <a href="tel:7142582819">(714) 258-2819</a></span>
+        </div><div class="bento-action-item bento-action-high">
+            <input type="checkbox" class="task-checkbox" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="bento-action-text">Pause distributions via Security Benefit</span>
+        </div><div class="bento-action-item bento-action-high">
+            <input type="checkbox" class="task-checkbox" onchange="handleCheck(this)" aria-label="Mark complete">
+            <span class="bento-action-text">Schedule Minako appointment via Kaiser</span>
         </div>
-        <div class="hc-body">
-            <div class="hc-status-row">
-                <span class="hc-badge hc-badge-sage">Hannah</span>
-                <span class="hc-meta">Day shift (8AM-6PM)</span>
-                <button class="hc-handoff-btn" onclick="openHandoffForm()" title="Add shift notes">&#128221; Shift Notes</button>
+            <div class='bento-more-link'>6 more items</div>
+        </div>
+    </div>
+            <div class="bento-tile bento-care" onclick="toggleBentoExpand(this)">
+        <div class="bento-tile-header">
+            <span class="bento-tile-title">Mother&#39;s Care</span>
+            <span class="bento-tile-summary">Hannah &middot; Falling off couch, tilting (Mar 2026)</span>
+        </div>
+        <div class="bento-tile-body">
+            <div class="bento-care-status">
+                <span class="bento-dot-amber"></span>
+                <span>Hannah on duty</span>
             </div>
-            <div class="hc-latest-handoff" id="latest-handoff"></div>
-            <div class="hc-metrics-row">
-                <div class="hc-metric">
-                    <span class="hc-metric-label">FAST</span>
-                    <span class="hc-metric-value hc-badge hc-badge-amber">6e</span>
-                </div>
-                <div class="hc-metric">
-                    <span class="hc-metric-label">Weight</span>
-                    <span class="hc-metric-value">93.8 lbs</span>
-                </div>
-                <div class="hc-metric hc-metric-wide">
-                    <span class="hc-metric-label">IHSS Hours</span>
-                    <div class="hc-progress-wrap">
-                        <div class="hc-progress-bar">
-                            <div class="hc-progress-fill" style="width:87%"></div>
-                        </div>
-                        <span class="hc-progress-text">245/283 hrs</span>
+            <div class="bento-care-line">Falling off couch, tilting (Mar 2026)</div>
+            <div class="bento-expandable">
+                <div class="bento-expand-content">
+                    <div class="bento-detail-row">Mom needs 24/7 care. She cannot walk, feed herself, or be left alone.</div>
+                    <div class="bento-detail-row"><strong>RCFE:</strong> Anaheim Villa — application submitted, awaiting response</div>
+                    <div class="bento-detail-row"><strong>Meds:</strong> On schedule</div>
+                    <div class="bento-detail-row"><strong>IHSS:</strong> 245/283 hours used
+                        <div class="hc-progress-bar" style="margin-top:4px"><div class="hc-progress-fill" style="width:87%"></div></div>
                     </div>
                 </div>
             </div>
-            <div class="hc-detail-section hc-collapsible">
-                <div class="hc-detail-row">
-                    <span class="hc-detail-label">RCFE</span>
-                    <span class="hc-detail-value">Anaheim Villa — application submitted, awaiting response</span>
-                </div>
-                <div class="hc-detail-row">
-                    <span class="hc-detail-label">Contact</span>
-                    <span class="hc-detail-value">Yumi Kim: <a href="tel:7143089800">(714) 308-9800</a></span>
-                </div>
-                <div class="hc-detail-row">
-                    <span class="hc-detail-label">Meds</span>
-                    <span class="hc-detail-value"><span class="hc-dot-green"></span> On schedule</span>
-                </div>
-                <div class='hc-detail-row hc-alert-amber'><span class='hc-detail-label'>Incident</span><span class='hc-detail-value'>Falling off couch, tilting (Mar 2026)</span></div>
-            </div>
         </div>
     </div>
-        <div class="home-card" data-persona-min="housemate">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#128197;</span>
-            <span class="hc-title">Today&#39;s Schedule</span>
-            <span class="hc-count-badge">4</span>
-            <span class="hc-chevron">&#9660;</span>
+            <div class="bento-tile bento-money" onclick="toggleBentoExpand(this)">
+        <div class="bento-tile-header">
+            <span class="bento-tile-title">Money</span>
+            <span class="bento-tile-summary bento-positive">+$100/mo</span>
         </div>
-        <div class="hc-body">
-            <div class="hc-subtitle">Thursday, March 26</div>
-            <div class="hc-timeline"><div class="hc-timeline-item">
-                <span class="hc-timeline-dot" style="background:#7A9E7E"></span>
-                <span class="hc-timeline-time">6:00 AM</span>
-                <span class="hc-timeline-text">Weights</span>
-                <span class="hc-person-chip" style="background:#7A9E7E22;color:#7A9E7E">Dan</span>
-            </div><div class="hc-timeline-item">
-                <span class="hc-timeline-dot" style="background:#7A9E7E"></span>
-                <span class="hc-timeline-time">6:30 PM</span>
-                <span class="hc-timeline-text">TKD Class</span>
-                <span class="hc-person-chip" style="background:#7A9E7E22;color:#7A9E7E">Dan</span>
-            </div><div class="hc-timeline-item">
-                <span class="hc-timeline-dot" style="background:#5B8FB9"></span>
-                <span class="hc-timeline-time">8:00 AM</span>
-                <span class="hc-timeline-text">School</span>
-                <span class="hc-person-chip" style="background:#5B8FB922;color:#5B8FB9">Koko</span>
-            </div><div class="hc-timeline-item">
-                <span class="hc-timeline-dot" style="background:#9B7ED8"></span>
-                <span class="hc-timeline-time">8:30 AM</span>
-                <span class="hc-timeline-text">Preschool at Cadenza</span>
-                <span class="hc-person-chip" style="background:#9B7ED822;color:#9B7ED8">Issa</span>
-            </div></div>
-        </div>
-    </div>
-        <div class="home-card" data-persona-min="admin" data-generalize="cashflow">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#128176;</span>
-            <span class="hc-title">Financial Pulse</span>
-            <span class="hc-chevron">&#9660;</span>
-        </div>
-        <div class="hc-body">
-            <div class="hc-big-number hc-positive">+$100<span class="hc-big-unit">/mo</span></div>
-            <div class="hc-detail-section hc-collapsible">
-                <div class="hc-sub-title">Upcoming Bills</div>
-                <div class="hc-bill-row">
-            <span class="hc-dot-amber"></span>
-            <span class="hc-bill-name">Rent</span>
-            <span class="hc-bill-amount">$5,745</span>
-            <span class="hc-bill-due">Apr 01</span>
-        </div><div class="hc-bill-row">
-            <span class="hc-dot-amber"></span>
-            <span class="hc-bill-name">Hannah (caregiver)</span>
-            <span class="hc-bill-amount">$5,413</span>
-            <span class="hc-bill-due">Biweekly</span>
-        </div><div class="hc-bill-row">
-            <span class="hc-dot-amber"></span>
-            <span class="hc-bill-name">Cadenza Tuition</span>
-            <span class="hc-bill-amount">$2,100</span>
-            <span class="hc-bill-due">Apr 01</span>
-        </div><div class="hc-bill-row">
-            <span class="hc-dot-amber"></span>
-            <span class="hc-bill-name">Geico Auto</span>
-            <span class="hc-bill-amount">$250</span>
-            <span class="hc-bill-due">Apr 15</span>
-        </div><div class="hc-bill-row">
-            <span class="hc-dot-green"></span>
-            <span class="hc-bill-name">Kaiser Health</span>
-            <span class="hc-bill-amount">$0</span>
-            <span class="hc-bill-due">Employer-covered</span>
-        </div>
-                <div class="hc-detail-row" style="margin-top:8px">
-                    <span class="hc-detail-label">IHSS</span>
-                    <span class="hc-detail-value hc-badge hc-badge-sage">Received ~Mar 15</span>
+        <div class="bento-tile-body">
+            <div class="bento-big-number bento-positive">+$100<span class="bento-unit">/mo</span></div>
+            <div class='bento-money-next'>Next: Rent $5,745 Apr 01</div>
+            <div class="bento-expandable">
+                <div class="bento-expand-content">
+                    <div class="bento-detail-row">Income: $15,920/mo</div>
+                    <div class="bento-detail-row">Expenses: $14,070/mo</div>
+                    <div class="bento-detail-row">Stress: Moderate &middot; Runway: ~3 years</div>
                 </div>
             </div>
         </div>
     </div>
-        <div class="home-card" data-persona-min="partner">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#11088;</span>
-            <span class="hc-title">Kids</span>
-            <span class="hc-chevron">&#9660;</span>
+            <div class="bento-tile bento-kids">
+        <div class="bento-tile-header">
+            <span class="bento-tile-title">Kids</span>
         </div>
-        <div class="hc-body"><div class="hc-kid-section" data-kid-name="koko(daniel)">
-            <div class="hc-kid-header">
+        <div class="bento-tile-body"><div class="bento-kid-section" data-kid-name="koko(daniel)">
+            <div class="bento-kid-header">
                 <strong>Koko (Daniel)</strong>
                 <span class="hc-age-chip">6</span>
                 <span class="hc-star-counter" id="star-counter-koko(daniel)" title="Stars earned">&#11088; <span class="star-count">0</span></span>
             </div>
-            <div class="hc-kid-school">Westpark Elementary</div>
-            <div class="hc-kid-activities"><div class="hc-act-item"><span class="hc-act-time">4:00 PM</span> TKD Class</div></div>
-            <div class="hc-collapsible">
-                <div class="hc-sub-title">Chores</div>
+            <div class='bento-kid-activity'>TKD Class</div>
+            <div class="bento-kid-chores">0/3 chores done</div>
+            <div class="bento-kid-detail bento-expandable">
                 <div class="hc-chores-list" id="chores-koko(daniel)"><label class="hc-chore" data-kid="koko(daniel)" data-chore-idx="0" data-chore-task="Make bed"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Make bed</span></label><label class="hc-chore" data-kid="koko(daniel)" data-chore-idx="1" data-chore-task="Put dishes in sink"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put dishes in sink</span></label><label class="hc-chore" data-kid="koko(daniel)" data-chore-idx="2" data-chore-task="Pick up toys"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Pick up toys</span></label></div>
-                <div class='hc-kid-health hc-muted'>Klinefelter+SMC3 — endocrinology follow-up pending</div>
             </div>
-        </div><div class="hc-kid-section" data-kid-name="issa(isaac)">
-            <div class="hc-kid-header">
+        </div><div class="bento-kid-section" data-kid-name="issa(isaac)">
+            <div class="bento-kid-header">
                 <strong>Issa (Isaac)</strong>
                 <span class="hc-age-chip">4</span>
                 <span class="hc-star-counter" id="star-counter-issa(isaac)" title="Stars earned">&#11088; <span class="star-count">0</span></span>
             </div>
-            <div class="hc-kid-school">Cadenza Music Preschool</div>
-            <div class="hc-kid-activities"><div class="hc-act-item hc-muted">No activities today</div></div>
-            <div class="hc-collapsible">
-                <div class="hc-sub-title">Chores</div>
+            
+            <div class="bento-kid-chores">0/2 chores done</div>
+            <div class="bento-kid-detail bento-expandable">
                 <div class="hc-chores-list" id="chores-issa(isaac)"><label class="hc-chore" data-kid="issa(isaac)" data-chore-idx="0" data-chore-task="Put shoes away"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put shoes away</span></label><label class="hc-chore" data-kid="issa(isaac)" data-chore-idx="1" data-chore-task="Help pick up toys"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Help pick up toys</span></label></div>
-                
             </div>
         </div></div>
     </div>
-        <div class="home-card" data-persona-min="partner">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#9200;</span>
-            <span class="hc-title">Deadlines</span>
-            <span class='hc-count-badge hc-count-red'>21 overdue</span>
-            <span class='hc-count-badge hc-count-amber'>2 upcoming</span>
-            <span class="hc-chevron">&#9660;</span>
+            <div class="bento-tile bento-schedule" onclick="showPanel('panel-family')">
+        <div class="bento-tile-header">
+            <span class="bento-tile-title">Schedule</span>
         </div>
-        <div class="hc-body"><div class="hc-deadline-row">
-            <span class="hc-deadline-name">CCW license renewal</span>
-            <span class="hc-countdown-chip hc-chip-red">1094d overdue</span>
-        </div><div class="hc-deadline-row">
-            <span class="hc-deadline-name">Nanny status — is the nanny still employed? What's the monthly cost?</span>
-            <span class="hc-countdown-chip hc-chip-red">1046d overdue</span>
-        </div><div class="hc-deadline-row">
-            <span class="hc-deadline-name">Dental work — receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?</span>
-            <span class="hc-countdown-chip hc-chip-red">557d overdue</span>
-        </div><div class="hc-deadline-row">
-            <span class="hc-deadline-name">Lease renewal — Irvine house at $5,745/mo, lease start Oct 2024</span>
-            <span class="hc-countdown-chip hc-chip-red">532d overdue</span>
-        </div><div class="hc-deadline-row">
-            <span class="hc-deadline-name">IHSS back-tracking application (Dan as joint provider)</span>
-            <span class="hc-countdown-chip hc-chip-red">466d overdue</span>
-        </div><div class="hc-deadline-row">
-            <span class="hc-deadline-name">Funeral pre-payment reimbursement from mother's account</span>
-            <span class="hc-countdown-chip hc-chip-red">447d overdue</span>
-        </div><div class="hc-deadline-row">
-            <span class="hc-deadline-name">Father's van title transfer to aunt (gomo)</span>
-            <span class="hc-countdown-chip hc-chip-red">435d overdue</span>
-        </div></div>
+        <div class="bento-tile-body"><div class="bento-sched-item">
+                <span class="bento-sched-dot" style="background:#7A9E7E"></span>
+                <span class="bento-sched-time">6:00 AM</span>
+                <span class="bento-sched-text">Weights</span>
+            </div><div class="bento-sched-item">
+                <span class="bento-sched-dot" style="background:#7A9E7E"></span>
+                <span class="bento-sched-time">6:30 PM</span>
+                <span class="bento-sched-text">TKD Class</span>
+            </div><div class="bento-sched-item">
+                <span class="bento-sched-dot" style="background:#5B8FB9"></span>
+                <span class="bento-sched-time">8:00 AM</span>
+                <span class="bento-sched-text">School</span>
+            </div></div>
     </div>
-        <div class="home-card">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#9729;&#65039;</span>
-            <span class="hc-title">Weather</span>
-            <span class="hc-chevron">&#9660;</span>
         </div>
-        <div class="hc-body">
-            <div class="hc-wx-main">
-                <span class="hc-wx-temp">62&#176;</span>
-                <div class="hc-wx-info">
-                    <span class="hc-wx-cond">Partly cloudy</span>
-                    <span class="hc-wx-hilo">H 86&#176; / L 58&#176;</span>
-                    <span class="hc-muted">Irvine, CA</span>
-                </div>
-            </div>
-            <div class="hc-wx-forecast"><div class="hc-wx-day">
-            <span class="hc-wx-day-label">03-26</span>
-            <span class="hc-wx-day-temp">86/58</span>
-        </div><div class="hc-wx-day">
-            <span class="hc-wx-day-label">03-27</span>
-            <span class="hc-wx-day-temp">72/59</span>
-        </div><div class="hc-wx-day">
-            <span class="hc-wx-day-label">03-28</span>
-            <span class="hc-wx-day-temp">83/60</span>
-        </div></div>
-            <div class="hc-collapsible">
-                <div class="hc-wx-rec">Mild conditions — outdoor activity OK</div>
-            </div>
-        </div>
-    </div>
-        <div class="home-card" data-persona-min="partner">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#128154;</span>
-            <span class="hc-title">Health</span>
-            <span class="hc-chevron">&#9660;</span>
-        </div>
-        <div class="hc-body">
-            <div class="hc-sub-title">Dan</div>
-            <div class="hc-goal-arcs">
-                <div class="goal-arc" id="goal-arc-weight" data-pct="64" data-label="165" data-sublabel="lbs">
-                    <svg viewBox="0 0 80 80" class="goal-arc-svg">
-                        <circle class="goal-arc-track" cx="40" cy="40" r="34" />
-                        <circle class="goal-arc-fill" cx="40" cy="40" r="34" stroke="var(--accent)" />
-                    </svg>
-                    <div class="goal-arc-center">
-                        <span class="goal-arc-value">165</span>
-                        <span class="goal-arc-unit">lbs</span>
-                    </div>
-                    <div class="goal-arc-label">Weight</div>
-                </div>
-                <div class="goal-arc" id="goal-arc-tkd" data-pct="56" data-label="159" data-sublabel="days">
-                    <svg viewBox="0 0 80 80" class="goal-arc-svg">
-                        <circle class="goal-arc-track" cx="40" cy="40" r="34" />
-                        <circle class="goal-arc-fill" cx="40" cy="40" r="34" stroke="var(--accent-warm)" />
-                    </svg>
-                    <div class="goal-arc-center">
-                        <span class="goal-arc-value">159</span>
-                        <span class="goal-arc-unit">days</span>
-                    </div>
-                    <div class="goal-arc-label">TKD</div>
-                </div>
-            </div>
-            <div class="hc-progress-wrap" style="margin:4px 0 8px">
-                <div class="hc-progress-bar">
-                    <div class="hc-progress-fill hc-progress-accent" style="width:64%"></div>
-                </div>
-                <span class="hc-progress-text">165 / 145 lbs</span>
-            </div>
-            <div class="hc-collapsible">
-                <div class="hc-muted">Weights M/T/Th/F, TKD T/Th</div>
-                <div class="hc-sub-title" style="margin-top:10px">Minako</div>
-                <div class="hc-detail-row">
-                    <span class="hc-detail-label">Risk Score</span>
-                    <span class="hc-detail-value hc-badge hc-badge-red">88/100</span>
-                </div>
-                <div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px"><span class="hc-countdown-chip hc-chip-red">Pelvic ultrasound</span> <span class="hc-countdown-chip hc-chip-red">Echocardiogram</span> <span class="hc-countdown-chip hc-chip-amber">Hand specialist</span> </div>
-                <div class="hc-alert-banner hc-alert-red">3 overdue appointments — risk score 88/100</div><div class="hc-alert-banner hc-alert-amber">20 lbs over target — 159 days to black belt</div>
-            </div>
-        </div>
-    </div>
-        <div class="home-card">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#128214;</span>
-            <span class="hc-title">Faith</span>
-            <span class="hc-chevron">&#9660;</span>
-        </div>
-        <div class="hc-body">
-            <blockquote class="hc-verse">Finally, all of you, be like-minded, be sympathetic, love one another, be compassionate and humble.</blockquote>
-            <cite class="hc-verse-ref">&mdash; 1 Peter 3:8</cite>
-            <div class="hc-collapsible">
-                <div class="hc-sub-title">Prayer Focus</div>
-                <div class="hc-muted">Wisdom — RCFE decision, SNT, legal matters, conservatorship</div>
-                
-            </div>
-        </div>
-    </div>
-        <div class="home-card" data-persona-min="housemate">
-        <div class="hc-header" onclick="toggleHomeCard(this)">
-            <span class="hc-icon">&#127968;</span>
-            <span class="hc-title">Household</span>
-            <span class="hc-chevron">&#9660;</span>
-        </div>
-        <div class="hc-body">
-            <div class="hc-hh-grid"><div class="hc-hh-person"><span class="hc-hh-avatar">&#128187;</span><span class="hc-hh-name">Dan</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Minako</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Koko</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Issa</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#128153;</span><span class="hc-hh-name">Mother</span></div></div>
-            <div class="hc-collapsible">
-                <div class="hc-sub-title">Shopping List <span class="hc-count-badge" id="shopping-count-badge" style="display:none">0</span></div>
-                <div class="hc-shopping-list" id="shopping-list-container">
-                    <div class="shopping-items" id="shopping-items"></div>
-                    <div class="shopping-add">
-                        <input type="text" id="shopping-input" placeholder="Add item..." autocomplete="off" onkeydown="if(event.key==='Enter')addShoppingItem()">
-                        <button onclick="addShoppingItem()" class="shopping-add-btn" aria-label="Add item">+</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        <div class="home-card home-card-full home-card-emergency" data-persona-min="housemate">
-        <div class="hc-header">
-            <span class="hc-icon">&#127384;</span>
-            <span class="hc-title">Emergency</span>
-        </div>
-        <div class="hc-body">
-            <div class="emergency-speed-dial">
-                <a href="tel:911" class="speed-dial-btn emergency-red">911</a>
-                <a href="tel:8003903510" class="speed-dial-btn">Kaiser</a>
-                <a href="tel:2133803344" class="speed-dial-btn">Attorney</a>
-                <a href="tel:7142468500" class="speed-dial-btn">CalOptima</a>
-            </div>
-            <div class="hc-em-grid" style="margin-top:10px"><a href="tel:911" class="hc-em-btn">
-                <span class="hc-em-name">911</span>
-                <span class="hc-em-role">Emergency</span>
-            </a><a href="tel:2133803344" class="hc-em-btn">
-                <span class="hc-em-name">Emmanuel Han</span>
-                <span class="hc-em-role">Attorney (Han &amp; Park)</span>
-            </a><a href="tel:8003903510" class="hc-em-btn">
-                <span class="hc-em-name">Kaiser Permanente</span>
-                <span class="hc-em-role">Health Insurance</span>
-            </a><a href="tel:7142468500" class="hc-em-btn">
-                <span class="hc-em-name">CalOptima</span>
-                <span class="hc-em-role">Mother's Medi-Cal</span>
-            </a></div>
-            <div class="hc-collapsible" style="margin-top:8px">
-                <div class="hc-em-row"><span>Osamu Hashizu — CPA</span><a href="tel:7142582819" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Yumi Kim — Anaheim Villa RCFE</span><a href="tel:7143089800" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Danny Lee — Surety Bond</span></div><div class="hc-em-row"><span>Yujin Park — SNT Attorney</span></div><div class="hc-em-row"><span>Tyler Joseph/AJG — Insurance Broker</span></div><div class="hc-em-row"><span>CANHR — Medi-Cal Legal Advice</span><a href="tel:4159745171" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Disability Rights CA — IHSS Advocate (free)</span></div><div class="hc-em-row"><span>Lifeway Irvine — Mobility Equipment</span><a href="tel:8887141930" class="hc-em-call">Call</a></div>
-            </div>
-            <div class="hc-alert-banner hc-alert-red">Missing: Advance Directives</div>
-        </div>
-    </div>
-    </div>
+        <div class="bento-deadlines-row"><span class="bento-deadline-chip hc-chip-red">CCW license renewal &mdash; 1094d overdue</span><span class="bento-deadline-chip hc-chip-red">Nanny status — is the nanny still employed? What's the monthly cost? &mdash; 1046d overdue</span><span class="bento-deadline-chip hc-chip-red">Dental work — receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover? &mdash; 557d overdue</span></div>
+    
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 26, 2026 at 09:00 AM &middot;
+            Generated March 26, 2026 at 09:23 AM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -5641,12 +6059,17 @@ canvas { max-width: 100%; }
         </div>
 
         <div class="merged-tab-content active" id="family-tab-people">
-            <div class="family-scroll">
-                <div class="family-card" onclick="toggleFamilyDetail(this)">
-            <strong>Dan </strong>
-            <span class="family-notes">Weight: 165 lbs, TKD goal 145 lbs, piriformis syndrome</span>
+            <div class="family-bento">
+                <div class="fp-card fp-card-wide" onclick="toggleFamilyDetail(this)">
+            <div class="fp-card-top">
+                <div class="fp-avatar">D</div>
+                <div class="fp-info">
+                    <div class="fp-name">Dan </div>
+                    <div class="fp-status">2 overdue health items</div>
+                </div>
+            </div>
+            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Print form from Danny Lee, BOTH Dan+Thomas sign same page, m</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Dan's weight (165 lbs) — no downward progress toward 145 lb </div>
             <div class="family-detail">
-                <div class="family-detail-row">Weight: 165 lbs</div><div class="family-detail-row">TKD goal 145 lbs</div><div class="family-detail-row">piriformis syndrome</div>
                 <div class="person-timeline"><div class="person-tl-item">
                 <span class="person-tl-dot">&#9989;</span>
                 <div class="person-tl-body">
@@ -5664,11 +6087,16 @@ canvas { max-width: 100%; }
 </div>
             </div>
         </div>
-<div class="family-card has-alert" onclick="toggleFamilyDetail(this)">
-            <strong>Minako </strong>
-            <span class="family-notes">2 overdue Kaiser appts, hand specialist needed</span>
+<div class="fp-card fp-card-alert fp-card-wide" onclick="toggleFamilyDetail(this)">
+            <div class="fp-card-top">
+                <div class="fp-avatar">M</div>
+                <div class="fp-info">
+                    <div class="fp-name">Minako </div>
+                    <div class="fp-status">2 overdue doctor appointments</div>
+                </div>
+            </div>
+            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Schedule Minako appointment via Kaiser</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Schedule Minako pelvic ultrasound via Kaiser</div>
             <div class="family-detail">
-                <div class="family-detail-row">2 overdue Kaiser appts</div><div class="family-detail-row">hand specialist needed</div>
                 <div class="person-timeline"><div class="person-tl-item">
                 <span class="person-tl-dot">&#9889;</span>
                 <div class="person-tl-body">
@@ -5700,27 +6128,42 @@ canvas { max-width: 100%; }
 </div>
             </div>
         </div>
-<div class="family-card" onclick="toggleFamilyDetail(this)">
-            <strong>Koko <span class="family-age">6</span></strong>
-            <span class="family-notes">IEP needed, RCOC: swimming + TKD</span>
+<div class="fp-card" onclick="toggleFamilyDetail(this)">
+            <div class="fp-card-top">
+                <div class="fp-avatar">K</div>
+                <div class="fp-info">
+                    <div class="fp-name">Koko <span class="fp-age-chip">6</span></div>
+                    <div class="fp-status">Needs IEP evaluation. Activities: Swimming, TKD</div>
+                </div>
+            </div>
+            
             <div class="family-detail">
-                <div class="family-detail-row">IEP needed</div><div class="family-detail-row">RCOC: swimming + TKD</div>
                 <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
             </div>
         </div>
-<div class="family-card" onclick="toggleFamilyDetail(this)">
-            <strong>Issa <span class="family-age">4</span></strong>
-            <span class="family-notes">Preschool at Cadenza</span>
+<div class="fp-card" onclick="toggleFamilyDetail(this)">
+            <div class="fp-card-top">
+                <div class="fp-avatar">I</div>
+                <div class="fp-info">
+                    <div class="fp-name">Issa <span class="fp-age-chip">4</span></div>
+                    <div class="fp-status">Preschool at Cadenza</div>
+                </div>
+            </div>
+            
             <div class="family-detail">
-                <div class="family-detail-row">Preschool at Cadenza</div>
                 <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
             </div>
         </div>
-<div class="family-card has-alert" onclick="toggleFamilyDetail(this)">
-            <strong>Mother <span class="family-age">67</span></strong>
-            <span class="family-notes">FAST 6e | 93.8 lbs | RCFE decision made</span>
+<div class="fp-card fp-card-alert" onclick="toggleFamilyDetail(this)">
+            <div class="fp-card-top">
+                <div class="fp-avatar">M</div>
+                <div class="fp-info">
+                    <div class="fp-name">Mother <span class="fp-age-chip">67</span></div>
+                    <div class="fp-status">Advanced Alzheimer's care. Moving to Anaheim Villa (in progress)</div>
+                </div>
+            </div>
+            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Submit bond for mother's assets</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>IHSS reassessment request — mother mobility decline — due in</div>
             <div class="family-detail">
-                <div class="family-detail-row">FAST 6e</div><div class="family-detail-row">93.8 lbs</div><div class="family-detail-row">RCFE decision made</div>
                 <div class="person-timeline"><div class="person-tl-item">
                 <span class="person-tl-dot">&#9889;</span>
                 <div class="person-tl-body">
@@ -5868,33 +6311,72 @@ canvas { max-width: 100%; }
     <div class="panel" id="panel-money">
         <div class="panel-header">
             <div class="panel-title">Money</div>
-            <div class="panel-subtitle" data-persona-min="admin" data-generalize="intel-subtitle">Stress: 54.8 (MODERATE) &middot; Runway: 38 months</div>
         </div>
 
-        <div class="charts-grid" id="chartsGrid" data-persona-min="admin">
+        <!-- ═══ MONTHLY SNAPSHOT ═══ -->
+        <div class="money-snapshot" onclick="toggleBentoExpand(this)">
+            <div class="money-snapshot-top">
+                <div class="money-big-surplus positive">+$100<span class="money-big-unit">/mo</span></div>
+                <div class="money-snapshot-meta">
+                    <div class="money-meta-row">Income: $15,920 &middot; Expenses: $14,070</div>
+                    <div class="money-meta-row">Runway: ~3 years</div>
+                </div>
+            </div>
+            <div class="bento-expandable">
+                <div class="bento-expand-content money-stress-detail">
+                    <div class="bento-detail-row">Your finances are moderately strained</div>
+                    <div class="bento-detail-row">Biggest risk: care costs increasing when Mom moves to RCFE</div>
+                    <div class="bento-detail-row">Unknown expenses: $1,100 - $2,400/mo not yet categorized</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ INCOME / EXPENSES ═══ -->
+        <div class="money-lists">
+            <div class="money-list-card">
+                <div class="money-list-title">Income</div>
+                <div class="money-list-items">
+                    <div class="money-list-row"><span class="money-list-name">Dan Salary (Agape)</span><span class="money-list-amount">$1,900</span></div><div class="money-list-row"><span class="money-list-name">Dan Salary (Yokly/Jireh)</span><span class="money-list-amount">$2,900</span></div><div class="money-list-row"><span class="money-list-name">Dan + Minako IHSS (combined)</span><span class="money-list-amount">$5,349</span></div><div class="money-list-row"><span class="money-list-name">Minako Cadenza</span><span class="money-list-amount">$910</span></div><div class="money-list-row"><span class="money-list-name">Mother Room &amp; Board</span><span class="money-list-amount">$2,000</span></div><div class="money-list-row"><span class="money-list-name">Mother SS</span><span class="money-list-amount">$1,985</span></div><div class="money-list-row"><span class="money-list-name">Mother IRA Distribution</span><span class="money-list-amount">$876</span></div>
+                    <div class="money-list-total"><span>Total</span><span>$15,920</span></div>
+                </div>
+            </div>
+            <div class="money-list-card">
+                <div class="money-list-title">Expenses</div>
+                <div class="money-list-items">
+                    <div class="money-list-row"><span class="money-list-name">Rent (138 Telstar)</span><span class="money-list-amount">$5,745</span></div><div class="money-list-row"><span class="money-list-name">Tithe</span><span class="money-list-amount">$480</span></div><div class="money-list-row"><span class="money-list-name">Auto Insurance (Topa)</span><span class="money-list-amount">$270</span></div><div class="money-list-row"><span class="money-list-name">Subscriptions</span><span class="money-list-amount">$27</span></div><div class="money-list-row"><span class="money-list-name">Renters Insurance (Allstate)</span><span class="money-list-amount">$25</span></div><div class="money-list-row"><span class="money-list-name">Health Insurance (Kaiser)</span><span class="money-list-amount">$10</span></div><div class="money-list-row"><span class="money-list-name">Hannah Caregiver</span><span class="money-list-amount">$5,413</span></div><div class="money-list-row"><span class="money-list-name">Cadenza Tuition (Koko + Issa)</span><span class="money-list-amount">$2,100</span></div>
+                    <div class="money-list-total"><span>Total</span><span>$14,070</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ UPCOMING BILLS ═══ -->
+        <div class="money-bills-card">
+            <div class="money-list-title">Upcoming Bills</div>
+            <div class="money-bill-row"><span class="bento-sched-dot" style="background:var(--amber)"></span><span class="money-bill-name">Rent</span><span class="money-bill-amt">$5,745</span><span class="money-bill-due">Apr 01</span></div><div class="money-bill-row"><span class="bento-sched-dot" style="background:var(--amber)"></span><span class="money-bill-name">Hannah (caregiver)</span><span class="money-bill-amt">$5,413</span><span class="money-bill-due">Biweekly</span></div><div class="money-bill-row"><span class="bento-sched-dot" style="background:var(--amber)"></span><span class="money-bill-name">Cadenza Tuition</span><span class="money-bill-amt">$2,100</span><span class="money-bill-due">Apr 01</span></div><div class="money-bill-row"><span class="bento-sched-dot" style="background:var(--amber)"></span><span class="money-bill-name">Geico Auto</span><span class="money-bill-amt">$250</span><span class="money-bill-due">Apr 15</span></div><div class="money-bill-row"><span class="bento-sched-dot" style="background:var(--green)"></span><span class="money-bill-name">Kaiser Health</span><span class="money-bill-amt">$0</span><span class="money-bill-due">Employer-covered</span></div>
+        </div>
+
+        <!-- ═══ CHARTS (hidden by default, admin toggle) ═══ -->
+        <button class="money-charts-toggle" onclick="toggleMoneyCharts()" data-persona-min="admin">Show Charts</button>
+        <div class="charts-grid" id="chartsGrid" style="display:none" data-persona-min="admin">
             <div class="chart-card" onclick="toggleChartExpand(this)">
                 <div class="chart-title">Stress Components</div>
                 <div class="skeleton-chart chart-skeleton"></div>
                 <canvas id="stressChart" height="200" style="display:none"></canvas>
-                <div class="chart-expand-hint">Tap to expand</div>
             </div>
             <div class="chart-card" onclick="toggleChartExpand(this)">
                 <div class="chart-title">Risk Clusters</div>
                 <div class="skeleton-chart chart-skeleton"></div>
                 <canvas id="riskChart" height="200" style="display:none"></canvas>
-                <div class="chart-expand-hint">Tap to expand</div>
             </div>
             <div class="chart-card" onclick="toggleChartExpand(this)">
                 <div class="chart-title">Income Breakdown</div>
                 <div class="skeleton-chart chart-skeleton"></div>
                 <canvas id="incomeChart" height="200" style="display:none"></canvas>
-                <div class="chart-expand-hint">Tap to expand</div>
             </div>
             <div class="chart-card" onclick="toggleChartExpand(this)">
                 <div class="chart-title">Risk Cluster Probability</div>
                 <div class="skeleton-chart chart-skeleton"></div>
                 <canvas id="probChart" height="200" style="display:none"></canvas>
-                <div class="chart-expand-hint">Tap to expand</div>
             </div>
         </div>
 
@@ -5903,7 +6385,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 26, 2026 at 09:00 AM</div>
+            <div class="report-meta">Generated March 26, 2026 at 09:23 AM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$100/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -5915,7 +6397,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 26, 2026 at 09:00 AM</div>
+            <div class="report-meta">Last updated: March 26, 2026 at 09:23 AM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -5987,16 +6469,9 @@ canvas { max-width: 100%; }
 
         <div class="section-title" id="sec-goals-tasks" onclick="toggleSectionCollapse(this)">Tasks <span class="count-badge">12</span> <span class="section-chevron">&#9660;</span></div>
         <div class="section-content" data-section="sec-goals-tasks">
-            <div class="view-toggle" id="taskViewToggle">
-                <button class="view-toggle-btn active" data-view="list" onclick="switchTaskView('list', this)">&#9776; List</button>
-                <button class="view-toggle-btn" data-view="kanban" onclick="switchTaskView('kanban', this)">&#9638; Kanban</button>
-                <button class="view-toggle-btn" data-view="calendar" onclick="switchTaskView('calendar', this)">&#128197; Calendar</button>
-            </div>
-
-            <div class="task-view active" id="taskViewList">
-                <div class="section-title" id="sec-tasks-priorities" onclick="toggleSectionCollapse(this)">Priority Actions <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
-                <div class="section-content" data-section="sec-tasks-priorities">
-                <div class="swipeable-wrap" data-swipe-id="action-0">
+            <div class="section-title" id="sec-tasks-priorities" onclick="toggleSectionCollapse(this)">Priority Actions <span class="count-badge">8</span> <span class="section-chevron">&#9660;</span></div>
+            <div class="section-content" data-section="sec-tasks-priorities">
+            <div class="swipeable-wrap" data-swipe-id="action-0">
             <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
             <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
             <div class="action-card urgent" data-index="action-0" data-checkable="true">
@@ -6085,12 +6560,12 @@ canvas { max-width: 100%; }
             </div>
         </div>
 
-                <button class="clear-completed-btn" id="clearCompleted2" onclick="clearChecked()">Clear completed</button>
-                </div>
+            <button class="clear-completed-btn" id="clearCompleted2" onclick="clearChecked()">Clear completed</button>
+            </div>
 
-                <div class="section-title" id="sec-tasks-active" onclick="toggleSectionCollapse(this)">Active Tasks <span class="count-badge">4</span> <span class="section-chevron">&#9660;</span></div>
-                <div class="section-content" data-section="sec-tasks-active">
-                <div class="swipeable-wrap" data-swipe-id="task-0">
+            <div class="section-title" id="sec-tasks-active" onclick="toggleSectionCollapse(this)">Active Tasks <span class="count-badge">4</span> <span class="section-chevron">&#9660;</span></div>
+            <div class="section-content" data-section="sec-tasks-active">
+            <div class="swipeable-wrap" data-swipe-id="task-0">
             <div class="swipe-reveal swipe-reveal-left">&#10003;</div>
             <div class="swipe-reveal swipe-reveal-right">&#128164;</div>
             <div class="task-item critical" data-index="task-0" data-checkable="true">
@@ -6131,82 +6606,6 @@ canvas { max-width: 100%; }
             </div>
         </div>
 
-                </div>
-            </div>
-
-            <div class="task-view" id="taskViewKanban">
-                <div class="kanban-board" id="kanbanBoard">
-        <div class="kanban-col" data-col="urgent">
-            <div class="kanban-col-header critical">Urgent <span class="count-badge">5</span></div>
-            <div class="kanban-col-body" data-drop="urgent">
-                <div class="kanban-card critical" draggable="true" data-task-key="action-0" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-0" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">URGENT</span>
-            <span class="kanban-card-text">Call Osamu Hashizu (714) 258-2819</span>
-        </div><div class="kanban-card critical" draggable="true" data-task-key="task-0" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="task-0" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">URGENT</span>
-            <span class="kanban-card-text">Print form from Danny Lee, BOTH Dan+Thomas sign same page, mail to Han &amp; Park. C</span>
-        </div><div class="kanban-card critical" draggable="true" data-task-key="task-1" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="task-1" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">URGENT</span>
-            <span class="kanban-card-text">Schedule Mar 27 slot with Yujin Park. RCFE decision made — SNT is next.</span>
-        </div><div class="kanban-card critical" draggable="true" data-task-key="task-2" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="task-2" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">URGENT</span>
-            <span class="kanban-card-text">Book Goleta Residence Inn + confirm Hannah+Thomas coverage. Trip departs Mar 30.</span>
-        </div><div class="kanban-card critical" draggable="true" data-task-key="task-3" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="task-3" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">URGENT</span>
-            <span class="kanban-card-text">Call Osamu Hashizu (714) 258-2819 to confirm engagement. Due April 15 = 23 days.</span>
-        </div>
-            </div>
-        </div>
-        <div class="kanban-col" data-col="high">
-            <div class="kanban-col-header warning">High <span class="count-badge">7</span></div>
-            <div class="kanban-col-body" data-drop="high">
-                <div class="kanban-card warning" draggable="true" data-task-key="action-1" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-1" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="kanban-card-text">Pause distributions via Security Benefit</span>
-        </div><div class="kanban-card warning" draggable="true" data-task-key="action-2" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-2" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="kanban-card-text">Schedule Minako appointment via Kaiser</span>
-        </div><div class="kanban-card warning" draggable="true" data-task-key="action-3" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-3" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="kanban-card-text">Schedule Minako pelvic ultrasound via Kaiser</span>
-        </div><div class="kanban-card warning" draggable="true" data-task-key="action-4" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-4" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="kanban-card-text">Submit bond for mother's assets</span>
-        </div><div class="kanban-card warning" draggable="true" data-task-key="action-5" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-5" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="kanban-card-text">Provide 7 expense amounts + 4 balances</span>
-        </div><div class="kanban-card warning" draggable="true" data-task-key="action-6" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-6" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="kanban-card-text">Pause IRA (requires conservatorship)</span>
-        </div><div class="kanban-card warning" draggable="true" data-task-key="action-7" data-checkable="true">
-            <input type="checkbox" class="task-checkbox" data-task-id="action-7" onchange="handleCheck(this)" aria-label="Mark complete">
-            <span class="action-badge">HIGH</span>
-            <span class="kanban-card-text">Install ramp + DME wheelchair</span>
-        </div>
-            </div>
-        </div>
-        <div class="kanban-col" data-col="medium">
-            <div class="kanban-col-header info">Medium/Low <span class="count-badge">0</span></div>
-            <div class="kanban-col-body" data-drop="medium">
-                <div class="kanban-empty">None</div>
-            </div>
-        </div>
-    </div>
-            </div>
-
-            <div class="task-view" id="taskViewCalendar">
-                <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day today" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28</div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30</div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31</div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
             </div>
         </div>
     </div>
@@ -6216,17 +6615,77 @@ canvas { max-width: 100%; }
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="panel" id="panel-more">
         <div class="panel-header">
-            <div class="panel-title">More</div>
-            <div class="panel-subtitle">System status and settings</div>
+            <div class="panel-title">Settings</div>
         </div>
-        <div class="sysstat-grid">
+
+        <!-- Settings -->
+        <div class="settings-section">
+            <div class="settings-card">
+                <div class="settings-row">
+                    <span class="settings-label">Dark Mode</span>
+                    <button class="settings-toggle" id="settingsDarkToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                        <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </button>
+                </div>
+                <div class="settings-row">
+                    <span class="settings-label">Push Notifications</span>
+                    <button class="settings-toggle" id="settingsPushToggle" onclick="togglePushNotifications()" aria-label="Toggle notifications">
+                        <span class="settings-toggle-track"><span class="settings-toggle-thumb"></span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emergency Contacts -->
+        <div class="settings-section">
+            <div class="section-title">Emergency Contacts</div>
+            <div class="home-card home-card-full home-card-emergency" data-persona-min="housemate">
+        <div class="hc-header">
+            <span class="hc-icon">&#127384;</span>
+            <span class="hc-title">Emergency</span>
+        </div>
+        <div class="hc-body">
+            <div class="emergency-speed-dial">
+                <a href="tel:911" class="speed-dial-btn emergency-red">911</a>
+                <a href="tel:8003903510" class="speed-dial-btn">Kaiser</a>
+                <a href="tel:2133803344" class="speed-dial-btn">Attorney</a>
+                <a href="tel:7142468500" class="speed-dial-btn">CalOptima</a>
+            </div>
+            <div class="hc-em-grid" style="margin-top:10px"><a href="tel:911" class="hc-em-btn">
+                <span class="hc-em-name">911</span>
+                <span class="hc-em-role">Emergency</span>
+            </a><a href="tel:2133803344" class="hc-em-btn">
+                <span class="hc-em-name">Emmanuel Han</span>
+                <span class="hc-em-role">Attorney (Han &amp; Park)</span>
+            </a><a href="tel:8003903510" class="hc-em-btn">
+                <span class="hc-em-name">Kaiser Permanente</span>
+                <span class="hc-em-role">Health Insurance</span>
+            </a><a href="tel:7142468500" class="hc-em-btn">
+                <span class="hc-em-name">CalOptima</span>
+                <span class="hc-em-role">Mother's Medi-Cal</span>
+            </a></div>
+            <div class="hc-collapsible" style="margin-top:8px">
+                <div class="hc-em-row"><span>Osamu Hashizu — CPA</span><a href="tel:7142582819" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Yumi Kim — Anaheim Villa RCFE</span><a href="tel:7143089800" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Danny Lee — Surety Bond</span></div><div class="hc-em-row"><span>Yujin Park — SNT Attorney</span></div><div class="hc-em-row"><span>Tyler Joseph/AJG — Insurance Broker</span></div><div class="hc-em-row"><span>CANHR — Medi-Cal Legal Advice</span><a href="tel:4159745171" class="hc-em-call">Call</a></div><div class="hc-em-row"><span>Disability Rights CA — IHSS Advocate (free)</span></div><div class="hc-em-row"><span>Lifeway Irvine — Mobility Equipment</span><a href="tel:8887141930" class="hc-em-call">Call</a></div>
+            </div>
+            <div class="hc-alert-banner hc-alert-red">Missing: Advance Directives</div>
+        </div>
+    </div>
+        </div>
+
+        <!-- System (collapsed by default) -->
+        <div class="section-title" id="sec-system-stats" onclick="toggleSectionCollapse(this)" style="cursor:pointer">
+            System <span class="section-chevron">&#9660;</span>
+        </div>
+        <div class="section-content" data-section="sec-system-stats">
+            <div class="sysstat-grid">
         <div class="sysstat-item"><span class="sysstat-val">37</span><span class="sysstat-lbl">Agents</span></div>
         <div class="sysstat-item"><span class="sysstat-val">30</span><span class="sysstat-lbl">Skills</span></div>
         <div class="sysstat-item"><span class="sysstat-val">92</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 09:00</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 09:23</span><span class="sysstat-lbl">Last render</span></div>
     </div>
+        </div>
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -6257,13 +6716,9 @@ canvas { max-width: 100%; }
         <span class="nav-tab-icon">&#128176;</span>
         <span class="nav-tab-label">Money</span>
     </button>
-    <button class="nav-tab" data-panel="panel-goals" onclick="showPanel('panel-goals', null, this)" aria-label="Goals">
+    <button class="nav-tab" data-panel="panel-goals" onclick="showPanel('panel-goals', null, this)" aria-label="Tasks">
         <span class="nav-tab-icon">&#127919;</span>
-        <span class="nav-tab-label">Goals</span>
-    </button>
-    <button class="nav-tab" data-panel="panel-more" onclick="showPanel('panel-more', null, this)" aria-label="More">
-        <span class="nav-tab-icon">&#9881;&#65039;</span>
-        <span class="nav-tab-label">More</span>
+        <span class="nav-tab-label">Tasks</span>
     </button>
 </nav>
 
@@ -6817,6 +7272,43 @@ function toggleHomeCard(headerEl) {
         card.classList.toggle('collapsed');
     }
 }
+
+/* ── Bento tile expand/collapse ──────────────────────────────────────── */
+function toggleBentoExpand(tileEl) {
+    if (!tileEl) return;
+    var tile = tileEl.closest('.bento-tile') || tileEl.closest('.money-snapshot') || tileEl;
+    if (!tile) return;
+    // On mobile, also toggle body visibility for collapsed tiles
+    if (window.innerWidth <= 480) {
+        tile.classList.toggle('mobile-expanded');
+    }
+    tile.classList.toggle('expanded');
+}
+
+function dismissAlertBanner() {
+    var banner = document.getElementById('bentoAlertBanner');
+    if (banner) banner.style.display = 'none';
+}
+
+function toggleMoneyCharts() {
+    var grid = document.getElementById('chartsGrid');
+    var btn = document.querySelector('.money-charts-toggle');
+    if (!grid) return;
+    if (grid.style.display === 'none') {
+        grid.style.display = '';
+        if (btn) btn.textContent = 'Hide Charts';
+        setTimeout(function() { initCharts(); }, 50);
+    } else {
+        grid.style.display = 'none';
+        if (btn) btn.textContent = 'Show Charts';
+    }
+}
+
+function toggleSidebarGroup(headerEl) {
+    var group = headerEl.closest('.sidebar-group');
+    if (group) group.classList.toggle('collapsed');
+}
+
 function handleChoreCheck(checkbox) {
     // Visual feedback only — future: persist to Firebase
     var label = checkbox.closest('.hc-chore');

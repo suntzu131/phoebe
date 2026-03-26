@@ -1,5 +1,5 @@
-// Phoebe Dashboard Service Worker — v12 (network-first HTML)
-const CACHE_NAME = "phoebe-dashboard-v13";
+// Phoebe Dashboard Service Worker — v14 (bento redesign)
+const CACHE_NAME = "phoebe-dashboard-v14";
 
 // Static assets: cache-first (rarely change)
 const STATIC_ASSETS = [
