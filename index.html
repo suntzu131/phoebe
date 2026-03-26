@@ -4440,6 +4440,610 @@ canvas { max-width: 100%; }
         gap: 10px;
     }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: SHOPPING LIST (Firebase-backed)                                */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.hc-shopping-list {
+    margin-top: 4px;
+}
+.shopping-items {
+    max-height: 200px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.shopping-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 12px;
+    font-family: var(--font);
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+    transition: opacity 0.2s;
+}
+.shopping-item:last-child { border-bottom: none; }
+.shopping-item.checked {
+    opacity: 0.5;
+}
+.shopping-item.checked .shopping-item-text {
+    text-decoration: line-through;
+    color: var(--ink-secondary);
+}
+.shopping-item input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.shopping-item-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.shopping-item-meta {
+    font-size: 10px;
+    color: var(--ink-secondary);
+    flex-shrink: 0;
+}
+.shopping-item-delete {
+    width: 28px; height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--red);
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+.shopping-item-delete:hover {
+    opacity: 1;
+    background: var(--red-bg);
+}
+.shopping-add {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+.shopping-add input {
+    flex: 1;
+    height: 36px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0 10px;
+    font-size: 13px;
+    font-family: var(--font);
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+}
+.shopping-add input:focus {
+    border-color: var(--accent);
+}
+[data-theme="dark"] .shopping-add input {
+    background: var(--surface-2);
+    border-color: var(--surface-4, var(--line));
+}
+.shopping-add-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s, transform 0.1s;
+    min-width: 44px;
+    min-height: 44px;
+}
+.shopping-add-btn:hover {
+    background: var(--accent-hover);
+}
+.shopping-add-btn:active {
+    transform: scale(0.95);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: KID CHORES (Firebase-backed stars + celebration)               */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.hc-star-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 13px;
+    margin-left: auto;
+    font-family: var(--font);
+    color: var(--accent-warm);
+}
+.hc-star-counter .star-count {
+    font-weight: 800;
+    font-size: 14px;
+}
+@keyframes starBurst {
+    0% { transform: scale(1); filter: brightness(1); }
+    30% { transform: scale(1.6); filter: brightness(1.4) drop-shadow(0 0 6px var(--accent-warm)); }
+    60% { transform: scale(1.1); filter: brightness(1.1); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+.hc-star-counter.celebrating {
+    animation: starBurst 0.6s ease;
+}
+@keyframes confettiBurst {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-30px) scale(0.5); }
+}
+.confetti-particle {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: confettiBurst 0.8s ease-out forwards;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: CAREGIVER HANDOFF OVERLAY                                      */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.hc-handoff-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    background: rgba(122,158,126,0.08);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font);
+    cursor: pointer;
+    margin-left: auto;
+    min-height: 32px;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.15s;
+}
+.hc-handoff-btn:hover {
+    background: rgba(122,158,126,0.15);
+}
+.hc-latest-handoff {
+    font-size: 11px;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    padding: 4px 0 6px;
+    line-height: 1.4;
+}
+.hc-latest-handoff:empty {
+    display: none;
+}
+.handoff-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.handoff-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+}
+.handoff-form {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    max-height: 85vh;
+    background: var(--paper);
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+    z-index: 1;
+    animation: slideUpForm 0.3s ease;
+}
+@keyframes slideUpForm {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+.handoff-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--line);
+}
+.handoff-form-header h3 {
+    font-size: 16px;
+    font-weight: 800;
+    font-family: var(--font);
+    color: var(--ink);
+    margin: 0;
+}
+.handoff-close-btn {
+    width: 36px; height: 36px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    color: var(--ink-secondary);
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+}
+.handoff-form-body {
+    padding: 16px 20px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.handoff-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+}
+.handoff-row {
+    display: flex;
+    gap: 10px;
+}
+.handoff-half {
+    flex: 1;
+}
+.handoff-select,
+.handoff-input,
+.handoff-textarea {
+    font-size: 14px;
+    font-family: var(--font);
+    color: var(--ink);
+    background: var(--surface-1);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 100%;
+}
+.handoff-select:focus,
+.handoff-input:focus,
+.handoff-textarea:focus {
+    border-color: var(--accent);
+}
+[data-theme="dark"] .handoff-select,
+[data-theme="dark"] .handoff-input,
+[data-theme="dark"] .handoff-textarea {
+    background: var(--surface-2);
+    color: var(--ink);
+}
+.handoff-textarea {
+    resize: vertical;
+    min-height: 44px;
+}
+.handoff-mood-selector {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.mood-btn {
+    padding: 6px 12px;
+    border: 2px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 12px;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+}
+.mood-btn.selected {
+    border-color: var(--accent);
+    background: rgba(122,158,126,0.08);
+}
+.handoff-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-secondary);
+}
+.handoff-toggle {
+    width: 44px; height: 24px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+.handoff-form-footer {
+    padding: 12px 20px 20px;
+    border-top: 1px solid var(--line);
+}
+.handoff-save-btn {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font);
+    cursor: pointer;
+    min-height: 48px;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+}
+.handoff-save-btn:hover {
+    background: var(--accent-hover);
+}
+.handoff-save-btn:active {
+    transform: scale(0.99);
+}
+[data-theme="dark"] .handoff-form {
+    background: var(--surface-1);
+}
+@media (min-width: 481px) {
+    .handoff-overlay {
+        align-items: center;
+    }
+    .handoff-form {
+        border-radius: 16px;
+        max-height: 80vh;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: EMERGENCY SPEED DIAL                                           */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.emergency-speed-dial {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+.speed-dial-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    font-family: var(--font);
+    text-decoration: none;
+    color: #fff;
+    background: var(--accent);
+    box-shadow: var(--shadow);
+    transition: transform 0.1s, box-shadow 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 44px;
+    min-height: 44px;
+}
+.speed-dial-btn:active {
+    transform: scale(0.94);
+}
+.speed-dial-btn.emergency-red {
+    background: var(--red);
+    font-size: 22px;
+    width: 88px;
+    height: 88px;
+    box-shadow: 0 2px 8px rgba(199,84,80,0.35), var(--shadow);
+}
+@media (max-width: 480px) {
+    .speed-dial-btn {
+        width: 68px;
+        height: 68px;
+        font-size: 14px;
+    }
+    .speed-dial-btn.emergency-red {
+        width: 74px;
+        height: 74px;
+        font-size: 20px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: VISUAL GOALS PROGRESS ARCS (SVG)                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.hc-goal-arcs {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+.goal-arc {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 80px;
+}
+.goal-arc-svg {
+    width: 80px;
+    height: 80px;
+}
+.goal-arc-track {
+    fill: none;
+    stroke: var(--surface-2);
+    stroke-width: 6;
+}
+.goal-arc-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 213.6;
+    stroke-dashoffset: 213.6;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 1s ease;
+}
+.goal-arc-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.goal-arc-value {
+    font-size: 16px;
+    font-weight: 900;
+    font-family: var(--font);
+    color: var(--ink);
+    line-height: 1.1;
+}
+.goal-arc-unit {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    text-transform: uppercase;
+}
+.goal-arc-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-secondary);
+    font-family: var(--font);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: MORNING BRIEF CARD                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.morning-brief-card {
+    background: var(--accent-light);
+    border: 1px solid rgba(122,158,126,0.15);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-top: 8px;
+}
+.brief-priorities {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.brief-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-family: var(--font);
+    color: var(--ink);
+    line-height: 1.4;
+}
+.brief-item-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.brief-toggle {
+    display: inline-block;
+    margin-top: 6px;
+    border: none;
+    background: transparent;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font);
+    cursor: pointer;
+    padding: 4px 0;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+}
+.morning-brief-card.expanded .brief-priorities {
+    /* Show all items when expanded */
+}
+.morning-brief-card:not(.expanded) .brief-item:nth-child(n+4) {
+    display: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: EMAIL ACTIONS STUB                                             */
+/* ══════════════════════════════════════════════════════════════════════════ */
+.email-actions-section {
+    cursor: pointer;
+}
+.email-actions-list {
+    padding: 0 4px;
+}
+.email-action-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-family: var(--font);
+    color: var(--ink);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE: MOBILE OVERRIDES FOR NEW FEATURES                              */
+/* ══════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .hc-goal-arcs {
+        gap: 12px;
+    }
+    .goal-arc {
+        width: 70px;
+    }
+    .goal-arc-svg {
+        width: 70px;
+        height: 70px;
+    }
+    .goal-arc-center {
+        width: 70px;
+        height: 70px;
+    }
+    .goal-arc-value {
+        font-size: 14px;
+    }
+    .hc-handoff-btn {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+    .morning-brief-card {
+        padding: 8px 12px;
+    }
+    .handoff-form {
+        max-width: 100%;
+    }
+}
 </style>
 </head>
 <body>
@@ -4508,7 +5112,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 00:36</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 00:51</span>
     </div>
 </aside>
 
@@ -4541,7 +5145,17 @@ canvas { max-width: 100%; }
                 <span class="tod-text" id="tod-text"></span>
             </div>
             <div class="tod-emphasis" id="tod-emphasis"></div>
+            <div class="morning-brief-card" id="morning-brief-card" style="display:none">
+                <div class="brief-priorities" id="brief-priorities"></div>
+                <button class="brief-toggle" onclick="toggleMorningBrief()">See full brief</button>
+            </div>
         </div>
+
+        <!-- ═══ EMAIL ACTIONS STUB ═══ -->
+        <div class="section-title email-actions-section" id="sec-email-actions" onclick="toggleSectionCollapse(this)" style="display:none">
+            Email Actions <span class="count-badge zero" id="email-action-count">0</span>
+        </div>
+        <div class="email-actions-list" id="email-actions-list" data-section="sec-email-actions" style="display:none"></div>
 
         <div class="summary-cards">
             <button class="summary-card sc-critical" data-panel="panel-goals" onclick="showPanel('panel-goals')" data-persona-min="partner">
@@ -4584,7 +5198,9 @@ canvas { max-width: 100%; }
             <div class="hc-status-row">
                 <span class="hc-badge hc-badge-sage">Dan &amp; Minako</span>
                 <span class="hc-meta">Evening/night (family care)</span>
+                <button class="hc-handoff-btn" onclick="openHandoffForm()" title="Add shift notes">&#128221; Shift Notes</button>
             </div>
+            <div class="hc-latest-handoff" id="latest-handoff"></div>
             <div class="hc-metrics-row">
                 <div class="hc-metric">
                     <span class="hc-metric-label">FAST</span>
@@ -4702,30 +5318,30 @@ canvas { max-width: 100%; }
             <span class="hc-title">Kids</span>
             <span class="hc-chevron">&#9660;</span>
         </div>
-        <div class="hc-body"><div class="hc-kid-section">
+        <div class="hc-body"><div class="hc-kid-section" data-kid-name="koko(daniel)">
             <div class="hc-kid-header">
                 <strong>Koko (Daniel)</strong>
                 <span class="hc-age-chip">6</span>
-                <span class="hc-stars" title="Stars earned"></span>
+                <span class="hc-star-counter" id="star-counter-koko(daniel)" title="Stars earned">&#11088; <span class="star-count">0</span></span>
             </div>
             <div class="hc-kid-school">Westpark Elementary</div>
             <div class="hc-kid-activities"><div class="hc-act-item"><span class="hc-act-time">4:00 PM</span> TKD Class</div></div>
             <div class="hc-collapsible">
                 <div class="hc-sub-title">Chores</div>
-                <label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Make bed</span></label><label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put dishes in sink</span></label><label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Pick up toys</span></label>
+                <div class="hc-chores-list" id="chores-koko(daniel)"><label class="hc-chore" data-kid="koko(daniel)" data-chore-idx="0" data-chore-task="Make bed"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Make bed</span></label><label class="hc-chore" data-kid="koko(daniel)" data-chore-idx="1" data-chore-task="Put dishes in sink"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put dishes in sink</span></label><label class="hc-chore" data-kid="koko(daniel)" data-chore-idx="2" data-chore-task="Pick up toys"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Pick up toys</span></label></div>
                 <div class='hc-kid-health hc-muted'>Klinefelter+SMC3 — endocrinology follow-up pending</div>
             </div>
-        </div><div class="hc-kid-section">
+        </div><div class="hc-kid-section" data-kid-name="issa(isaac)">
             <div class="hc-kid-header">
                 <strong>Issa (Isaac)</strong>
                 <span class="hc-age-chip">4</span>
-                <span class="hc-stars" title="Stars earned"></span>
+                <span class="hc-star-counter" id="star-counter-issa(isaac)" title="Stars earned">&#11088; <span class="star-count">0</span></span>
             </div>
             <div class="hc-kid-school">Cadenza Music Preschool</div>
             <div class="hc-kid-activities"><div class="hc-act-item hc-muted">No activities today</div></div>
             <div class="hc-collapsible">
                 <div class="hc-sub-title">Chores</div>
-                <label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put shoes away</span></label><label class="hc-chore"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Help pick up toys</span></label>
+                <div class="hc-chores-list" id="chores-issa(isaac)"><label class="hc-chore" data-kid="issa(isaac)" data-chore-idx="0" data-chore-task="Put shoes away"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Put shoes away</span></label><label class="hc-chore" data-kid="issa(isaac)" data-chore-idx="1" data-chore-task="Help pick up toys"><input type="checkbox"  onchange="handleChoreCheck(this)"><span>Help pick up toys</span></label></div>
                 
             </div>
         </div></div>
@@ -4799,18 +5415,28 @@ canvas { max-width: 100%; }
         </div>
         <div class="hc-body">
             <div class="hc-sub-title">Dan</div>
-            <div class="hc-metrics-row">
-                <div class="hc-metric">
-                    <span class="hc-metric-label">Weight</span>
-                    <span class="hc-metric-value">165 lbs</span>
+            <div class="hc-goal-arcs">
+                <div class="goal-arc" id="goal-arc-weight" data-pct="64" data-label="165" data-sublabel="lbs">
+                    <svg viewBox="0 0 80 80" class="goal-arc-svg">
+                        <circle class="goal-arc-track" cx="40" cy="40" r="34" />
+                        <circle class="goal-arc-fill" cx="40" cy="40" r="34" stroke="var(--accent)" />
+                    </svg>
+                    <div class="goal-arc-center">
+                        <span class="goal-arc-value">165</span>
+                        <span class="goal-arc-unit">lbs</span>
+                    </div>
+                    <div class="goal-arc-label">Weight</div>
                 </div>
-                <div class="hc-metric">
-                    <span class="hc-metric-label">Goal</span>
-                    <span class="hc-metric-value">145 lbs</span>
-                </div>
-                <div class="hc-metric">
-                    <span class="hc-metric-label">TKD</span>
-                    <span class="hc-metric-value">159d</span>
+                <div class="goal-arc" id="goal-arc-tkd" data-pct="56" data-label="159" data-sublabel="days">
+                    <svg viewBox="0 0 80 80" class="goal-arc-svg">
+                        <circle class="goal-arc-track" cx="40" cy="40" r="34" />
+                        <circle class="goal-arc-fill" cx="40" cy="40" r="34" stroke="var(--accent-warm)" />
+                    </svg>
+                    <div class="goal-arc-center">
+                        <span class="goal-arc-value">159</span>
+                        <span class="goal-arc-unit">days</span>
+                    </div>
+                    <div class="goal-arc-label">TKD</div>
                 </div>
             </div>
             <div class="hc-progress-wrap" style="margin:4px 0 8px">
@@ -4856,8 +5482,14 @@ canvas { max-width: 100%; }
         <div class="hc-body">
             <div class="hc-hh-grid"><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Dan</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Minako</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Koko</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Issa</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#128153;</span><span class="hc-hh-name">Mother</span></div></div>
             <div class="hc-collapsible">
-                <div class="hc-sub-title">Shopping List </div>
-                <div class="hc-muted">Shopping list empty</div>
+                <div class="hc-sub-title">Shopping List <span class="hc-count-badge" id="shopping-count-badge" style="display:none">0</span></div>
+                <div class="hc-shopping-list" id="shopping-list-container">
+                    <div class="shopping-items" id="shopping-items"></div>
+                    <div class="shopping-add">
+                        <input type="text" id="shopping-input" placeholder="Add item..." autocomplete="off" onkeydown="if(event.key==='Enter')addShoppingItem()">
+                        <button onclick="addShoppingItem()" class="shopping-add-btn" aria-label="Add item">+</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -4867,7 +5499,13 @@ canvas { max-width: 100%; }
             <span class="hc-title">Emergency</span>
         </div>
         <div class="hc-body">
-            <div class="hc-em-grid"><a href="tel:911" class="hc-em-btn">
+            <div class="emergency-speed-dial">
+                <a href="tel:911" class="speed-dial-btn emergency-red">911</a>
+                <a href="tel:8003903510" class="speed-dial-btn">Kaiser</a>
+                <a href="tel:2133803344" class="speed-dial-btn">Attorney</a>
+                <a href="tel:7142468500" class="speed-dial-btn">CalOptima</a>
+            </div>
+            <div class="hc-em-grid" style="margin-top:10px"><a href="tel:911" class="hc-em-btn">
                 <span class="hc-em-name">911</span>
                 <span class="hc-em-role">Emergency</span>
             </a><a href="tel:2133803344" class="hc-em-btn">
@@ -4889,7 +5527,7 @@ canvas { max-width: 100%; }
     </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 26, 2026 at 12:36 AM &middot;
+            Generated March 26, 2026 at 12:51 AM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -5268,7 +5906,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 26, 2026 at 12:36 AM</div>
+            <div class="report-meta">Generated March 26, 2026 at 12:51 AM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$4,402/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -5280,7 +5918,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 26, 2026 at 12:36 AM</div>
+            <div class="report-meta">Last updated: March 26, 2026 at 12:51 AM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -5590,7 +6228,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">92</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 00:36</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 00:51</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -5682,6 +6320,60 @@ canvas { max-width: 100%; }
 <div class="error-toast" id="errorToast">
     <span id="errorToastText">Message failed to send</span>
     <button class="error-toast-close" onclick="hideErrorToast()">&times;</button>
+</div>
+
+<!-- ══════════════ CAREGIVER HANDOFF OVERLAY ══════════════ -->
+<div class="handoff-overlay" id="handoff-overlay" style="display:none">
+    <div class="handoff-backdrop" onclick="closeHandoffForm()"></div>
+    <div class="handoff-form">
+        <div class="handoff-form-header">
+            <h3>Shift Handoff Notes</h3>
+            <button class="handoff-close-btn" onclick="closeHandoffForm()" aria-label="Close">&times;</button>
+        </div>
+        <div class="handoff-form-body">
+            <label class="handoff-label">Caregiver
+                <select id="handoff-caregiver" class="handoff-select">
+                    <option value="Hannah">Hannah</option>
+                    <option value="Dan">Dan</option>
+                    <option value="Minako">Minako</option>
+                </select>
+            </label>
+            <div class="handoff-row">
+                <label class="handoff-label handoff-half">Shift Start
+                    <input type="time" id="handoff-start" class="handoff-input" value="08:00">
+                </label>
+                <label class="handoff-label handoff-half">Shift End
+                    <input type="time" id="handoff-end" class="handoff-input" value="18:00">
+                </label>
+            </div>
+            <label class="handoff-label">Meals
+                <textarea id="handoff-meals" class="handoff-textarea" rows="2" placeholder="Breakfast: oatmeal, Lunch: rice + soup"></textarea>
+            </label>
+            <label class="handoff-label">Mood
+                <div class="handoff-mood-selector" id="handoff-mood-selector">
+                    <button type="button" class="mood-btn" data-mood="calm" onclick="selectMood('calm')">&#128522; Calm</button>
+                    <button type="button" class="mood-btn" data-mood="happy" onclick="selectMood('happy')">&#128515; Happy</button>
+                    <button type="button" class="mood-btn" data-mood="sleepy" onclick="selectMood('sleepy')">&#128564; Sleepy</button>
+                    <button type="button" class="mood-btn" data-mood="agitated" onclick="selectMood('agitated')">&#128544; Agitated</button>
+                </div>
+            </label>
+            <label class="handoff-label">
+                <span class="handoff-toggle-row">
+                    Medications Given
+                    <input type="checkbox" id="handoff-meds" class="handoff-toggle" checked>
+                </span>
+            </label>
+            <label class="handoff-label">Incidents
+                <textarea id="handoff-incidents" class="handoff-textarea" rows="2" placeholder="Any falls, confusion episodes, etc."></textarea>
+            </label>
+            <label class="handoff-label">Notes
+                <textarea id="handoff-notes" class="handoff-textarea" rows="3" placeholder="General observations about the day"></textarea>
+            </label>
+        </div>
+        <div class="handoff-form-footer">
+            <button class="handoff-save-btn" onclick="saveHandoffNote()">Save Notes</button>
+        </div>
+    </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════════ -->
@@ -7603,6 +8295,7 @@ function _initDashboardAfterAuth() {
             restoreTaskView();
             autoCollapseEmptySections();
             setTimeout(hideUnnecessaryToggles, 300);
+            setTimeout(initInteractiveFeatures, 500);
             return;
         }
     }
@@ -7629,6 +8322,7 @@ function _initDashboardAfterAuth() {
     restoreTaskView();
     autoCollapseEmptySections();
     setTimeout(hideUnnecessaryToggles, 300);
+    setTimeout(initInteractiveFeatures, 500);
 }
 
 /* ── 12b. FIREBASE CHAT — multi-thread, thinking indicator, avatars ────── */
@@ -9633,6 +10327,442 @@ function retrySendMessage(tempKey, threadId, msgData) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE 1: SHOPPING LIST (Firebase RTDB)                                 */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var FIREBASE_DB_URL = "https://han-personal-project-default-rtdb.firebaseio.com";
+var _shoppingRef = null;
+
+function getFirebaseDb() {
+    if (typeof firebase !== "undefined" && firebase.database) {
+        return firebase.database();
+    }
+    return null;
+}
+
+function loadShoppingList() {
+    var db = getFirebaseDb();
+    if (!db) return;
+    _shoppingRef = db.ref("phoebe-dashboard/shopping-list");
+    _shoppingRef.on("value", function(snap) {
+        var items = snap.val() || {};
+        renderShoppingList(items);
+    });
+}
+
+function renderShoppingList(items) {
+    var container = document.getElementById("shopping-items");
+    var badge = document.getElementById("shopping-count-badge");
+    if (!container) return;
+
+    var keys = Object.keys(items);
+    /* Sort: unchecked first, then checked; within each group sort by timestamp */
+    keys.sort(function(a, b) {
+        var ia = items[a], ib = items[b];
+        if (ia.checked && !ib.checked) return 1;
+        if (!ia.checked && ib.checked) return -1;
+        return (ia.timestamp || 0) - (ib.timestamp || 0);
+    });
+
+    var uncheckedCount = 0;
+    var html = "";
+    for (var i = 0; i < keys.length; i++) {
+        var id = keys[i];
+        var item = items[id];
+        if (!item.checked) uncheckedCount++;
+        var checkedClass = item.checked ? " checked" : "";
+        var checkedAttr = item.checked ? " checked" : "";
+        var addedBy = item.added_by ? item.added_by : "";
+        html += '<div class="shopping-item' + checkedClass + '" data-id="' + id + '">' +
+            '<input type="checkbox"' + checkedAttr + ' onchange="toggleShoppingItem(\'' + id + '\', this.checked)" aria-label="Toggle ' + escHtml(item.text || "") + '">' +
+            '<span class="shopping-item-text">' + escHtml(item.text || "") + '</span>' +
+            (addedBy ? '<span class="shopping-item-meta">' + escHtml(addedBy) + '</span>' : '') +
+            '<button class="shopping-item-delete" onclick="deleteShoppingItem(\'' + id + '\')" aria-label="Delete">&times;</button>' +
+            '</div>';
+    }
+    container.innerHTML = html;
+
+    if (badge) {
+        badge.textContent = String(uncheckedCount);
+        badge.style.display = uncheckedCount > 0 ? "inline-block" : "none";
+    }
+}
+
+function addShoppingItem() {
+    var input = document.getElementById("shopping-input");
+    if (!input) return;
+    var text = input.value.trim();
+    if (!text) return;
+    var db = getFirebaseDb();
+    if (!db) return;
+    var userName = (_currentUser && _currentUser.name) ? _currentUser.name : "Dan";
+    db.ref("phoebe-dashboard/shopping-list").push({
+        text: text,
+        added_by: userName,
+        checked: false,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+    });
+    input.value = "";
+    input.focus();
+}
+
+function toggleShoppingItem(itemId, checked) {
+    var db = getFirebaseDb();
+    if (!db) return;
+    db.ref("phoebe-dashboard/shopping-list/" + itemId + "/checked").set(!!checked);
+}
+
+function deleteShoppingItem(itemId) {
+    var db = getFirebaseDb();
+    if (!db) return;
+    db.ref("phoebe-dashboard/shopping-list/" + itemId).remove();
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE 2: KID CHORES (Firebase RTDB)                                   */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _choresDate = new Date().toISOString().slice(0, 10); /* "2026-03-26" */
+var _choreStarListeners = false;
+
+function loadChores() {
+    var db = getFirebaseDb();
+    if (!db) return;
+    var ref = db.ref("phoebe-dashboard/chores/" + _choresDate);
+    ref.on("value", function(snap) {
+        var data = snap.val();
+        if (!data) {
+            /* Initialize today's chores from the rendered HTML */
+            resetDailyChores();
+            return;
+        }
+        /* Update checkbox states from Firebase */
+        for (var kid in data) {
+            var chores = data[kid];
+            for (var choreId in chores) {
+                var chore = chores[choreId];
+                var label = document.querySelector('.hc-chore[data-kid="' + kid + '"][data-chore-idx="' + choreId + '"]');
+                if (label) {
+                    var cb = label.querySelector('input[type="checkbox"]');
+                    if (cb && cb.checked !== chore.done) {
+                        cb.checked = chore.done;
+                        label.style.opacity = chore.done ? "0.6" : "1";
+                    }
+                }
+            }
+            /* Check if all chores done for celebration */
+            checkAllChoresDone(kid, data[kid]);
+        }
+    });
+    loadStarCount();
+}
+
+function resetDailyChores() {
+    var db = getFirebaseDb();
+    if (!db) return;
+    /* Scan DOM for chore labels and initialize Firebase with them */
+    var allLabels = document.querySelectorAll(".hc-chore[data-kid]");
+    var choreData = {};
+    allLabels.forEach(function(label) {
+        var kid = label.getAttribute("data-kid");
+        var idx = label.getAttribute("data-chore-idx");
+        var task = label.getAttribute("data-chore-task");
+        if (!choreData[kid]) choreData[kid] = {};
+        choreData[kid][idx] = {
+            task: task || "",
+            done: false
+        };
+    });
+    if (Object.keys(choreData).length > 0) {
+        db.ref("phoebe-dashboard/chores/" + _choresDate).set(choreData);
+    }
+}
+
+function handleChoreCheck(checkbox) {
+    var label = checkbox.closest('.hc-chore');
+    if (!label) return;
+    var kid = label.getAttribute("data-kid");
+    var idx = label.getAttribute("data-chore-idx");
+    if (!kid || idx === null) return;
+
+    /* Visual feedback */
+    label.style.opacity = checkbox.checked ? "0.6" : "1";
+
+    /* Persist to Firebase */
+    var db = getFirebaseDb();
+    if (!db) return;
+    db.ref("phoebe-dashboard/chores/" + _choresDate + "/" + kid + "/" + idx + "/done").set(checkbox.checked);
+}
+
+function checkAllChoresDone(kid, choresObj) {
+    if (!choresObj) return;
+    var allDone = true;
+    var count = 0;
+    for (var key in choresObj) {
+        count++;
+        if (!choresObj[key].done) { allDone = false; break; }
+    }
+    if (allDone && count > 0) {
+        triggerStarCelebration(kid);
+    }
+}
+
+function triggerStarCelebration(kid) {
+    var counter = document.getElementById("star-counter-" + kid);
+    if (!counter || counter.getAttribute("data-celebrated-today") === "1") return;
+    counter.setAttribute("data-celebrated-today", "1");
+    counter.classList.add("celebrating");
+    setTimeout(function() { counter.classList.remove("celebrating"); }, 700);
+
+    /* Increment star count in Firebase */
+    var db = getFirebaseDb();
+    if (!db) return;
+    var starRef = db.ref("phoebe-dashboard/chore-stars/" + kid);
+    starRef.transaction(function(current) {
+        return (current || 0) + 1;
+    });
+
+    /* Confetti burst */
+    spawnConfetti(counter);
+}
+
+function spawnConfetti(el) {
+    var rect = el.getBoundingClientRect();
+    var colors = ["var(--accent-warm)", "var(--accent)", "var(--red)", "var(--blue)", "#ff69b4"];
+    for (var i = 0; i < 12; i++) {
+        var p = document.createElement("div");
+        p.className = "confetti-particle";
+        p.style.background = colors[i % colors.length];
+        p.style.left = (rect.left + rect.width / 2 + (Math.random() - 0.5) * 40) + "px";
+        p.style.top = (rect.top + (Math.random() - 0.5) * 20) + "px";
+        p.style.animationDelay = (Math.random() * 0.2) + "s";
+        document.body.appendChild(p);
+        setTimeout(function(el) { el.remove(); }, 1000, p);
+    }
+}
+
+function loadStarCount() {
+    if (_choreStarListeners) return;
+    _choreStarListeners = true;
+    var db = getFirebaseDb();
+    if (!db) return;
+    db.ref("phoebe-dashboard/chore-stars").on("value", function(snap) {
+        var stars = snap.val() || {};
+        for (var kid in stars) {
+            var counter = document.getElementById("star-counter-" + kid);
+            if (counter) {
+                var countEl = counter.querySelector(".star-count");
+                if (countEl) countEl.textContent = String(stars[kid] || 0);
+            }
+        }
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE 3: CAREGIVER HANDOFF (Firebase RTDB)                            */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _selectedMood = "calm";
+
+function openHandoffForm() {
+    var overlay = document.getElementById("handoff-overlay");
+    if (overlay) {
+        overlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+}
+
+function closeHandoffForm() {
+    var overlay = document.getElementById("handoff-overlay");
+    if (overlay) {
+        overlay.style.display = "none";
+        document.body.style.overflow = "";
+    }
+}
+
+function selectMood(mood) {
+    _selectedMood = mood;
+    var btns = document.querySelectorAll("#handoff-mood-selector .mood-btn");
+    btns.forEach(function(btn) {
+        btn.classList.toggle("selected", btn.getAttribute("data-mood") === mood);
+    });
+}
+
+function saveHandoffNote() {
+    var db = getFirebaseDb();
+    if (!db) return;
+    var caregiver = document.getElementById("handoff-caregiver").value;
+    var shiftStart = document.getElementById("handoff-start").value;
+    var shiftEnd = document.getElementById("handoff-end").value;
+    var meals = document.getElementById("handoff-meals").value.trim();
+    var medsGiven = document.getElementById("handoff-meds").checked;
+    var incidents = document.getElementById("handoff-incidents").value.trim();
+    var notes = document.getElementById("handoff-notes").value.trim();
+
+    /* Format shift times for display */
+    function fmtTime(t) {
+        if (!t) return "";
+        var parts = t.split(":");
+        var h = parseInt(parts[0], 10);
+        var m = parts[1] || "00";
+        var ampm = h >= 12 ? "PM" : "AM";
+        h = h % 12 || 12;
+        return h + ":" + m + " " + ampm;
+    }
+
+    var today = new Date().toISOString().slice(0, 10);
+    var shiftId = Date.now().toString(36);
+    db.ref("phoebe-dashboard/care-handoff/" + today + "/" + shiftId).set({
+        caregiver: caregiver,
+        shift_start: fmtTime(shiftStart),
+        shift_end: fmtTime(shiftEnd),
+        meals: meals,
+        mood: _selectedMood,
+        medications_given: medsGiven,
+        incidents: incidents,
+        notes: notes,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+    });
+
+    /* Reset form */
+    document.getElementById("handoff-meals").value = "";
+    document.getElementById("handoff-incidents").value = "";
+    document.getElementById("handoff-notes").value = "";
+    closeHandoffForm();
+}
+
+function loadLatestHandoff() {
+    var db = getFirebaseDb();
+    if (!db) return;
+    var today = new Date().toISOString().slice(0, 10);
+    db.ref("phoebe-dashboard/care-handoff/" + today).limitToLast(1).on("value", function(snap) {
+        var data = snap.val();
+        var el = document.getElementById("latest-handoff");
+        if (!el) return;
+        if (!data) { el.innerHTML = ""; return; }
+        var keys = Object.keys(data);
+        if (keys.length === 0) { el.innerHTML = ""; return; }
+        var latest = data[keys[keys.length - 1]];
+        var moodEmoji = { calm: "&#128522;", happy: "&#128515;", sleepy: "&#128564;", agitated: "&#128544;" };
+        var emoji = moodEmoji[latest.mood] || "";
+        el.innerHTML = '<strong>' + escHtml(latest.caregiver || "") + '</strong> ' +
+            escHtml(latest.shift_start || "") + ' - ' + escHtml(latest.shift_end || "") +
+            ' &middot; ' + emoji + ' ' + escHtml(latest.mood || "") +
+            (latest.notes ? ' &middot; <em>' + escHtml(latest.notes).substring(0, 60) + '</em>' : '');
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE 5: VISUAL GOALS PROGRESS ARCS (SVG animation)                  */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function animateGoalArcs() {
+    var arcs = document.querySelectorAll(".goal-arc");
+    arcs.forEach(function(arc) {
+        var pct = parseInt(arc.getAttribute("data-pct") || "0", 10);
+        var fill = arc.querySelector(".goal-arc-fill");
+        if (!fill) return;
+        /* circumference of circle r=34: 2 * pi * 34 = 213.6 */
+        var circumference = 213.6;
+        var offset = circumference - (pct / 100) * circumference;
+        /* Trigger animation after a small delay */
+        setTimeout(function() {
+            fill.style.strokeDashoffset = String(offset);
+        }, 150);
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE 6: MORNING BRIEF DISPLAY (Firebase RTDB)                       */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function loadMorningBrief() {
+    var db = getFirebaseDb();
+    if (!db) return;
+    var today = new Date().toISOString().slice(0, 10);
+    db.ref("phoebe-dashboard/morning-brief/" + today).once("value", function(snap) {
+        var data = snap.val();
+        var card = document.getElementById("morning-brief-card");
+        var container = document.getElementById("brief-priorities");
+        if (!card || !container || !data) return;
+
+        /* Determine persona priorities */
+        var persona = _userPersona || "admin";
+        var priorities = data.priorities || [];
+        if (data.persona_priorities && data.persona_priorities[persona]) {
+            priorities = data.persona_priorities[persona];
+        }
+        if (priorities.length === 0) return;
+
+        var dotColors = ["var(--accent)", "var(--accent-warm)", "var(--red)", "var(--blue)", "var(--amber)"];
+        var html = "";
+        for (var i = 0; i < priorities.length; i++) {
+            var p = priorities[i];
+            var text = typeof p === "string" ? p : (p.text || "");
+            var color = dotColors[i % dotColors.length];
+            html += '<div class="brief-item"><span class="brief-item-dot" style="background:' + color + '"></span>' + escHtml(text) + '</div>';
+        }
+        container.innerHTML = html;
+        card.style.display = "block";
+    });
+}
+
+function toggleMorningBrief() {
+    var card = document.getElementById("morning-brief-card");
+    if (!card) return;
+    card.classList.toggle("expanded");
+    var btn = card.querySelector(".brief-toggle");
+    if (btn) {
+        btn.textContent = card.classList.contains("expanded") ? "Show less" : "See full brief";
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURE 7: EMAIL-TO-ACTION STUB (Firebase RTDB)                        */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function loadEmailActions() {
+    var db = getFirebaseDb();
+    if (!db) return;
+    var today = new Date().toISOString().slice(0, 10);
+    db.ref("phoebe-dashboard/email-actions/" + today).once("value", function(snap) {
+        var data = snap.val();
+        var section = document.getElementById("sec-email-actions");
+        var list = document.getElementById("email-actions-list");
+        var badge = document.getElementById("email-action-count");
+        if (!data || !section || !list) return;
+
+        var keys = Object.keys(data);
+        if (keys.length === 0) return;
+
+        section.style.display = "flex";
+        list.style.display = "block";
+        if (badge) {
+            badge.textContent = String(keys.length);
+            badge.classList.remove("zero");
+        }
+
+        var html = "";
+        for (var i = 0; i < keys.length; i++) {
+            var action = data[keys[i]];
+            html += '<div class="email-action-item">' +
+                '<span>&#9993;</span> ' +
+                '<span>' + escHtml(action.subject || action.text || "") + '</span>' +
+                '</div>';
+        }
+        list.innerHTML = html;
+    });
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  FEATURES: Initialization function (called after auth)                   */
+/* ══════════════════════════════════════════════════════════════════════════ */
+function initInteractiveFeatures() {
+    loadShoppingList();
+    loadChores();
+    loadLatestHandoff();
+    animateGoalArcs();
+    loadMorningBrief();
+    loadEmailActions();
+    /* Default mood selection */
+    selectMood("calm");
+}
+
+/* ══════════════════════════════════════════════════════════════════════════ */
 /*  INIT ON DOM READY                                                       */
 /* ══════════════════════════════════════════════════════════════════════════ */
 document.addEventListener("DOMContentLoaded", function() {
@@ -9660,6 +10790,8 @@ document.addEventListener("DOMContentLoaded", function() {
         restoreTaskView();
         autoCollapseEmptySections();
         setTimeout(hideUnnecessaryToggles, 300);
+        /* Init interactive features (may degrade gracefully without Firebase) */
+        setTimeout(function() { animateGoalArcs(); }, 500);
     }
 
     /* Chat: Enter key to send, @mention handling, typing indicator, Escape to cancel reply */
