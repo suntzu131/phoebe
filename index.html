@@ -1835,17 +1835,18 @@ canvas { max-width: 100%; }
     /* ── 4. BOTTOM NAV: visible, safe area aware ────────────────────── */
     .bottom-nav {
         display: flex;
+        justify-content: space-evenly;
         z-index: 100;
         height: 56px;
         padding-left: 0;
         padding-right: 0;
-        overflow: hidden;
     }
     .nav-tab {
-        flex: 1 1 0;
+        flex: 1 1 0%;
         min-width: 0;
         min-height: 48px;
-        padding: 6px 4px;
+        padding: 6px 2px;
+        border-radius: 0;
     }
     .nav-tab-icon { font-size: 18px; }
     .nav-tab-label { font-size: 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -3560,7 +3561,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 22:41</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 22:43</span>
     </div>
 </aside>
 
@@ -3769,7 +3770,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 25, 2026 at 10:41 PM &middot;
+            Generated March 25, 2026 at 10:43 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -4677,7 +4678,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 25, 2026 at 10:41 PM</div>
+            <div class="report-meta">Generated March 25, 2026 at 10:43 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$4,402/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -4689,7 +4690,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 25, 2026 at 10:41 PM</div>
+            <div class="report-meta">Last updated: March 25, 2026 at 10:43 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -4726,7 +4727,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">91</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 22:41</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 22:43</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
