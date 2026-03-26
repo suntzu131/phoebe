@@ -517,6 +517,46 @@ h1, h2, h3, h4, h5, h6, .panel-title, .report-title, .chart-title {
     background: var(--accent-light);
 }
 
+/* ── FULL-PANEL CHAT (sidebar navigation) ────────────────────────────── */
+#panel-chat {
+    padding: 0;
+}
+#panel-chat .panel-chat-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: calc(100vh - 16px);
+    padding: 8px 24px 0;
+    display: flex;
+    flex-direction: column;
+}
+#panel-chat .chat-container {
+    flex: 1;
+    height: auto;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+#panel-chat .chat-messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+#panel-chat .chat-input-area {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    padding: 12px 16px;
+    border-top: 1px solid var(--line);
+    background: var(--paper);
+}
+#panel-chat .chat-header {
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
 /* ── PANELS — one visible at a time ───────────────────────────────────── */
 .panel {
     display: none;
@@ -2128,6 +2168,22 @@ canvas { max-width: 100%; }
     .pinned-msg-card { padding: 8px 10px; }
     .report-card { padding: 14px; }
     .report-section-title { font-size: 12px; }
+
+    /* ── 6b. PANEL-CHAT: full height on mobile ─────────────────────── */
+    #panel-chat { padding: 0 0 56px; }
+    #panel-chat .panel-chat-wrap {
+        height: calc(100vh - 56px);
+        padding: 0;
+    }
+    #panel-chat .chat-container {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+    }
+    #panel-chat .chat-input-area {
+        padding: 8px 10px;
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+    }
 
     /* ── 7. METRICS: horizontal layout on phone ────────────────────── */
     .metrics-grid { grid-template-columns: 1fr; gap: 8px; }
@@ -5777,6 +5833,10 @@ canvas { max-width: 100%; }
 
         <div class="sidebar-divider"></div>
 
+        <button class="sidebar-item" data-panel="panel-chat" data-label="Chat" onclick="showPanel('panel-chat', this)">
+            <span class="sidebar-item-icon">&#128172;</span>
+            <span class="sidebar-item-label">Chat</span>
+        </button>
         <button class="sidebar-item" data-panel="panel-more" data-label="Settings" onclick="showPanel('panel-more', this)">
             <span class="sidebar-item-icon">&#9881;&#65039;</span>
             <span class="sidebar-item-label">Settings</span>
@@ -5786,7 +5846,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 09:23</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 09:38</span>
     </div>
 </aside>
 
@@ -5942,7 +6002,7 @@ canvas { max-width: 100%; }
     
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 26, 2026 at 09:23 AM &middot;
+            Generated March 26, 2026 at 09:38 AM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -6136,9 +6196,16 @@ canvas { max-width: 100%; }
                     <div class="fp-status">Needs IEP evaluation. Activities: Swimming, TKD</div>
                 </div>
             </div>
-            
+            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Updated invitation: Send koko video  @ Monthly from 4pm to 5</div>
             <div class="family-detail">
-                <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
+                <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#128197;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-04-10</span>
+                    <span class="person-tl-text">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (</span>
+                </div>
+            </div>
+</div>
             </div>
         </div>
 <div class="fp-card" onclick="toggleFamilyDetail(this)">
@@ -6162,9 +6229,16 @@ canvas { max-width: 100%; }
                     <div class="fp-status">Advanced Alzheimer's care. Moving to Anaheim Villa (in progress)</div>
                 </div>
             </div>
-            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Submit bond for mother's assets</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>IHSS reassessment request — mother mobility decline — due in</div>
+            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Mother's Day</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Submit bond for mother's assets</div>
             <div class="family-detail">
                 <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#128197;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-05-10</span>
+                    <span class="person-tl-text">Mother's Day</span>
+                </div>
+            </div>
+<div class="person-tl-item">
                 <span class="person-tl-dot">&#9889;</span>
                 <div class="person-tl-body">
                     <span class="person-tl-date">2026-03-26</span>
@@ -6191,7 +6265,97 @@ canvas { max-width: 100%; }
             </div>
             <div class="card">
                 <div class="card-body tab-panel active" id="tab-calendar-events">
-                    <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
+                    <div class="timeline-item info">
+            <div class="timeline-date">2026-03-28</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Wedding Anniversary</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-03-30</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-05</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Easter Sunday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 08:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Trim Hair</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 09:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Prepare tithe</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-06</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Easter Monday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 10, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-11</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Grandpa Han's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-12</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Chris Eun's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 12, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Vacuum all filters for air purifiers</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Tax Day</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-21</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Plan for Summer Trip</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-24</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Atum Hyung's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-25</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Happy birthday!</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-26</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Hawaii Wedding Anniversary</span>
+            </div>
+        </div>
+
                 </div>
                 <div class="card-body tab-panel" id="tab-calendar-deadlines" data-persona-min="admin">
                     <div class="timeline-item critical">
@@ -6385,7 +6549,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 26, 2026 at 09:23 AM</div>
+            <div class="report-meta">Generated March 26, 2026 at 09:38 AM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$100/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -6397,7 +6561,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 26, 2026 at 09:23 AM</div>
+            <div class="report-meta">Last updated: March 26, 2026 at 09:38 AM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -6683,7 +6847,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">92</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 09:23</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 09:38</span><span class="sysstat-lbl">Last render</span></div>
     </div>
         </div>
     </div>
@@ -6697,7 +6861,65 @@ canvas { max-width: 100%; }
     <div class="panel" id="panel-calendar" style="display:none"></div>
     <div class="panel" id="panel-reports" style="display:none"></div>
     <div class="panel" id="panel-system" style="display:none"></div>
-    <div class="panel" id="panel-chat" style="display:none"></div>
+    <div class="panel" id="panel-chat">
+        <div class="panel-chat-wrap">
+            <div class="chat-container" id="panel-chat-container">
+                <div class="chat-header">
+                    <div class="chat-header-left">
+                        <h3>Phoebe Chat</h3>
+                        <span class="chat-status" id="panel-chat-status"><span class="skeleton-line" style="width:64px;height:10px;display:inline-block;margin:0;vertical-align:middle"></span></span>
+                    </div>
+                    <div class="chat-header-actions">
+                        <button class="chat-header-btn" id="panel-push-bell-btn" onclick="togglePushNotifications()" aria-label="Enable notifications" title="Enable notifications">&#128276;</button>
+                        <button class="chat-header-btn" onclick="togglePanelChatSearch()" aria-label="Search messages" title="Search messages">&#128269;</button>
+                    </div>
+                </div>
+                <div class="chat-search-bar" id="panel-chat-search-bar">
+                    <input type="text" id="panel-chat-search-input" placeholder="Search messages..." autocomplete="off">
+                    <div class="chat-search-nav">
+                        <span id="panel-chat-search-count"></span>
+                        <button onclick="panelChatSearchNav(-1)" aria-label="Previous match">&#9650;</button>
+                        <button onclick="panelChatSearchNav(1)" aria-label="Next match">&#9660;</button>
+                    </div>
+                    <button class="chat-search-close" onclick="closePanelChatSearch()" aria-label="Close search">&times;</button>
+                </div>
+                <div class="chat-threads">
+                    <div class="thread-tabs" id="panel-thread-tabs">
+                        <button class="thread-tab active" data-thread="phoebe-family" onclick="switchThread('phoebe-family', this)">Family</button>
+                        <button class="thread-tab thread-tab-new" onclick="createNewThread()">+ New</button>
+                    </div>
+                    <div class="thread-topic-line" id="panel-thread-topic-line" onclick="editThreadDescription()"></div>
+                </div>
+                <div class="chat-messages" id="panel-chat-messages">
+                    <div class="chat-empty" id="panel-chat-empty">
+                        <div class="chat-empty-icon">&#128172;</div>
+                        <div class="chat-empty-text">Phoebe Family Chat</div>
+                        <div class="chat-empty-sub">Messages sync in real-time across all family devices</div>
+                    </div>
+                </div>
+                <div class="gchat-typing" id="panel-gchat-typing"></div>
+                <div class="chat-reply-bar" id="panel-chat-reply-bar">
+                    <div class="chat-reply-bar-content">
+                        <div class="chat-reply-bar-label" id="panel-reply-bar-label"></div>
+                        <div class="chat-reply-bar-text" id="panel-reply-bar-text"></div>
+                    </div>
+                    <button class="chat-reply-bar-close" onclick="cancelReply()" aria-label="Cancel reply">&times;</button>
+                </div>
+                <div class="voice-recording-bar" id="panel-voice-recording-bar">
+                    <div class="voice-rec-dot"></div>
+                    <span class="voice-rec-timer" id="panel-voice-rec-timer">0:00</span>
+                    <span style="font-size:12px;color:var(--ink-secondary)">Recording...</span>
+                    <button class="voice-rec-cancel" onclick="cancelVoiceRecording()">Cancel</button>
+                </div>
+                <div class="chat-input-area" style="position:relative;">
+                    <div class="mention-dropdown" id="panel-mention-dropdown"></div>
+                    <input type="text" id="panel-chat-input" placeholder="Message Phoebe..." autocomplete="off">
+                    <button class="chat-mic-btn" id="panel-chat-mic-btn" onclick="toggleVoiceRecording()" title="Voice message" aria-label="Record voice message">&#127908;</button>
+                    <button id="panel-chat-send" onclick="sendChatMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div><!-- /main-content -->
 </div><!-- /app-shell -->
@@ -6716,14 +6938,14 @@ canvas { max-width: 100%; }
         <span class="nav-tab-icon">&#128176;</span>
         <span class="nav-tab-label">Money</span>
     </button>
-    <button class="nav-tab" data-panel="panel-goals" onclick="showPanel('panel-goals', null, this)" aria-label="Tasks">
-        <span class="nav-tab-icon">&#127919;</span>
-        <span class="nav-tab-label">Tasks</span>
+    <button class="nav-tab" data-panel="panel-chat" onclick="showPanel('panel-chat', null, this)" aria-label="Chat">
+        <span class="nav-tab-icon">&#128172;</span>
+        <span class="nav-tab-label">Chat</span>
     </button>
 </nav>
 
 <!-- ══════════════ FAB + COMMAND PALETTE (Cmd+K) ══════════════ -->
-<button class="fab" id="fab" onclick="openCommandPalette()" aria-label="Quick command (Ctrl+K)">&#9889;</button>
+<button class="fab" id="fab" onclick="toggleChatOverlay()" aria-label="Chat with Phoebe">&#128172;</button>
 
 <div class="cmd-palette-overlay" id="cmdPaletteOverlay" onclick="if(event.target===this) closeCommandPalette()">
     <div class="cmd-palette" role="dialog" aria-label="Command palette">
@@ -7051,6 +7273,24 @@ function showPanel(panelId, sidebarBtn, bottomBtn) {
         setTimeout(function() { initCharts(); }, 50);
     }
 
+    /* Init chat when full-panel chat is shown */
+    if (panelId === "panel-chat") {
+        initChat();
+        syncChatToPanel();
+        /* Close overlay if it was open — panel takes over */
+        var overlay = document.getElementById("chatOverlay");
+        if (overlay && overlay.classList.contains("open")) {
+            overlay.classList.remove("open");
+            var backdrop = document.getElementById("chatBackdrop");
+            if (backdrop) backdrop.classList.remove("open");
+        }
+        /* Clear notification badges */
+        var chatSidebarBtn2 = document.querySelector(".sidebar-chat-btn");
+        if (chatSidebarBtn2) chatSidebarBtn2.classList.remove("has-notification");
+        var bottomChatTab2 = document.querySelector('.nav-tab[data-panel="panel-chat"]');
+        if (bottomChatTab2) bottomChatTab2.classList.remove("has-notification");
+    }
+
     /* Save to storage */
     storageSet("phoebe_active_panel", panelId);
 }
@@ -7071,6 +7311,13 @@ function closeMobileSidebar() {
 var _chatPinned = false;
 
 function toggleChatOverlay() {
+    /* If user is already on the full-panel chat, don't open overlay on top */
+    if (_currentPanel === "panel-chat") {
+        /* Focus the panel's input instead */
+        var panelInput = document.getElementById("panel-chat-input");
+        if (panelInput) panelInput.focus();
+        return;
+    }
     var overlay = document.getElementById("chatOverlay");
     var backdrop = document.getElementById("chatBackdrop");
     if (!overlay) return;
@@ -7094,6 +7341,8 @@ function openChatOverlay() {
     /* Clear notification flash */
     var chatSidebarBtn = document.querySelector(".sidebar-chat-btn");
     if (chatSidebarBtn) chatSidebarBtn.classList.remove("has-notification");
+    var bottomChatTab = document.querySelector('.nav-tab[data-panel="panel-chat"]');
+    if (bottomChatTab) bottomChatTab.classList.remove("has-notification");
     /* Hide FAB on mobile when chat is open */
     var fab = document.getElementById("fab");
     if (fab && window.innerWidth <= 480) {
@@ -7134,6 +7383,105 @@ function toggleChatPin() {
         }
     }
 }
+
+/* ── Full-Panel Chat Sync ─────────────────────────────────────────────── */
+/* Mirrors overlay messages into the panel-chat container so both views
+   share the same Firebase data. The overlay remains the "source of truth"
+   for the real-time listener; the panel simply clones its content. */
+function syncChatToPanel() {
+    var overlayMsgs = document.getElementById("chat-messages");
+    var panelMsgs = document.getElementById("panel-chat-messages");
+    var panelStatus = document.getElementById("panel-chat-status");
+    var overlayStatus = document.getElementById("chat-status");
+    if (!overlayMsgs || !panelMsgs) return;
+
+    /* Clone messages into panel */
+    panelMsgs.innerHTML = overlayMsgs.innerHTML;
+    panelMsgs.scrollTop = panelMsgs.scrollHeight;
+
+    /* Sync status text */
+    if (panelStatus && overlayStatus) {
+        panelStatus.innerHTML = overlayStatus.innerHTML;
+        panelStatus.className = overlayStatus.className;
+    }
+
+    /* Sync thread tabs */
+    var overlayTabs = document.getElementById("thread-tabs");
+    var panelTabs = document.getElementById("panel-thread-tabs");
+    if (overlayTabs && panelTabs) {
+        panelTabs.innerHTML = overlayTabs.innerHTML;
+    }
+
+    /* Sync topic line */
+    var overlayTopic = document.getElementById("thread-topic-line");
+    var panelTopic = document.getElementById("panel-thread-topic-line");
+    if (overlayTopic && panelTopic) {
+        panelTopic.innerHTML = overlayTopic.innerHTML;
+    }
+}
+
+/* Keep panel in sync when new messages arrive (called from renderChatMessage) */
+function _maybeSyncPanel() {
+    if (_currentPanel === "panel-chat") {
+        syncChatToPanel();
+    }
+}
+
+/* Panel-chat search (mirrors overlay search) */
+function togglePanelChatSearch() {
+    var bar = document.getElementById("panel-chat-search-bar");
+    if (bar) {
+        bar.style.display = bar.style.display === "flex" ? "none" : "flex";
+        if (bar.style.display === "flex") {
+            document.getElementById("panel-chat-search-input").focus();
+        }
+    }
+}
+function closePanelChatSearch() {
+    var bar = document.getElementById("panel-chat-search-bar");
+    if (bar) bar.style.display = "none";
+}
+function panelChatSearchNav(dir) {
+    /* Delegate to overlay search for now — same thread data */
+    chatSearchNav(dir);
+}
+
+/* Panel chat input — wire up Enter key and Send button.
+   The panel's send/input delegates to the same sendChatMessage() function
+   but we need to read from whichever input is currently visible. */
+(function _wirePanelChatInput() {
+    document.addEventListener("DOMContentLoaded", function() {
+        var panelInput = document.getElementById("panel-chat-input");
+        if (panelInput) {
+            panelInput.addEventListener("keydown", function(e) {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    /* Move value to overlay input so sendChatMessage picks it up */
+                    var overlayInput = document.getElementById("chat-input");
+                    if (overlayInput) {
+                        overlayInput.value = panelInput.value;
+                        panelInput.value = "";
+                        sendChatMessage();
+                    }
+                }
+            });
+        }
+        var panelSend = document.getElementById("panel-chat-send");
+        if (panelSend) {
+            panelSend.addEventListener("click", function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var panelInput2 = document.getElementById("panel-chat-input");
+                var overlayInput2 = document.getElementById("chat-input");
+                if (panelInput2 && overlayInput2) {
+                    overlayInput2.value = panelInput2.value;
+                    panelInput2.value = "";
+                    sendChatMessage();
+                }
+            });
+        }
+    });
+})();
 
 /* ── Merged Tab Switching ────────────────────────────────────────────── */
 function switchMergedTab(e, tabId) {
@@ -8305,7 +8653,7 @@ function initTaskSwipe() {
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  11c. BATCH 5 — TASK MULTI-VIEW: List/Kanban/Calendar (Item 12)          */
 /* ══════════════════════════════════════════════════════════════════════════ */
-var _calEventsData = {"2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
+var _calEventsData = {"2026-03-28": ["Wedding Anniversary"], "2026-03-30": ["Stay at The Hadsten Solvang, Tapestry Collection by Hilton"], "2026-04-05": ["Easter Sunday", "Trim Hair", "Prepare tithe"], "2026-04-06": ["Easter Monday"], "2026-04-10": ["Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)"], "2026-04-11": ["Grandpa Han's Birthday"], "2026-04-12": ["Chris Eun's Birthday", "Vacuum all filters for air purifiers"], "2026-04-15": ["Tax Day"], "2026-04-21": ["Plan for Summer Trip"], "2026-04-24": ["Atum Hyung's Birthday"], "2026-04-25": ["Happy birthday!"], "2026-04-26": ["Hawaii Wedding Anniversary"], "2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
 
 function switchTaskView(view, btn) {
     /* Update toggle buttons */
@@ -8482,11 +8830,11 @@ var ALLOWED_USERS = {
 
 /* Persona-based panel access control */
 var PERSONA_ACCESS = {
-    "admin":     ["home","family","money","goals","more"],
-    "partner":   ["home","family","goals"],
-    "housemate": ["home","family"],
-    "guest":     ["home"],
-    "system":    ["home","family","money","goals","more"],
+    "admin":     ["home","family","money","goals","more","chat"],
+    "partner":   ["home","family","goals","chat"],
+    "housemate": ["home","family","chat"],
+    "guest":     ["home","chat"],
+    "system":    ["home","family","money","goals","more","chat"],
 };
 
 function signInWithGoogle() {
@@ -9600,6 +9948,9 @@ function appendChatMessage(key, msg) {
 
     /* Observe for read receipts */
     observeMessageForReadReceipt(div);
+
+    /* Sync to full-panel chat if it's the active view */
+    _maybeSyncPanel();
 }
 
 /* ── Rebuild message content (after thinking -> response transition) ── */
@@ -11395,18 +11746,22 @@ function initPushNotifications() {
         _pushMessaging.onMessage(function(payload) {
             var chatOverlay = document.getElementById("chatOverlay");
             var isChatOpen = chatOverlay && chatOverlay.classList.contains("open");
+            var isChatPanel = (_currentPanel === "panel-chat");
 
-            if (!isChatOpen) {
+            if (!isChatOpen && !isChatPanel) {
                 /* Flash the sidebar chat button to alert the user */
                 var chatBtn = document.querySelector(".sidebar-chat-btn");
                 var mobileChatBtn = document.querySelector(".mobile-header-btn[aria-label='Open chat']");
+                var bottomChatTab = document.querySelector('.nav-tab[data-panel="panel-chat"]');
                 if (chatBtn) chatBtn.classList.add("has-notification");
                 if (mobileChatBtn) mobileChatBtn.classList.add("has-notification");
+                if (bottomChatTab) bottomChatTab.classList.add("has-notification");
 
                 /* Auto-remove flash after 10 seconds */
                 setTimeout(function() {
                     if (chatBtn) chatBtn.classList.remove("has-notification");
                     if (mobileChatBtn) mobileChatBtn.classList.remove("has-notification");
+                    if (bottomChatTab) bottomChatTab.classList.remove("has-notification");
                 }, 10000);
             }
             /* Chat messages arrive via Firebase RTDB listener — no need to render here */
