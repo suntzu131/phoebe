@@ -5112,7 +5112,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 06:30</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-26 08:09</span>
     </div>
 </aside>
 
@@ -5168,10 +5168,10 @@ canvas { max-width: 100%; }
             <span class="sc-label">Money</span>
             <span class="sc-detail">&#8599; Cash flow moderate</span>
         </button>
-<button class="summary-card sc-info" data-panel="panel-family" onclick="showPanel('panel-family')" data-persona-min="housemate">
-            <span class="sc-value">2026-03-28</span>
+<button class="summary-card sc-info" data-panel="panel-family" onclick="showPanel('panel-family')" style="display:none" data-persona-min="housemate">
+            <span class="sc-value">No events</span>
             <span class="sc-label">Calendar</span>
-            <span class="sc-detail">Wedding Anniversary</span>
+            <span class="sc-detail">Calendar is clear</span>
         </button>
 <button class="summary-card sc-warning" data-panel="panel-family" onclick="showPanel('panel-family')" data-persona-min="partner">
             <span class="sc-value">2</span>
@@ -5196,8 +5196,8 @@ canvas { max-width: 100%; }
         </div>
         <div class="hc-body">
             <div class="hc-status-row">
-                <span class="hc-badge hc-badge-sage">Dan &amp; Minako</span>
-                <span class="hc-meta">Evening/night (family care)</span>
+                <span class="hc-badge hc-badge-sage">Hannah</span>
+                <span class="hc-meta">Day shift (8AM-6PM)</span>
                 <button class="hc-handoff-btn" onclick="openHandoffForm()" title="Add shift notes">&#128221; Shift Notes</button>
             </div>
             <div class="hc-latest-handoff" id="latest-handoff"></div>
@@ -5385,22 +5385,22 @@ canvas { max-width: 100%; }
         </div>
         <div class="hc-body">
             <div class="hc-wx-main">
-                <span class="hc-wx-temp">62&#176;</span>
+                <span class="hc-wx-temp">61&#176;</span>
                 <div class="hc-wx-info">
                     <span class="hc-wx-cond">Overcast</span>
-                    <span class="hc-wx-hilo">H 89&#176; / L 57&#176;</span>
+                    <span class="hc-wx-hilo">H 88&#176; / L 58&#176;</span>
                     <span class="hc-muted">Irvine, CA</span>
                 </div>
             </div>
             <div class="hc-wx-forecast"><div class="hc-wx-day">
             <span class="hc-wx-day-label">03-26</span>
-            <span class="hc-wx-day-temp">89/57</span>
+            <span class="hc-wx-day-temp">88/58</span>
         </div><div class="hc-wx-day">
             <span class="hc-wx-day-label">03-27</span>
-            <span class="hc-wx-day-temp">79/58</span>
+            <span class="hc-wx-day-temp">74/59</span>
         </div><div class="hc-wx-day">
             <span class="hc-wx-day-label">03-28</span>
-            <span class="hc-wx-day-temp">86/59</span>
+            <span class="hc-wx-day-temp">84/58</span>
         </div></div>
             <div class="hc-collapsible">
                 <div class="hc-wx-rec">Mild conditions — outdoor activity OK</div>
@@ -5480,7 +5480,7 @@ canvas { max-width: 100%; }
             <span class="hc-chevron">&#9660;</span>
         </div>
         <div class="hc-body">
-            <div class="hc-hh-grid"><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Dan</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Minako</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Koko</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Issa</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#128153;</span><span class="hc-hh-name">Mother</span></div></div>
+            <div class="hc-hh-grid"><div class="hc-hh-person"><span class="hc-hh-avatar">&#128187;</span><span class="hc-hh-name">Dan</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#127968;</span><span class="hc-hh-name">Minako</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#128153;</span><span class="hc-hh-name">Mother</span></div><div class="hc-hh-person"><span class="hc-hh-avatar">&#128153;</span><span class="hc-hh-name">Hannah</span></div></div>
             <div class="hc-collapsible">
                 <div class="hc-sub-title">Shopping List <span class="hc-count-badge" id="shopping-count-badge" style="display:none">0</span></div>
                 <div class="hc-shopping-list" id="shopping-list-container">
@@ -5527,7 +5527,7 @@ canvas { max-width: 100%; }
     </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 26, 2026 at 06:30 AM &middot;
+            Generated March 26, 2026 at 08:09 AM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -5708,14 +5708,7 @@ canvas { max-width: 100%; }
             <span class="family-notes">IEP needed, RCOC: swimming + TKD</span>
             <div class="family-detail">
                 <div class="family-detail-row">IEP needed</div><div class="family-detail-row">RCOC: swimming + TKD</div>
-                <div class="person-timeline"><div class="person-tl-item">
-                <span class="person-tl-dot">&#128197;</span>
-                <div class="person-tl-body">
-                    <span class="person-tl-date">2026-04-10</span>
-                    <span class="person-tl-text">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (</span>
-                </div>
-            </div>
-</div>
+                <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
             </div>
         </div>
 <div class="family-card" onclick="toggleFamilyDetail(this)">
@@ -5732,13 +5725,6 @@ canvas { max-width: 100%; }
             <div class="family-detail">
                 <div class="family-detail-row">FAST 6e</div><div class="family-detail-row">93.8 lbs</div><div class="family-detail-row">RCFE decision made</div>
                 <div class="person-timeline"><div class="person-tl-item">
-                <span class="person-tl-dot">&#128197;</span>
-                <div class="person-tl-body">
-                    <span class="person-tl-date">2026-05-10</span>
-                    <span class="person-tl-text">Mother's Day</span>
-                </div>
-            </div>
-<div class="person-tl-item">
                 <span class="person-tl-dot">&#9889;</span>
                 <div class="person-tl-body">
                     <span class="person-tl-date">2026-03-26</span>
@@ -5765,97 +5751,7 @@ canvas { max-width: 100%; }
             </div>
             <div class="card">
                 <div class="card-body tab-panel active" id="tab-calendar-events">
-                    <div class="timeline-item info">
-            <div class="timeline-date">2026-03-28</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Wedding Anniversary</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-03-30</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Stay at The Hadsten Solvang, Tapestry Collection by Hilton</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-05</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Easter Sunday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 08:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Trim Hair</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 05, 09:00 AM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Prepare tithe</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-06</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Easter Monday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 10, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-11</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Grandpa Han's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-12</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Chris Eun's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">Apr 12, 04:00 PM</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Vacuum all filters for air purifiers</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-15</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Tax Day</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-21</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Plan for Summer Trip</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-24</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Atum Hyung's Birthday</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-25</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Happy birthday!</span>
-            </div>
-        </div>
-<div class="timeline-item info">
-            <div class="timeline-date">2026-04-26</div>
-            <div class="timeline-content">
-                <span class="timeline-title">Hawaii Wedding Anniversary</span>
-            </div>
-        </div>
-
+                    <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
                 </div>
                 <div class="card-body tab-panel" id="tab-calendar-deadlines" data-persona-min="admin">
                     <div class="timeline-item critical">
@@ -6010,7 +5906,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 26, 2026 at 06:30 AM</div>
+            <div class="report-meta">Generated March 26, 2026 at 08:09 AM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$4,402/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -6022,7 +5918,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 26, 2026 at 06:30 AM</div>
+            <div class="report-meta">Last updated: March 26, 2026 at 08:09 AM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -6313,7 +6209,7 @@ canvas { max-width: 100%; }
             </div>
 
             <div class="task-view" id="taskViewCalendar">
-                <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day today" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31</div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
+                <div class="cal-view" id="calendarView"><div class="cal-month-name">March 2026</div><div class="cal-grid"><div class="cal-dow">S</div><div class="cal-dow">M</div><div class="cal-dow">T</div><div class="cal-dow">W</div><div class="cal-dow">T</div><div class="cal-dow">F</div><div class="cal-dow">S</div><div class="cal-day" data-date="2026-03-01" onclick="showCalDay(this)">1</div><div class="cal-day" data-date="2026-03-02" onclick="showCalDay(this)">2</div><div class="cal-day" data-date="2026-03-03" onclick="showCalDay(this)">3</div><div class="cal-day" data-date="2026-03-04" onclick="showCalDay(this)">4</div><div class="cal-day" data-date="2026-03-05" onclick="showCalDay(this)">5</div><div class="cal-day" data-date="2026-03-06" onclick="showCalDay(this)">6</div><div class="cal-day" data-date="2026-03-07" onclick="showCalDay(this)">7</div><div class="cal-day" data-date="2026-03-08" onclick="showCalDay(this)">8</div><div class="cal-day" data-date="2026-03-09" onclick="showCalDay(this)">9</div><div class="cal-day" data-date="2026-03-10" onclick="showCalDay(this)">10</div><div class="cal-day" data-date="2026-03-11" onclick="showCalDay(this)">11</div><div class="cal-day" data-date="2026-03-12" onclick="showCalDay(this)">12</div><div class="cal-day" data-date="2026-03-13" onclick="showCalDay(this)">13</div><div class="cal-day" data-date="2026-03-14" onclick="showCalDay(this)">14</div><div class="cal-day" data-date="2026-03-15" onclick="showCalDay(this)">15<span class="cal-dot"></span></div><div class="cal-day" data-date="2026-03-16" onclick="showCalDay(this)">16</div><div class="cal-day" data-date="2026-03-17" onclick="showCalDay(this)">17</div><div class="cal-day" data-date="2026-03-18" onclick="showCalDay(this)">18</div><div class="cal-day" data-date="2026-03-19" onclick="showCalDay(this)">19</div><div class="cal-day" data-date="2026-03-20" onclick="showCalDay(this)">20</div><div class="cal-day" data-date="2026-03-21" onclick="showCalDay(this)">21</div><div class="cal-day" data-date="2026-03-22" onclick="showCalDay(this)">22</div><div class="cal-day" data-date="2026-03-23" onclick="showCalDay(this)">23</div><div class="cal-day" data-date="2026-03-24" onclick="showCalDay(this)">24</div><div class="cal-day" data-date="2026-03-25" onclick="showCalDay(this)">25</div><div class="cal-day today" data-date="2026-03-26" onclick="showCalDay(this)">26</div><div class="cal-day" data-date="2026-03-27" onclick="showCalDay(this)">27</div><div class="cal-day" data-date="2026-03-28" onclick="showCalDay(this)">28</div><div class="cal-day" data-date="2026-03-29" onclick="showCalDay(this)">29</div><div class="cal-day" data-date="2026-03-30" onclick="showCalDay(this)">30</div><div class="cal-day" data-date="2026-03-31" onclick="showCalDay(this)">31</div></div><div class="cal-day-detail" id="calDayDetail"></div></div>
             </div>
         </div>
     </div>
@@ -6332,7 +6228,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">92</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 06:30</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-26 08:09</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -7920,7 +7816,7 @@ function initTaskSwipe() {
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  11c. BATCH 5 — TASK MULTI-VIEW: List/Kanban/Calendar (Item 12)          */
 /* ══════════════════════════════════════════════════════════════════════════ */
-var _calEventsData = {"2026-03-28": ["Wedding Anniversary"], "2026-03-30": ["Stay at The Hadsten Solvang, Tapestry Collection by Hilton"], "2026-04-05": ["Easter Sunday", "Trim Hair", "Prepare tithe"], "2026-04-06": ["Easter Monday"], "2026-04-10": ["Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)"], "2026-04-11": ["Grandpa Han's Birthday"], "2026-04-12": ["Chris Eun's Birthday", "Vacuum all filters for air purifiers"], "2026-04-15": ["Tax Day"], "2026-04-21": ["Plan for Summer Trip"], "2026-04-24": ["Atum Hyung's Birthday"], "2026-04-25": ["Happy birthday!"], "2026-04-26": ["Hawaii Wedding Anniversary"], "2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
+var _calEventsData = {"2023-03-28": ["[Deadline] CCW license renewal"], "2023-05-15": ["[Deadline] Nanny status \u2014 is the nanny still employed? What's the monthly cost?"], "2024-09-15": ["[Deadline] Dental work \u2014 receding gums, crowns, missing teeth. Any upcoming procedures? Does Kaiser cover?"], "2024-10-10": ["[Deadline] Lease renewal \u2014 Irvine house at $5,745/mo, lease start Oct 2024"], "2024-12-15": ["[Deadline] IHSS back-tracking application (Dan as joint provider)"], "2025-01-03": ["[Deadline] Funeral pre-payment reimbursement from mother's account"], "2025-01-15": ["[Deadline] Father's van title transfer to aunt (gomo)"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe"]};
 
 function switchTaskView(view, btn) {
     /* Update toggle buttons */
@@ -11186,19 +11082,51 @@ function showIOSInstallHint() {
 /* ── PWA Service Worker ────────────────────────────────────────────────── */
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").then(function(reg) {
-        /* Listen for new SW versions and auto-activate */
+        /* Check for updates every 30 minutes */
+        setInterval(function() { reg.update(); }, 30 * 60 * 1000);
+
+        /* Listen for new SW versions */
         reg.addEventListener("updatefound", function() {
             var newSW = reg.installing;
             if (newSW) {
                 newSW.addEventListener("statechange", function() {
-                    if (newSW.state === "activated") {
-                        console.log("New service worker activated");
+                    if (newSW.state === "installed" && navigator.serviceWorker.controller) {
+                        /* New version ready — show update toast */
+                        _showUpdateToast();
                     }
                 });
             }
         });
     }).catch(function(err) {
         console.warn("SW registration failed:", err);
+    });
+
+    /* Auto-reload when new SW takes control */
+    var _refreshing = false;
+    navigator.serviceWorker.addEventListener("controllerchange", function() {
+        if (!_refreshing) {
+            _refreshing = true;
+            window.location.reload();
+        }
+    });
+}
+
+function _showUpdateToast() {
+    var toast = document.createElement("div");
+    toast.id = "update-toast";
+    toast.innerHTML = '<span>New version available</span><button onclick="_applyUpdate()">Update now</button>';
+    toast.style.cssText = "position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--accent,#7A9E7E);color:#fff;padding:12px 20px;border-radius:28px;display:flex;align-items:center;gap:12px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);font-size:14px;font-family:var(--font,Inter,sans-serif);animation:slideUp 0.3s ease;";
+    toast.querySelector("button").style.cssText = "background:rgba(255,255,255,0.25);border:none;color:#fff;padding:6px 16px;border-radius:16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;";
+    document.body.appendChild(toast);
+}
+
+function _applyUpdate() {
+    var toast = document.getElementById("update-toast");
+    if (toast) toast.remove();
+    navigator.serviceWorker.ready.then(function(reg) {
+        if (reg.waiting) {
+            reg.waiting.postMessage({ type: "SKIP_WAITING" });
+        }
     });
 }
 </script>

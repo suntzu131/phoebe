@@ -1,5 +1,5 @@
-// Phoebe Dashboard Service Worker — v11 (10 cards + 7 features)
-const CACHE_NAME = "phoebe-dashboard-v11";
+// Phoebe Dashboard Service Worker — v12 (network-first HTML)
+const CACHE_NAME = "phoebe-dashboard-v12";
 
 // Static assets: cache-first (rarely change)
 const STATIC_ASSETS = [
@@ -32,6 +32,13 @@ self.addEventListener("install", function(event) {
         })
     );
     self.skipWaiting();
+});
+
+/* Listen for SKIP_WAITING message from the page (update toast) */
+self.addEventListener("message", function(event) {
+    if (event.data && event.data.type === "SKIP_WAITING") {
+        self.skipWaiting();
+    }
 });
 
 self.addEventListener("activate", function(event) {
@@ -89,23 +96,21 @@ self.addEventListener("fetch", function(event) {
         return;
     }
 
-    // Strategy 2: Stale-while-revalidate for app shell (HTML, manifest)
+    // Strategy 2: Network-first for app shell (HTML, manifest)
+    // Always fetch fresh when online so dashboard updates show immediately.
+    // Falls back to cache when offline.
     if (isAppShell(url)) {
         event.respondWith(
-            caches.match(event.request).then(function(cached) {
-                var fetchPromise = fetch(event.request).then(function(response) {
-                    if (response && response.status === 200) {
-                        var clone = response.clone();
-                        caches.open(CACHE_NAME).then(function(cache) {
-                            cache.put(event.request, clone);
-                        });
-                    }
-                    return response;
-                }).catch(function() {
-                    return cached;
-                });
-                // Return cached immediately, update in background
-                return cached || fetchPromise;
+            fetch(event.request).then(function(response) {
+                if (response && response.status === 200) {
+                    var clone = response.clone();
+                    caches.open(CACHE_NAME).then(function(cache) {
+                        cache.put(event.request, clone);
+                    });
+                }
+                return response;
+            }).catch(function() {
+                return caches.match(event.request);
             })
         );
         return;
