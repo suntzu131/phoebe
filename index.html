@@ -18,6 +18,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js"></script>
 <style>
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  CSS VARIABLES — Johnny's Design DNA                                      */
@@ -2125,6 +2126,30 @@ canvas { max-width: 100%; }
     transition: background 0.15s;
 }
 .chat-header-btn:hover { background: var(--bg); }
+.chat-header-btn.bell-active { color: var(--accent); }
+.chat-header-btn.bell-denied { color: var(--red); opacity: 0.5; cursor: not-allowed; }
+@keyframes notif-flash {
+    0%, 100% { background: transparent; }
+    50% { background: rgba(168, 95, 63, 0.15); }
+}
+.nav-tab.has-notification .nav-tab-icon,
+.sidebar-item.has-notification [data-label]::after {
+    animation: notif-flash 1s ease-in-out 3;
+}
+.nav-tab.has-notification {
+    position: relative;
+}
+.nav-tab.has-notification::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: calc(50% - 16px);
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: notif-flash 1s ease-in-out 3;
+}
 .chat-status {
     font-size: 12px;
     color: var(--ink-secondary);
@@ -3562,7 +3587,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 22:47</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 23:01</span>
     </div>
 </aside>
 
@@ -3771,7 +3796,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 25, 2026 at 10:47 PM &middot;
+            Generated March 25, 2026 at 11:01 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -3787,6 +3812,7 @@ canvas { max-width: 100%; }
                     <span class="chat-status" id="chat-status"><span class="skeleton-line" style="width:64px;height:10px;display:inline-block;margin:0;vertical-align:middle"></span></span>
                 </div>
                 <div class="chat-header-actions">
+                    <button class="chat-header-btn" id="push-bell-btn" onclick="togglePushNotifications()" aria-label="Enable notifications" title="Enable notifications">&#128276;</button>
                     <button class="chat-header-btn" onclick="toggleChatSearch()" aria-label="Search messages" title="Search messages">&#128269;</button>
                 </div>
             </div>
@@ -4679,7 +4705,7 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 25, 2026 at 10:47 PM</div>
+            <div class="report-meta">Generated March 25, 2026 at 11:01 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$4,402/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -4691,7 +4717,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 25, 2026 at 10:47 PM</div>
+            <div class="report-meta">Last updated: March 25, 2026 at 11:01 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -4728,7 +4754,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">91</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 22:47</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 23:01</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -5037,6 +5063,11 @@ function showPanel(panelId, sidebarBtn, bottomBtn) {
     /* Lazy-init Firebase chat when panel is first shown */
     if (panelId === "panel-chat") {
         initChat();
+        /* Clear notification flash when entering chat */
+        var chatNavTab = document.querySelector('.nav-tab[data-panel="panel-chat"]');
+        var chatSidebarItem = document.querySelector('.sidebar-item[data-panel="panel-chat"]');
+        if (chatNavTab) chatNavTab.classList.remove("has-notification");
+        if (chatSidebarItem) chatSidebarItem.classList.remove("has-notification");
     }
 
     /* Hide FAB on chat panel (mobile: input area occupies that zone) */
@@ -6620,6 +6651,31 @@ function _generalizeForPartner() {
 }
 
 function _initDashboardAfterAuth() {
+    /* Check URL params for deep linking (e.g., from push notification click) */
+    var urlParams = new URLSearchParams(window.location.search);
+    var urlPanel = urlParams.get("panel");
+    if (urlPanel) {
+        var targetPanel = "panel-" + urlPanel;
+        if (document.getElementById(targetPanel)) {
+            showPanel(targetPanel);
+            /* Clean the URL to avoid re-opening panel on refresh */
+            if (window.history.replaceState) {
+                window.history.replaceState(null, "", window.location.pathname);
+            }
+            /* Skip storage restore since we have an explicit URL target */
+            setTimeout(function() { initCharts(); }, 200);
+            restoreCheckedTasks();
+            restoreCollapsedSections();
+            setTimeOfDay();
+            initAnomalySwipe();
+            initTaskSwipe();
+            restoreTaskView();
+            autoCollapseEmptySections();
+            setTimeout(hideUnnecessaryToggles, 300);
+            return;
+        }
+    }
+
     /* Restore last active panel */
     storageGet("phoebe_active_panel", "panel-home").then(function(panelId) {
         if (panelId && document.getElementById(panelId)) {
@@ -6774,6 +6830,11 @@ function initChat() {
             firebase.initializeApp(FIREBASE_CONFIG);
         }
         chatDb = firebase.database();
+
+        /* Initialize push notifications (lazy — only on first chat open) */
+        if (!_pushMessaging) {
+            initPushNotifications();
+        }
 
         /* Store current user profile photo in Firebase for cross-device photo sharing */
         if (_currentUser && _currentUser.photoURL && _currentUser.email) {
@@ -8763,6 +8824,153 @@ document.addEventListener("DOMContentLoaded", function() {
     /* Load the offline queue on startup */
     loadOfflineQueue();
 })();
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/*  14. PUSH NOTIFICATIONS — FCM registration + foreground handler          */
+/* ══════════════════════════════════════════════════════════════════════════ */
+var _pushMessaging = null;
+var _pushToken = null;
+var VAPID_KEY = "BKx1BcJN-0oQjcd5Z_qS-bVlYlyn2Z3fOlS9GuHyZUR7di6sPrFRncvi8WPddPnpLrL3ciNynLXRQK2aaK_1UN0";
+
+function initPushNotifications() {
+    if (!("Notification" in window) || !("serviceWorker" in navigator)) return;
+    if (typeof firebase === "undefined" || !firebase.messaging) return;
+
+    try {
+        _pushMessaging = firebase.messaging();
+
+        /* Foreground message handler — flash the chat tab instead of OS notification */
+        _pushMessaging.onMessage(function(payload) {
+            var activePanel = document.querySelector(".panel.active");
+            var isChatActive = activePanel && activePanel.id === "panel-chat";
+
+            if (!isChatActive) {
+                /* Flash the chat tab to alert the user */
+                var chatNavTab = document.querySelector('.nav-tab[data-panel="panel-chat"]');
+                var chatSidebarItem = document.querySelector('.sidebar-item[data-panel="panel-chat"]');
+                if (chatNavTab) chatNavTab.classList.add("has-notification");
+                if (chatSidebarItem) chatSidebarItem.classList.add("has-notification");
+
+                /* Auto-remove flash after 10 seconds */
+                setTimeout(function() {
+                    if (chatNavTab) chatNavTab.classList.remove("has-notification");
+                    if (chatSidebarItem) chatSidebarItem.classList.remove("has-notification");
+                }, 10000);
+            }
+            /* Chat messages arrive via Firebase RTDB listener — no need to render here */
+        });
+
+        /* Check stored permission state */
+        updateBellState();
+
+    } catch (e) {
+        console.warn("Push init error:", e);
+    }
+}
+
+function updateBellState() {
+    var btn = document.getElementById("push-bell-btn");
+    if (!btn) return;
+
+    if (!("Notification" in window)) {
+        btn.classList.add("bell-denied");
+        btn.title = "Notifications not supported";
+        return;
+    }
+
+    if (Notification.permission === "granted") {
+        btn.classList.add("bell-active");
+        btn.classList.remove("bell-denied");
+        btn.innerHTML = "&#128276;";  /* filled bell */
+        btn.title = "Notifications enabled";
+    } else if (Notification.permission === "denied") {
+        btn.classList.add("bell-denied");
+        btn.classList.remove("bell-active");
+        btn.innerHTML = "&#128277;";  /* bell with slash */
+        btn.title = "Notifications blocked — check browser settings";
+    } else {
+        btn.classList.remove("bell-active", "bell-denied");
+        btn.innerHTML = "&#128276;";
+        btn.title = "Enable notifications";
+    }
+}
+
+function togglePushNotifications() {
+    if (!("Notification" in window)) {
+        alert("Push notifications are not supported in this browser.");
+        return;
+    }
+
+    if (Notification.permission === "denied") {
+        alert("Notifications are blocked. Please enable them in your browser settings for this site.");
+        return;
+    }
+
+    if (Notification.permission === "granted" && _pushToken) {
+        /* Already registered — show status */
+        alert("Push notifications are enabled. You'll receive alerts when Phoebe replies.");
+        return;
+    }
+
+    /* Request permission and register */
+    Notification.requestPermission().then(function(permission) {
+        if (permission === "granted") {
+            registerPushToken();
+        }
+        updateBellState();
+    });
+}
+
+function registerPushToken() {
+    if (!_pushMessaging) return;
+
+    navigator.serviceWorker.getRegistration("firebase-messaging-sw.js").then(function(reg) {
+        if (!reg) {
+            /* Register the FCM service worker if not already done */
+            return navigator.serviceWorker.register("firebase-messaging-sw.js");
+        }
+        return reg;
+    }).then(function(swReg) {
+        return _pushMessaging.getToken({
+            vapidKey: VAPID_KEY,
+            serviceWorkerRegistration: swReg
+        });
+    }).then(function(token) {
+        if (token) {
+            _pushToken = token;
+            /* Store token in Firebase RTDB under /push_tokens/<email> */
+            var email = (_currentUser && _currentUser.email) || "anonymous";
+            var name = (_currentUser && _currentUser.name) || CHAT_USER || "Unknown";
+            var safeEmail = email.replace(/\./g, ",");
+            var tokenData = {
+                token: token,
+                name: name,
+                email: email,
+                updatedAt: firebase.database.ServerValue.TIMESTAMP,
+                userAgent: navigator.userAgent.substring(0, 120)
+            };
+            firebase.database().ref("push_tokens/" + safeEmail).set(tokenData);
+            console.log("Push token registered for", email);
+            updateBellState();
+        }
+    }).catch(function(err) {
+        console.warn("Push token registration failed:", err);
+    });
+}
+
+/* Handle messages from the service worker (notification click -> open chat) */
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.addEventListener("message", function(event) {
+        if (event.data && event.data.type === "NOTIFICATION_CLICK") {
+            var panel = event.data.panel || "panel-chat";
+            showPanel(panel);
+        }
+    });
+}
+
+/* Also clear notification flash when chat panel is shown */
+var _origShowPanel = (typeof showPanel === "function") ? showPanel : null;
+/* We patch in the DOMContentLoaded handler below instead */
 
 /* ── PWA Service Worker ────────────────────────────────────────────────── */
 if ("serviceWorker" in navigator) {

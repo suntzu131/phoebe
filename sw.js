@@ -1,5 +1,5 @@
-// Phoebe Dashboard Service Worker — v7 (offline-first)
-const CACHE_NAME = "phoebe-dashboard-v7";
+// Phoebe Dashboard Service Worker — v8 (offline-first + push)
+const CACHE_NAME = "phoebe-dashboard-v8";
 
 // Static assets: cache-first (rarely change)
 const STATIC_ASSETS = [
@@ -10,6 +10,7 @@ const STATIC_ASSETS = [
     "https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js",
     "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js",
     "https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js",
+    "https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js",
 ];
 
 // App shell: stale-while-revalidate (serve cached, update in background)
