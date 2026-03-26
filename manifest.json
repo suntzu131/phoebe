@@ -6,8 +6,8 @@
   "scope": "/phoebe/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#a85f3f",
-  "background_color": "#f6f1ea",
+  "theme_color": "#7A9E7E",
+  "background_color": "#FAF8F5",
   "icons": [
     {
       "src": "icon-192.png",
