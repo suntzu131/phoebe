@@ -1806,28 +1806,163 @@ canvas { max-width: 100%; }
 /*  RESPONSIVE — Phone (<=480px): sidebar hidden, bottom nav + hamburger    */
 /* ══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
+
+    /* ── 1. SIDEBAR: completely hidden, full-screen overlay when open ──── */
     .sidebar {
         transform: translateX(-100%);
-        width: 280px;
+        width: 100vw;
+        max-width: 320px;
+        z-index: 201;
     }
     .sidebar.mobile-open {
         transform: translateX(0);
     }
+    .sidebar-overlay.open {
+        display: block;
+        z-index: 200;
+    }
+
+    /* ── 2. MAIN CONTENT: no sidebar margin ──────────────────────────── */
     .main-content {
         margin-left: 0;
     }
+
+    /* ── 3. MOBILE HEADER: visible ──────────────────────────────────── */
     .mobile-header {
         display: flex;
     }
+
+    /* ── 4. BOTTOM NAV: visible, safe area aware ────────────────────── */
     .bottom-nav {
         display: flex;
+        z-index: 100;
+        height: 56px;
     }
+    .nav-tab {
+        min-width: 48px;
+        min-height: 48px;
+    }
+    .nav-tab-icon { font-size: 20px; }
+    .nav-tab-label { font-size: 10px; }
+    .nav-tab.active::after {
+        bottom: 6px;
+        width: 5px;
+        height: 5px;
+    }
+
+    /* ── 5. PANELS: full-width, avoid bottom nav overlap ────────────── */
     .panel {
-        padding: 16px 12px 100px;
+        padding: 16px 12px 72px;
+        max-width: 100%;
+        overflow-x: hidden;
     }
     .fab { bottom: 68px; right: 12px; width: 48px; height: 48px; font-size: 22px; }
     .undo-toast { bottom: 68px; font-size: 12px; padding: 8px 14px; }
+    .error-toast { bottom: 68px; font-size: 12px; max-width: 85vw; white-space: normal; }
 
+    /* ── 6. CHAT PANEL: full-height, input above bottom nav ──────── */
+    #panel-chat {
+        padding: 0;
+        flex-direction: column;
+        height: calc(100dvh - 44px - 56px);
+        /* 44px mobile header, 56px bottom nav */
+        overflow: hidden;
+    }
+    /* Override .panel.active display:block to use flex for chat layout */
+    #panel-chat.active {
+        display: flex;
+    }
+    #panel-chat .chat-container {
+        height: 100%;
+        max-height: none;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+        display: flex;
+        flex-direction: column;
+    }
+    /* Messages area fills remaining space; bottom padding for fixed input */
+    #panel-chat .chat-messages {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 64px;
+        /* Space for the fixed chat-input-area that sits above bottom nav */
+    }
+    /* Chat input sits at bottom of chat, above bottom nav */
+    #panel-chat .chat-input-area {
+        position: fixed;
+        bottom: 56px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        padding: 8px 10px;
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+        background: var(--paper);
+        border-top: 1px solid var(--line);
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+    }
+    .chat-input-area input {
+        padding: 10px 14px;
+        font-size: 16px;
+        /* 16px prevents iOS zoom on focus */
+        min-height: 44px;
+    }
+    .chat-input-area button {
+        padding: 10px 16px;
+        min-height: 44px;
+        min-width: 56px;
+    }
+    .chat-mic-btn { width: 40px; height: 40px; font-size: 18px; min-height: 40px; }
+    .chat-status { font-size: 10px; }
+
+    /* Thread tabs */
+    .thread-tabs { padding: 6px 8px; }
+    .thread-tab { padding: 6px 12px; font-size: 11px; min-height: 32px; }
+    .thread-tab-actions { display: none; }
+    .thread-topic-line { padding: 0 8px 4px; font-size: 10px; }
+
+    /* Chat messages: proper spacing and sizing */
+    .gchat-msg {
+        padding: 4px 10px;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .gchat-msg.own {
+        padding-right: 10px;
+    }
+    .gchat-avatar, .gchat-avatar-letter {
+        width: 28px;
+        height: 28px;
+        font-size: 11px;
+    }
+    .gchat-body {
+        max-width: 82%;
+        min-width: 0;
+    }
+    .gchat-bubble {
+        padding: 8px 12px;
+        font-size: 14px;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+    .gchat-sender { font-size: 11px; }
+    .gchat-time { font-size: 9px; }
+    /* Hide hover menu on mobile — long-press bottom sheet used instead */
+    .gchat-hover-menu { display: none !important; }
+
+    /* Chat sub-components */
+    .chat-reply-bar { padding: 6px 8px; font-size: 11px; }
+    .mention-dropdown { left: 8px; right: 8px; min-width: auto; }
+    .mention-option { padding: 10px 12px; min-height: 44px; }
+    .chat-search-bar input { font-size: 16px; }
+    .voice-recording-bar { padding: 6px 8px; }
+    .chat-card { max-width: 240px; }
+    .pinned-msg-card { padding: 8px 10px; }
+    .report-card { padding: 14px; }
+    .report-section-title { font-size: 12px; }
+
+    /* ── 7. METRICS: horizontal layout on phone ────────────────────── */
     .metrics-grid { grid-template-columns: 1fr; gap: 8px; }
     .metric-card {
         display: grid; grid-template-columns: 56px 1fr; grid-template-rows: auto auto;
@@ -1840,82 +1975,94 @@ canvas { max-width: 100%; }
     .metric-ring-wrap svg { width: 56px; height: 56px; }
     .metric-ring-wrap .metric-ring-value { font-size: 12px; }
 
+    /* ── 8. CHARTS / LAYOUT GRIDS ──────────────────────────────────── */
     .charts-grid { grid-template-columns: 1fr; }
     .action-meta { padding-left: 0; }
-
     .anomaly-item { grid-template-columns: 1fr; }
     .anomaly-severity, .anomaly-domain { display: inline; }
 
+    /* ── 9. FAMILY CARDS ───────────────────────────────────────────── */
     .family-card { flex: 0 0 120px; padding: 10px; }
     .family-card strong { font-size: 13px; }
     .family-card.expanded { flex: 0 0 200px; }
 
+    /* ── 10. GOALS / TIMELINE ──────────────────────────────────────── */
     .goals-grid { grid-template-columns: 1fr; }
     .timeline-date { min-width: 65px; font-size: 10px; }
     .timeline-title { font-size: 11px; }
     .section-title { font-size: 12px; margin: 16px 0 8px; }
 
+    /* ── 11. SYSTEM STATS ──────────────────────────────────────────── */
     .sysstat-grid { grid-template-columns: repeat(2, 1fr); padding: 10px; }
     .sysstat-val { font-size: 15px; }
     .rcfe-label { min-width: 72px; font-size: 11px; }
     .rcfe-row { font-size: 12px; }
     .command-panel { border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
 
-    /* Batch 5 mobile: summary cards scroll horizontally */
+    /* ── 12. SUMMARY CARDS: horizontal snap scroll ─────────────────── */
     .summary-cards {
-        grid-template-columns: repeat(5, 130px);
+        display: flex;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        padding-bottom: 4px;
+        gap: 8px;
+        padding: 0 2px 4px;
+        margin: 0 -2px;
     }
     .summary-cards::-webkit-scrollbar { display: none; }
     .summary-card {
         scroll-snap-align: start;
+        flex: 0 0 130px;
         min-height: 60px;
         padding: 10px 12px;
     }
     .sc-value { font-size: 16px; }
 
-    /* Batch 5 mobile: kanban stacks vertically */
+    /* ── 13. KANBAN ────────────────────────────────────────────────── */
     .kanban-board { grid-template-columns: 1fr; }
     .kanban-col { min-height: 60px; }
 
-    /* Batch 5 mobile: calendar smaller text */
+    /* ── 14. CALENDAR ──────────────────────────────────────────────── */
     .cal-day { font-size: 12px; padding: 6px 2px; min-height: 36px; }
     .cal-month-name { font-size: 13px; }
 
-    /* Batch 5 mobile: person timeline compact */
+    /* ── 15. PERSON TIMELINE ───────────────────────────────────────── */
     .person-tl-text { font-size: 10px; }
     .person-tl-dot { width: 18px; height: 18px; font-size: 8px; }
     .person-tl-item::before { left: 8px; }
-    /* Chat panel: override panel padding and size for full-height chat */
-    #panel-chat { padding: 0 0 56px; }
-    #panel-chat .chat-container { height: calc(100dvh - 56px - 44px); max-height: none; border-radius: 0; box-shadow: none; }
-    .chat-input-area { padding: 8px; }
-    .chat-input-area input { padding: 8px 12px; font-size: 16px; }
-    .chat-input-area button { padding: 8px 16px; }
-    .chat-status { font-size: 10px; }
-    .thread-tabs { padding: 6px 8px; }
-    .thread-tab { padding: 5px 10px; font-size: 11px; min-height: 28px; }
-    .gchat-avatar, .gchat-avatar-letter { width: 28px; height: 28px; font-size: 11px; }
-    .gchat-body { max-width: 85%; }
-    /* Hide hover menu on mobile — long-press bottom sheet used instead */
-    .gchat-hover-menu { display: none !important; }
-    .gchat-msg { -webkit-tap-highlight-color: transparent; }
-    .chat-reply-bar { padding: 6px 8px; font-size: 11px; }
-    .mention-dropdown { left: 8px; right: 8px; min-width: auto; }
-    .mention-option { padding: 10px 12px; min-height: 44px; }
-    .chat-search-bar input { font-size: 16px; }
-    .thread-tab-actions { display: none; }
-    .thread-topic-line { padding: 0 8px 4px; font-size: 10px; }
-    .voice-recording-bar { padding: 6px 8px; }
-    .chat-mic-btn { width: 36px; height: 36px; font-size: 18px; }
-    .chat-card { max-width: 240px; }
-    .pinned-msg-card { padding: 8px 10px; }
-    .report-card { padding: 14px; }
-    .report-section-title { font-size: 12px; }
+
+    /* ── 16. COMMAND PALETTE: bottom sheet ──────────────────────────── */
+    .cmd-palette-input {
+        font-size: 16px;
+        min-height: 48px;
+    }
+
+    /* ── 17. LOGIN SCREEN: centered, no overflow ──────────────────── */
+    .login-card {
+        width: calc(100% - 32px);
+        max-width: 340px;
+        padding: 32px 24px 28px;
+    }
+    .login-icon { width: 64px; height: 64px; font-size: 28px; }
+    .login-card h2 { font-size: 20px; }
+    .google-signin-btn {
+        width: 100%;
+        min-height: 48px;
+        font-size: 15px;
+    }
+
+    /* ── 18. GLOBAL: prevent horizontal overflow ───────────────────── */
+    .app-shell {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+    /* Ensure all cards are full-width */
+    .card, .action-card, .risk-card, .goal-card {
+        max-width: 100%;
+        overflow: hidden;
+        word-break: break-word;
+    }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════ */
@@ -3408,7 +3555,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 22:11</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-25 22:36</span>
     </div>
 </aside>
 
@@ -3450,7 +3597,7 @@ canvas { max-width: 100%; }
             <span class="sc-detail">Call Osamu Hashizu (714) 258-2819</span>
         </button>
 <button class="summary-card sc-positive" data-panel="panel-intel" onclick="showPanel('panel-intel')" data-persona-min="admin" data-generalize="money-card">
-            <span class="sc-value">+$6,502</span>
+            <span class="sc-value">+$4,402</span>
             <span class="sc-label">Money</span>
             <span class="sc-detail">&#8599; Cash flow moderate</span>
         </button>
@@ -3486,10 +3633,10 @@ canvas { max-width: 100%; }
             <svg width="64" height="64" viewBox="0 0 64 64">
                 <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="4"/>
                 <circle cx="32" cy="32" r="28" fill="none" stroke="var(--green)" stroke-width="4"
-                    stroke-dasharray="175.93" stroke-dashoffset="88.3"
+                    stroke-dasharray="175.93" stroke-dashoffset="116.6"
                     stroke-linecap="round" transform="rotate(-90 32 32)"/>
             </svg>
-            <span class="metric-ring-value"><span class="metric-value positive" style="font-size:inherit">+$6,502</span></span>
+            <span class="metric-ring-value"><span class="metric-value positive" style="font-size:inherit">+$4,402</span></span>
         </div>
                 <span class="metric-detail">Income $13,059</span>
             </div>
@@ -3617,7 +3764,7 @@ canvas { max-width: 100%; }
         </div>
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 25, 2026 at 10:11 PM &middot;
+            Generated March 25, 2026 at 10:36 PM &middot;
             Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
@@ -4525,9 +4672,9 @@ canvas { max-width: 100%; }
         <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 25, 2026 at 10:11 PM</div>
+            <div class="report-meta">Generated March 25, 2026 at 10:36 PM</div>
             <div class="report-content" id="morning-brief-content">
-                <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$6,502/mo (MODERATE stress at 54.8)</span></div>
+                <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$4,402/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
 <div class="report-item" data-persona-min="admin" data-generalize="brief-runway"><span class="report-item-bullet good"></span><span class="report-item-text">Financial runway: 38 months</span></div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">CCW license renewal — 2023-03-28</span></div>
@@ -4537,7 +4684,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 25, 2026 at 10:11 PM</div>
+            <div class="report-meta">Last updated: March 25, 2026 at 10:36 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -4553,7 +4700,7 @@ canvas { max-width: 100%; }
 <div class="report-item"><span class="report-item-bullet warning"></span><span class="report-item-text">CARE CRISIS CLUSTER — 58/100</span></div>
 <div class="report-section-title" data-persona-min="admin">Financial Summary</div>
 <div class="report-item" data-persona-min="admin"><span class="report-item-bullet info"></span><span class="report-item-text">Income: $13,059/mo</span></div>
-<div class="report-item" data-persona-min="admin"><span class="report-item-bullet info"></span><span class="report-item-text">Verified expenses: $6,557/mo</span></div>
+<div class="report-item" data-persona-min="admin"><span class="report-item-bullet info"></span><span class="report-item-text">Verified expenses: $8,657/mo</span></div>
 <div class="report-item" data-persona-min="admin"><span class="report-item-bullet warning"></span><span class="report-item-text">Unknown expenses: $1,100 - $2,400/mo</span></div>
             </div>
         </div>
@@ -4574,7 +4721,7 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">91</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">54</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 22:11</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-25 22:36</span><span class="sysstat-lbl">Last render</span></div>
     </div>
     </div>
 
@@ -6376,7 +6523,7 @@ function _applyPersonaAccess() {
 /* ── Generalization: replace exact values with qualitative labels ── */
 function _generalizeElement(el, genType) {
     var stress = 54.8;
-    var surplus = 6502;
+    var surplus = 4402;
     var stressRating = "MODERATE";
     var runwayMo = 38;
 
@@ -7155,7 +7302,13 @@ function appendChatMessage(key, msg) {
     if (timestamp && !isThinking) {
         try {
             var d = new Date(timestamp);
-            time = d.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+            var now = new Date();
+            var isToday = (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate());
+            if (isToday) {
+                time = d.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+            } else {
+                time = d.toLocaleDateString("en-US", {month: "short", day: "numeric"}) + ", " + d.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+            }
         } catch(e) { time = ""; }
     }
 
@@ -7266,7 +7419,16 @@ function rebuildMessageContent(el, key, msg) {
 
     var time = "";
     if (msg.responded_at || msg.timestamp) {
-        try { time = new Date(msg.responded_at || msg.timestamp).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); } catch(e) {}
+        try {
+            var d = new Date(msg.responded_at || msg.timestamp);
+            var now = new Date();
+            var isToday = (d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate());
+            if (isToday) {
+                time = d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+            } else {
+                time = d.toLocaleDateString("en-US", {month: "short", day: "numeric"}) + ", " + d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+            }
+        } catch(e) {}
     }
 
     var avatarHtml = getAvatarHtml(isPhoebe ? "Phoebe" : sender, email);
