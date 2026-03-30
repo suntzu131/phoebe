@@ -1856,43 +1856,6 @@ h1, h2, h3, h4, h5, h6, .panel-title, .report-title, .chart-title {
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  SYSTEM STATS                                                             */
 /* ══════════════════════════════════════════════════════════════════════════ */
-
-/* ── Version & Changelog ────────────────────────────────────────── */
-.version-card {
-    background: var(--paper); border: 1px solid var(--line);
-    border-radius: 12px; padding: 16px; margin-bottom: 16px;
-}
-.version-current {
-    display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;
-}
-.version-number {
-    font-size: 24px; font-weight: 800; color: var(--accent);
-    letter-spacing: -0.02em;
-}
-.version-date { font-size: 13px; color: var(--ink-secondary); }
-.changelog { display: flex; flex-direction: column; gap: 16px; }
-.changelog-entry {
-    padding: 12px 0; border-top: 1px solid var(--line);
-}
-.changelog-entry:first-child { border-top: none; padding-top: 0; }
-.changelog-version {
-    font-size: 14px; font-weight: 700; color: var(--ink);
-    margin-right: 8px;
-}
-.changelog-date { font-size: 12px; color: var(--ink-secondary); }
-.changelog-items {
-    margin-top: 8px; padding-left: 16px;
-    font-size: 13px; color: var(--ink-secondary); line-height: 1.6;
-}
-.changelog-items div::before {
-    content: "•"; margin-left: -12px; margin-right: 6px;
-    color: var(--accent);
-}
-.app-version-footer {
-    display: inline-block; font-size: 10px; color: var(--ink-secondary);
-    opacity: 0.5; margin-left: 4px;
-}
-
 .sysstat-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -2444,18 +2407,16 @@ canvas { max-width: 100%; }
         display: flex;
     }
 
-    /* ── 4. BOTTOM NAV: visible, 5-col grid for equal sizing ────────── */
+    /* ── 4. BOTTOM NAV: visible, 4-col grid for equal sizing ────────── */
     .bottom-nav {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         z-index: 100;
         height: 56px;
         padding-left: 0;
         padding-right: 0;
         width: 100%;
     }
-    /* Hide FAB on mobile when Chat tab exists in bottom nav */
-    .fab { display: none !important; }
     .nav-tab {
         min-width: 0;
         min-height: 48px;
@@ -6144,110 +6105,6 @@ canvas { max-width: 100%; }
         max-width: 100%;
     }
 }
-
-/* ═══ DASHBOARD REDESIGN — Phases 1-3 (injected into render source) ═══ */
-
-/* Timeline Year Groups */
-.tl-year-group { margin-bottom: 8px; }
-.tl-year-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 0; cursor: pointer; user-select: none;
-    position: sticky; top: 0; z-index: 2;
-    background: var(--bg); border-bottom: 1px solid var(--line);
-}
-.tl-year-header:hover { opacity: 0.8; }
-.tl-year-label { font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
-.tl-year-count { font-size: 12px; color: var(--ink-secondary); background: var(--surface-2); padding: 2px 8px; border-radius: 10px; font-weight: 500; }
-.tl-year-chevron { margin-left: auto; font-size: 16px; color: var(--ink-secondary); transition: transform 0.2s ease; }
-.tl-year-group.collapsed .tl-year-chevron { transform: rotate(-90deg); }
-.tl-year-group.collapsed .tl-year-events { display: none; }
-.tl-event-desc { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-.tl-event.expanded .tl-event-desc { max-height: 300px; }
-.tl-event-card { cursor: pointer; }
-.tl-expand-hint { font-size: 11px; color: var(--accent); margin-top: 4px; opacity: 0.7; }
-.tl-event.expanded .tl-expand-hint { display: none; }
-
-/* Money Charts */
-.money-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-@media (max-width: 640px) { .money-charts { grid-template-columns: 1fr; } }
-.money-chart-card { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-card); }
-.money-chart-title { font-size: 13px; font-weight: 600; color: var(--ink-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 16px; }
-.donut-container { display: flex; align-items: center; gap: 20px; }
-.donut-legend { display: flex; flex-direction: column; gap: 6px; flex: 1; }
-.donut-legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-.donut-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-.donut-legend-label { color: var(--ink-secondary); flex: 1; }
-.donut-legend-value { font-weight: 600; color: var(--ink); }
-.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.bar-label { font-size: 12px; color: var(--ink-secondary); width: 100px; text-align: right; flex-shrink: 0; }
-.bar-track { flex: 1; height: 20px; background: var(--surface-2); border-radius: 10px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s ease; }
-.bar-value { font-size: 11px; font-weight: 600; color: var(--ink); width: 60px; text-align: right; flex-shrink: 0; }
-
-/* Goals Progress Rings */
-.goal-progress-ring { position: relative; width: 52px; height: 52px; flex-shrink: 0; }
-.goal-progress-ring svg { transform: rotate(-90deg); }
-.goal-progress-ring .ring-bg { fill: none; stroke: var(--surface-2); stroke-width: 5; }
-.goal-progress-ring .ring-fill { fill: none; stroke: var(--accent); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
-.goal-progress-pct { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 12px; font-weight: 700; color: var(--ink); }
-.goal-card-enhanced { display: flex !important; align-items: center; gap: 14px; }
-
-/* Transitions */
-.panel { transition: opacity 0.2s ease; }
-.bento-tile, .fp-card, .money-chart-card { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-.bento-tile:hover, .fp-card:hover, .money-chart-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-.panel.active { animation: panelFadeIn 0.2s ease; }
-@keyframes panelFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Person-Specific Avatars */
-.fp-avatar[data-person="Dan"] { background: #5a7c5e !important; }
-.fp-avatar[data-person="Minako"] { background: #D4A843 !important; }
-.fp-avatar[data-person="Koko"] { background: #5B8FB9 !important; }
-.fp-avatar[data-person="Issa"] { background: #4AADAD !important; }
-.fp-avatar[data-person="Mother"] { background: #C07070 !important; }
-
-/* Progressive Disclosure */
-.fp-card .fp-event-row:nth-child(n+3) { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.3s ease, opacity 0.2s ease; }
-.fp-card.expanded .fp-event-row:nth-child(n+3) { max-height: 100px; opacity: 1; }
-.fp-expand-indicator { font-size: 11px; color: var(--accent); cursor: pointer; padding: 4px 0; opacity: 0.7; }
-.fp-card.expanded .fp-expand-indicator .fp-expand-text { display: none; }
-.fp-card.expanded .fp-expand-indicator::after { content: 'show less'; }
-
-/* Ask Phoebe Bar */
-.ask-phoebe-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin: 0 0 16px 0; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; cursor: pointer; box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.06)); transition: all 0.15s ease; }
-.ask-phoebe-bar:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(122,158,126,0.12); }
-.ask-phoebe-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
-.ask-phoebe-text { flex: 1; font-size: 14px; color: var(--ink-secondary); }
-.ask-phoebe-shortcut { font-size: 11px; color: var(--ink-secondary); background: var(--surface-2); padding: 2px 8px; border-radius: 4px; font-family: monospace; opacity: 0.7; }
-@media (max-width: 640px) { .ask-phoebe-bar { margin: 0 16px 12px 16px; } .ask-phoebe-shortcut { display: none; } }
-
-/* Warm Dark Mode */
-[data-theme="dark"] { --bg: #1a1f1b; --paper: #222823; --surface-2: #2a302b; --line: #353b36; --ink: #e8e5e0; --ink-secondary: #9a9890; --accent: #8fb893; }
-[data-theme="dark"] .sidebar { background: #151a16; }
-[data-theme="dark"] .bento-tile, [data-theme="dark"] .fp-card, [data-theme="dark"] .money-chart-card, [data-theme="dark"] .tl-event-card { background: var(--paper); border-color: var(--line); }
-[data-theme="dark"] .tl-year-header { background: var(--bg); border-color: var(--line); }
-[data-theme="dark"] .ask-phoebe-bar { background: var(--paper); border-color: var(--line); }
-
-/* Sidebar Polish */
-.sidebar { opacity: 0.92; transition: opacity 0.2s ease; }
-.sidebar:hover { opacity: 1; }
-
-/* Version Footer */
-.app-version-footer { display: inline-block; font-size: 10px; color: var(--ink-secondary); opacity: 0.5; margin-left: 4px; }
-
-/* Version Card in Settings */
-.version-card { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-.version-current { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
-.version-number { font-size: 24px; font-weight: 800; color: var(--accent); letter-spacing: -0.02em; }
-.version-date { font-size: 13px; color: var(--ink-secondary); }
-.changelog { display: flex; flex-direction: column; gap: 16px; }
-.changelog-entry { padding: 12px 0; border-top: 1px solid var(--line); }
-.changelog-entry:first-child { border-top: none; padding-top: 0; }
-.changelog-version { font-size: 14px; font-weight: 700; color: var(--ink); margin-right: 8px; }
-.changelog-date { font-size: 12px; color: var(--ink-secondary); }
-.changelog-items { margin-top: 8px; padding-left: 16px; font-size: 13px; color: var(--ink-secondary); line-height: 1.6; }
-.changelog-items div::before { content: "2"; margin-left: -12px; margin-right: 6px; color: var(--accent); }
-
 </style>
 </head>
 <body>
@@ -6358,7 +6215,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-30 09:53</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-30 06:30</span>
     </div>
 </aside>
 
@@ -6380,13 +6237,6 @@ canvas { max-width: 100%; }
             <span class="mobile-header-avatar" id="mobile-avatar"></span>
         </div>
     </header>
-
-    <!-- ═══ ASK PHOEBE — Persistent Search/Chat Bar ═══ -->
-    <div class="ask-phoebe-bar" onclick="toggleChatOverlay()">
-        <span class="ask-phoebe-icon">P</span>
-        <span class="ask-phoebe-text">Ask Phoebe anything...</span>
-        <span class="ask-phoebe-shortcut">Ctrl+K</span>
-    </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!--  PANEL: HOME                                                       -->
@@ -6433,12 +6283,12 @@ canvas { max-width: 100%; }
             <div class="bento-tile bento-care" onclick="toggleBentoExpand(this)">
         <div class="bento-tile-header">
             <span class="bento-tile-title">Mother&#39;s Care</span>
-            <span class="bento-tile-summary">Hannah &middot; Falling off couch, tilting (Mar 2026)</span>
+            <span class="bento-tile-summary">Dan &amp; Minako &middot; Falling off couch, tilting (Mar 2026)</span>
         </div>
         <div class="bento-tile-body">
             <div class="bento-care-status">
                 <span class="bento-dot-amber"></span>
-                <span>Hannah on duty</span>
+                <span>Dan &amp; Minako on duty</span>
             </div>
             <div class="bento-care-line">Falling off couch, tilting (Mar 2026)</div>
             <div class="bento-expandable">
@@ -6521,8 +6371,8 @@ canvas { max-width: 100%; }
     
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 30, 2026 at 09:53 AM &middot;
-            Phoebe Life Intelligence <span class="app-version-footer">v16</span> &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
+            Generated March 30, 2026 at 06:30 AM &middot;
+            Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
 
@@ -6715,9 +6565,23 @@ canvas { max-width: 100%; }
                     <div class="fp-status">Needs IEP evaluation. Activities: Swimming, TKD</div>
                 </div>
             </div>
-            
+            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Updated invitation: Send koko video  @ Monthly from 4pm to 5</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Updated invitation: Send koko video  @ Monthly from 4pm to 5</div>
             <div class="family-detail">
-                <div class="person-timeline"><div class="timeline-empty">No recent activity</div></div>
+                <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#128197;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-05-10</span>
+                    <span class="person-tl-text">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (</span>
+                </div>
+            </div>
+<div class="person-tl-item">
+                <span class="person-tl-dot">&#128197;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-04-10</span>
+                    <span class="person-tl-text">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (</span>
+                </div>
+            </div>
+</div>
             </div>
         </div>
 <div class="fp-card" onclick="toggleFamilyDetail(this)">
@@ -6741,9 +6605,16 @@ canvas { max-width: 100%; }
                     <div class="fp-status">Advanced Alzheimer's care. Moving to Anaheim Villa (in progress)</div>
                 </div>
             </div>
-            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Submit bond for mother's assets</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>IHSS reassessment request — mother mobility decline — due in</div>
+            <div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Mother's Day</div><div class="fp-event-row"><span class="fp-event-icon">&#128197;</span>Submit bond for mother's assets</div>
             <div class="family-detail">
                 <div class="person-timeline"><div class="person-tl-item">
+                <span class="person-tl-dot">&#128197;</span>
+                <div class="person-tl-body">
+                    <span class="person-tl-date">2026-05-10</span>
+                    <span class="person-tl-text">Mother's Day</span>
+                </div>
+            </div>
+<div class="person-tl-item">
                 <span class="person-tl-dot">&#9889;</span>
                 <div class="person-tl-body">
                     <span class="person-tl-date">2026-03-30</span>
@@ -6770,7 +6641,97 @@ canvas { max-width: 100%; }
             </div>
             <div class="card">
                 <div class="card-body tab-panel active" id="tab-calendar-events">
-                    <div style="padding:12px;font-size:13px;color:var(--ink-secondary)">No upcoming events found.</div>
+                    <div class="timeline-item info">
+            <div class="timeline-date">2026-04-05</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Easter Sunday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 08:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Trim Hair</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 05, 09:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Prepare tithe</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-06</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Easter Monday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 10, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-11</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Grandpa Han's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-12</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Chris Eun's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 12, 04:00 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Vacuum all filters for air purifiers</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-15</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Tax Day</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-21</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Plan for Summer Trip</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-24</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Atum Hyung's Birthday</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-25</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Happy birthday!</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">2026-04-26</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Hawaii Wedding Anniversary</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">Apr 27, 07:10 PM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Dodgers game parking lot H</span>
+            </div>
+        </div>
+<div class="timeline-item info">
+            <div class="timeline-date">May 03, 08:00 AM</div>
+            <div class="timeline-content">
+                <span class="timeline-title">Trim Hair</span>
+            </div>
+        </div>
+
                 </div>
                 <div class="card-body tab-panel" id="tab-calendar-deadlines" data-persona-min="admin">
                     <div class="timeline-item critical">
@@ -9096,7 +9057,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 30, 2026 at 09:53 AM</div>
+            <div class="report-meta">Generated March 30, 2026 at 06:30 AM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$100/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -9108,7 +9069,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 30, 2026 at 09:53 AM</div>
+            <div class="report-meta">Last updated: March 30, 2026 at 06:30 AM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -9391,37 +9352,12 @@ canvas { max-width: 100%; }
             <div class="sysstat-grid">
         <div class="sysstat-item"><span class="sysstat-val">37</span><span class="sysstat-lbl">Agents</span></div>
         <div class="sysstat-item"><span class="sysstat-val">30</span><span class="sysstat-lbl">Skills</span></div>
-        <div class="sysstat-item"><span class="sysstat-val">101</span><span class="sysstat-lbl">Tools</span></div>
+        <div class="sysstat-item"><span class="sysstat-val">100</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">52</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-30 09:53</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-30 06:30</span><span class="sysstat-lbl">Last render</span></div>
     </div>
         </div>
-
-        
-        <div class="section-title" id="sec-version" onclick="toggleSectionCollapse(this)">Version <span class="count-badge">v16</span> <span class="section-chevron">&#9660;</span></div>
-        <div class="section-content" data-section="sec-version">
-            <div class="version-card">
-                <div class="version-current">
-                    <span class="version-number">v16</span>
-                    <span class="version-date">March 30, 2026</span>
-                </div>
-                <div class="changelog"><div class="changelog-entry">
-            <span class="changelog-version">v16</span>
-            <span class="changelog-date">2026-03-30</span>
-            <div class="changelog-items"><div>Dashboard redesign — Phases 1-3</div><div>Timeline: year grouping + collapse + tap-to-expand events</div><div>Money: donut chart (income) + bar chart (expenses) always visible</div><div>Goals: SVG progress rings on all 6 goals</div><div>Ask Phoebe: persistent search/chat bar on every panel</div><div>CSS transitions + micro-interactions</div><div>Family avatars: distinct colors per person (Dan/Minako/Koko/Issa/Mother)</div><div>Warm dark mode (sage-tinted, not pure black)</div><div>Progressive disclosure on family cards</div><div>Fix: sidebar navigation — accordion behavior, auto-expand groups</div><div>Fix: mobile 5-tab bottom nav (was 4-column, Chat tab off-screen)</div><div>Fix: FAB hidden on mobile (was overlapping chat send button)</div><div>Version display + changelog in Settings panel</div><div>click-path-testing.md — 21st critical rule</div></div>
-        </div><div class="changelog-entry">
-            <span class="changelog-version">v15</span>
-            <span class="changelog-date">2026-03-26</span>
-            <div class="changelog-items"><div>Chat panel + FAB overlay</div><div>Bento grid home layout with 10 card types</div><div>Persona-aware access control (admin/partner/housemate/guest)</div><div>PWA + push notifications + service worker</div><div>Google Chat-style message bubbles</div><div>Multi-thread chat (phoebe-family, Kids, custom)</div><div>Command palette (Ctrl+K)</div><div>Keyboard shortcuts (1-5 for panels)</div><div>Financial stress score + risk clusters</div></div>
-        </div><div class="changelog-entry">
-            <span class="changelog-version">v14</span>
-            <span class="changelog-date">2026-03-24</span>
-            <div class="changelog-items"><div>Initial dashboard launch</div><div>5-panel layout (Home, Family, Money, Goals, Settings)</div><div>Firebase authentication + Google sign-in</div><div>Emergency contacts with call buttons</div><div>Morning brief + intelligence report</div><div>Compliance monitoring alerts</div></div>
-        </div></div>
-            </div>
-        </div>
-    
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -9827,12 +9763,6 @@ function showPanel(panelId, sidebarBtn, bottomBtn) {
         var match = document.querySelector('.sidebar-item[data-panel="' + panelId + '"]');
         if (match) match.classList.add("active");
     }
-    /* Auto-expand parent sidebar group of active item */
-    var activeItem = document.querySelector('.sidebar-item.active');
-    if (activeItem) {
-        var parentGroup = activeItem.closest('.sidebar-group');
-        if (parentGroup) parentGroup.classList.remove('collapsed');
-    }
 
     /* Update bottom nav active state */
     document.querySelectorAll(".nav-tab").forEach(function(b) { b.classList.remove("active"); });
@@ -10236,21 +10166,7 @@ function toggleMoneyCharts() {
 
 function toggleSidebarGroup(headerEl) {
     var group = headerEl.closest('.sidebar-group');
-    if (!group) return;
-    var wasCollapsed = group.classList.contains('collapsed');
-    /* Accordion: collapse all groups first */
-    document.querySelectorAll('.sidebar-group').forEach(function(g) {
-        g.classList.add('collapsed');
-    });
-    /* If was collapsed, expand it and navigate to first sub-item */
-    if (wasCollapsed) {
-        group.classList.remove('collapsed');
-        var firstItem = group.querySelector('.sidebar-item[data-panel]');
-        if (firstItem) {
-            var panel = firstItem.getAttribute('data-panel');
-            if (panel) showPanel(panel, firstItem);
-        }
-    }
+    if (group) group.classList.toggle('collapsed');
 }
 
 function handleChoreCheck(checkbox) {
@@ -11309,7 +11225,7 @@ function initTaskSwipe() {
 /* ══════════════════════════════════════════════════════════════════════════ */
 /*  11c. BATCH 5 — TASK MULTI-VIEW: List/Kanban/Calendar (Item 12)          */
 /* ══════════════════════════════════════════════════════════════════════════ */
-var _calEventsData = {"2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe", "[Deadline] SXSW 2026 Austin trip (with Eddie, Calvin, Johnny)", "[Deadline] Mother's mobility equipment \u2014 ramp for ADU stairs", "[Deadline] IHSS reassessment consideration (mother's mobility decline = potential hours increase)", "[Deadline] Disability Rights CA consultation (free IHSS advocate \u2014 confirm care arrangement framing)", "[Deadline] Pastor Samuel's house downsize (1BR by March 2026)", "[Deadline] Plantar fasciitis monitoring \u2014 bottom-of-foot pain after trail running"], "2026-03-28": ["[Deadline] **Solvang trip departs**"]};
+var _calEventsData = {"2026-04-05": ["Easter Sunday", "Trim Hair", "Prepare tithe"], "2026-04-06": ["Easter Monday"], "2026-04-10": ["Updated invitation: Send koko video  @ Monthly from 4pm to 5pm on day 10 (PDT) (corp131@hotmail.com)"], "2026-04-11": ["Grandpa Han's Birthday"], "2026-04-12": ["Chris Eun's Birthday", "Vacuum all filters for air purifiers"], "2026-04-15": ["Tax Day"], "2026-04-21": ["Plan for Summer Trip"], "2026-04-24": ["Atum Hyung's Birthday"], "2026-04-25": ["Happy birthday!"], "2026-04-26": ["Hawaii Wedding Anniversary"], "2026-04-27": ["Dodgers game parking lot H"], "2026-05-03": ["Trim Hair"], "2025-05-15": ["[Deadline] Minako echocardiogram (follow-up to CT cardiomegaly finding)", "[Deadline] ~~Medi-Cal DHCS appeal (filed ~May 2025 after $1,350 SOC)~~"], "2025-06-15": ["[Deadline] Second vehicle confirmation \u2014 vehicles status"], "2025-10-15": ["[Deadline] Anaheim Villa RCFE application \u2014 2-3 month wait after approval"], "2025-12-12": ["[Deadline] IRA annuity pause request (Security Benefit, $973.48/mo distributions)"], "2025-12-15": ["[Deadline] Minako pelvic ultrasound follow-up (6-12 months post June 2025)"], "2026-02-15": ["[Deadline] Insurance broker contact (Tyler Joseph/AJG) \u2014 find ~$100/mo premium to reduce mother's income below Medi-Cal threshold"], "2026-03-15": ["[Deadline] TKD belt test \u2014 red/black to red/black w/ stripe", "[Deadline] SXSW 2026 Austin trip (with Eddie, Calvin, Johnny)", "[Deadline] Mother's mobility equipment \u2014 ramp for ADU stairs", "[Deadline] IHSS reassessment consideration (mother's mobility decline = potential hours increase)", "[Deadline] Disability Rights CA consultation (free IHSS advocate \u2014 confirm care arrangement framing)", "[Deadline] Pastor Samuel's house downsize (1BR by March 2026)", "[Deadline] Plantar fasciitis monitoring \u2014 bottom-of-foot pain after trail running"], "2026-03-28": ["[Deadline] **Solvang trip departs**"]};
 
 function switchTaskView(view, btn) {
     /* Update toggle buttons */
@@ -14645,147 +14561,6 @@ function _applyUpdate() {
         }
     });
 }
-
-/* ═══ DASHBOARD REDESIGN JS — Phases 1-3 (injected into render source) ═══ */
-
-/* Timeline Year Grouping */
-function tlInitYearGroups() {
-    var container = document.getElementById('tl-events');
-    if (!container) return;
-    var events = Array.from(container.querySelectorAll('.tl-event'));
-    if (events.length === 0) return;
-    var groups = {};
-    events.forEach(function(ev) {
-        var year = ev.getAttribute('data-year') || 'Unknown';
-        if (!groups[year]) groups[year] = [];
-        groups[year].push(ev);
-    });
-    var years = Object.keys(groups).sort(function(a, b) {
-        if (a === 'Unknown') return 1; if (b === 'Unknown') return -1;
-        return parseInt(b) - parseInt(a);
-    });
-    container.innerHTML = '';
-    years.forEach(function(year, idx) {
-        var group = document.createElement('div');
-        group.className = 'tl-year-group' + (idx > 0 ? ' collapsed' : '');
-        group.setAttribute('data-group-year', year);
-        var header = document.createElement('div');
-        header.className = 'tl-year-header';
-        header.innerHTML = '<span class="tl-year-label">' + year + '</span>' +
-            '<span class="tl-year-count">' + groups[year].length + ' events</span>' +
-            '<span class="tl-year-chevron">▼</span>';
-        header.onclick = function() { group.classList.toggle('collapsed'); };
-        var eventsWrap = document.createElement('div');
-        eventsWrap.className = 'tl-year-events';
-        groups[year].forEach(function(ev) { eventsWrap.appendChild(ev); });
-        group.appendChild(header); group.appendChild(eventsWrap);
-        container.appendChild(group);
-    });
-    container.querySelectorAll('.tl-event-card').forEach(function(card) {
-        var ev = card.closest('.tl-event');
-        var desc = card.querySelector('.tl-event-desc');
-        if (desc && desc.textContent.trim().length > 0) {
-            var hint = document.createElement('div');
-            hint.className = 'tl-expand-hint'; hint.textContent = 'tap to expand';
-            var body = card.querySelector('.tl-event-body');
-            if (body) body.appendChild(hint);
-            card.addEventListener('click', function(e) { e.stopPropagation(); ev.classList.toggle('expanded'); });
-        }
-    });
-}
-
-/* Money Charts */
-function moneyInitCharts() {
-    var panel = document.getElementById('panel-money');
-    if (!panel || panel.querySelector('.money-charts')) return;
-    var incomeItems = [], expenseItems = [];
-    panel.querySelectorAll('.money-list-card').forEach(function(card) {
-        var titleEl = card.querySelector('.money-list-title');
-        var headerText = titleEl ? titleEl.textContent.trim().toUpperCase() : '';
-        card.querySelectorAll('.money-list-row').forEach(function(row) {
-            var nameEl = row.querySelector('.money-list-name');
-            var amtEl = row.querySelector('.money-list-amount');
-            if (!nameEl || !amtEl) return;
-            var label = nameEl.textContent.trim();
-            var val = parseFloat(amtEl.textContent.trim().replace(/[^0-9.]/g, '')) || 0;
-            if (val === 0) return;
-            if (headerText.indexOf('INCOME') >= 0) incomeItems.push({label: label, value: val});
-            else if (headerText.indexOf('EXPENSE') >= 0) expenseItems.push({label: label, value: val});
-        });
-    });
-    if (incomeItems.length === 0 && expenseItems.length === 0) return;
-    var colors = ['#7A9E7E','#D4A843','#5B8FB9','#C75450','#9B7EC8','#E8915A','#6CB4A0'];
-    var total = incomeItems.reduce(function(s,i){return s+i.value;}, 0);
-    var cx = 60, cy = 60, r = 50, circ = 2 * Math.PI * r;
-    var donutPaths = '', offset = 0;
-    incomeItems.forEach(function(item, idx) {
-        var pct = item.value / total; var dashLen = pct * circ;
-        var color = colors[idx % colors.length]; item.color = color;
-        donutPaths += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="16" stroke-dasharray="'+dashLen+' '+(circ-dashLen)+'" stroke-dashoffset="'+(-offset)+'" style="transition:all 0.5s ease;"/>';
-        offset += dashLen;
-    });
-    var donutSVG = '<svg width="120" height="120" viewBox="0 0 120 120" style="transform:rotate(-90deg)">' + donutPaths + '</svg>';
-    var legend = incomeItems.map(function(item) { return '<div class="donut-legend-item"><span class="donut-legend-dot" style="background:'+item.color+'"></span><span class="donut-legend-label">'+item.label+'</span><span class="donut-legend-value">$'+item.value.toLocaleString()+'</span></div>'; }).join('');
-    var maxExp = Math.max.apply(null, expenseItems.map(function(e){return e.value;}));
-    var bars = expenseItems.map(function(item, idx) { var pct = Math.round((item.value / maxExp) * 100); var color = colors[(idx+3)%colors.length]; return '<div class="bar-row"><span class="bar-label">'+item.label.replace(/\(.+?\)/g,'').trim().substring(0,15)+'</span><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div><span class="bar-value">$'+item.value.toLocaleString()+'</span></div>'; }).join('');
-    var chartsDiv = document.createElement('div'); chartsDiv.className = 'money-charts';
-    chartsDiv.innerHTML = '<div class="money-chart-card"><div class="money-chart-title">Income Breakdown</div><div class="donut-container">' + donutSVG + '<div class="donut-legend">' + legend + '</div></div></div><div class="money-chart-card"><div class="money-chart-title">Expense Breakdown</div>' + bars + '</div>';
-    var moneyLists = panel.querySelector('.money-lists');
-    if (moneyLists) moneyLists.parentNode.insertBefore(chartsDiv, moneyLists);
-    else { var snapshot = panel.querySelector('.money-snapshot'); if (snapshot) snapshot.after(chartsDiv); }
-}
-
-/* Goals Progress Rings */
-function goalsInitRings() {
-    var panel = document.getElementById('panel-goals');
-    if (!panel || panel.querySelector('.goal-progress-ring')) return;
-    var goalDefs = { 'tkd black belt': {pct:75,color:'#7A9E7E'}, 'weight loss': {pct:30,color:'#D4A843'}, 'retire at 55': {pct:15,color:'#5B8FB9'}, 'multi-country': {pct:10,color:'#9B7EC8'}, 'mother': {pct:60,color:'#C75450'}, 'agapay': {pct:20,color:'#E8915A'}, 'faith': {pct:20,color:'#E8915A'} };
-    panel.querySelectorAll('.goal-card').forEach(function(card) {
-        var text = card.textContent.toLowerCase(); var pct = 0, color = '#7A9E7E';
-        Object.keys(goalDefs).forEach(function(key) { if (text.indexOf(key) >= 0) { pct = goalDefs[key].pct; color = goalDefs[key].color; } });
-        if (card.querySelector('.goal-progress-ring')) return;
-        var circ = 2 * Math.PI * 22; var dashOffset = circ * (1 - pct / 100);
-        var ring = document.createElement('div'); ring.className = 'goal-progress-ring';
-        ring.innerHTML = '<svg width="52" height="52" viewBox="0 0 52 52"><circle class="ring-bg" cx="26" cy="26" r="22"/><circle class="ring-fill" cx="26" cy="26" r="22" stroke-dasharray="'+circ+'" stroke-dashoffset="'+dashOffset+'" style="stroke:'+color+'"/></svg><span class="goal-progress-pct">'+pct+'%</span>';
-        card.classList.add('goal-card-enhanced'); card.insertBefore(ring, card.firstChild);
-    });
-}
-
-/* Avatar Colors */
-function avatarInit() {
-    document.querySelectorAll('.fp-avatar').forEach(function(av) {
-        var card = av.closest('.fp-card'); if (!card) return;
-        var nameEl = card.querySelector('.fp-name');
-        if (nameEl) { av.setAttribute('data-person', nameEl.textContent.trim().split(' ')[0]); }
-        if (card.textContent.indexOf('Alzheimer') >= 0 || card.textContent.indexOf('Mother') >= 0) av.setAttribute('data-person', 'Mother');
-    });
-}
-
-/* Progressive Disclosure */
-function progressiveInit() {
-    document.querySelectorAll('.fp-card').forEach(function(card) {
-        var rows = card.querySelectorAll('.fp-event-row');
-        if (rows.length > 2 && !card.querySelector('.fp-expand-indicator')) {
-            var ind = document.createElement('div'); ind.className = 'fp-expand-indicator';
-            ind.innerHTML = '<span class="fp-expand-text">' + (rows.length - 2) + ' more items</span>';
-            ind.onclick = function(e) { e.stopPropagation(); card.classList.toggle('expanded'); };
-            rows[rows.length-1].parentNode.appendChild(ind);
-        }
-    });
-}
-
-/* Master init — runs on panel switch and page load */
-var _redesignOrigShow = showPanel;
-showPanel = function(pid, sb, bb) {
-    _redesignOrigShow(pid, sb, bb);
-    if (pid === 'panel-timeline' && !document.querySelector('.tl-year-group')) setTimeout(tlInitYearGroups, 50);
-    if (pid === 'panel-money') setTimeout(moneyInitCharts, 50);
-    if (pid === 'panel-goals') setTimeout(goalsInitRings, 50);
-};
-setTimeout(function() {
-    moneyInitCharts(); goalsInitRings(); avatarInit(); progressiveInit();
-}, 500);
-
 </script>
 </body>
 </html>
