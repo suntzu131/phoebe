@@ -6413,6 +6413,41 @@ button, .nav-tab, .sidebar-item, .tl-filter-btn, .tl-filter-chip, .merged-tab {
     background: var(--paper);
 }
 
+/* ── Version & Changelog ────────────────────────────────────────── */
+.version-card {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 12px; padding: 16px; margin-bottom: 16px;
+}
+.version-current {
+    display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;
+}
+.version-number {
+    font-size: 24px; font-weight: 800; color: var(--accent);
+    letter-spacing: -0.02em;
+}
+.version-date { font-size: 13px; color: var(--ink-secondary); }
+.changelog { display: flex; flex-direction: column; gap: 16px; }
+.changelog-entry {
+    padding: 12px 0; border-top: 1px solid var(--line);
+}
+.changelog-entry:first-child { border-top: none; padding-top: 0; }
+.changelog-version {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-right: 8px;
+}
+.changelog-date { font-size: 12px; color: var(--ink-secondary); }
+.changelog-items {
+    margin-top: 8px; padding-left: 16px;
+    font-size: 13px; color: var(--ink-secondary); line-height: 1.6;
+}
+.changelog-items div::before {
+    content: "•"; margin-left: -12px; margin-right: 6px;
+    color: var(--accent);
+}
+.app-version-footer {
+    display: inline-block; font-size: 10px; color: var(--ink-secondary);
+    opacity: 0.5; margin-left: 4px;
+}
 /* ── Ask Phoebe Persistent Bar (Phase 1.4) ──────────────────────── */
 .ask-phoebe-bar {
     display: flex; align-items: center; gap: 10px;
@@ -6741,7 +6776,7 @@ button, .nav-tab, .sidebar-item, .tl-filter-btn, .tl-filter-chip, .merged-tab {
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
             Generated March 30, 2026 at 06:30 AM &middot;
-            Phoebe Life Intelligence &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
+            Phoebe Life Intelligence <span class="app-version-footer">v16</span> &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
 
@@ -9726,6 +9761,46 @@ button, .nav-tab, .sidebar-item, .tl-filter-btn, .tl-filter-chip, .merged-tab {
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-30 06:30</span><span class="sysstat-lbl">Last render</span></div>
     </div>
+        </div>
+
+        <!-- ═══ VERSION & CHANGELOG ═══ -->
+        <div class="section-title" id="sec-version" onclick="toggleSectionCollapse(this)">Version <span class="count-badge" id="app-version-badge">v16</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-content" data-section="sec-version">
+            <div class="version-card">
+                <div class="version-current">
+                    <span class="version-number" id="app-version">v16</span>
+                    <span class="version-date">March 30, 2026</span>
+                </div>
+                <div class="changelog">
+                    <div class="changelog-entry">
+                        <span class="changelog-version">v16</span>
+                        <span class="changelog-date">2026-03-30</span>
+                        <div class="changelog-items">
+                            <div>Dashboard redesign — Phases 1-3</div>
+                            <div>Timeline: year grouping + collapse + tap-to-expand</div>
+                            <div>Money: donut chart + bar chart always visible</div>
+                            <div>Goals: SVG progress rings on all goals</div>
+                            <div>Ask Phoebe: persistent search bar on every panel</div>
+                            <div>CSS transitions + micro-interactions</div>
+                            <div>Family avatars: distinct colors per person</div>
+                            <div>Warm dark mode (sage-tinted)</div>
+                            <div>Fix: sidebar navigation (accordion behavior)</div>
+                            <div>Fix: mobile 5-tab bottom nav (was 4)</div>
+                            <div>Fix: FAB hidden on mobile (was overlapping send)</div>
+                        </div>
+                    </div>
+                    <div class="changelog-entry">
+                        <span class="changelog-version">v15</span>
+                        <span class="changelog-date">2026-03-26</span>
+                        <div class="changelog-items">
+                            <div>Chat panel + FAB overlay</div>
+                            <div>Bento grid home layout</div>
+                            <div>Persona-aware access control</div>
+                            <div>PWA + push notifications</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
