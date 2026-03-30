@@ -1,5 +1,5 @@
-// Phoebe Dashboard Service Worker — v15 (chat panel + FAB)
-const CACHE_NAME = "phoebe-dashboard-v15";
+// Phoebe Dashboard Service Worker — v16 (redesign + nav fixes)
+const CACHE_NAME = "phoebe-dashboard-v16";
 
 // Static assets: cache-first (rarely change)
 const STATIC_ASSETS = [
