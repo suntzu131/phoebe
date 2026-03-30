@@ -1,0 +1,49 @@
+[
+  {
+    "version": 16,
+    "date": "2026-03-30",
+    "items": [
+      "Dashboard redesign — Phases 1-3",
+      "Timeline: year grouping + collapse + tap-to-expand events",
+      "Money: donut chart (income) + bar chart (expenses) always visible",
+      "Goals: SVG progress rings on all 6 goals",
+      "Ask Phoebe: persistent search/chat bar on every panel",
+      "CSS transitions + micro-interactions",
+      "Family avatars: distinct colors per person (Dan/Minako/Koko/Issa/Mother)",
+      "Warm dark mode (sage-tinted, not pure black)",
+      "Progressive disclosure on family cards",
+      "Fix: sidebar navigation — accordion behavior, auto-expand groups",
+      "Fix: mobile 5-tab bottom nav (was 4-column, Chat tab off-screen)",
+      "Fix: FAB hidden on mobile (was overlapping chat send button)",
+      "Version display + changelog in Settings panel",
+      "click-path-testing.md — 21st critical rule"
+    ]
+  },
+  {
+    "version": 15,
+    "date": "2026-03-26",
+    "items": [
+      "Chat panel + FAB overlay",
+      "Bento grid home layout with 10 card types",
+      "Persona-aware access control (admin/partner/housemate/guest)",
+      "PWA + push notifications + service worker",
+      "Google Chat-style message bubbles",
+      "Multi-thread chat (phoebe-family, Kids, custom)",
+      "Command palette (Ctrl+K)",
+      "Keyboard shortcuts (1-5 for panels)",
+      "Financial stress score + risk clusters"
+    ]
+  },
+  {
+    "version": 14,
+    "date": "2026-03-24",
+    "items": [
+      "Initial dashboard launch",
+      "5-panel layout (Home, Family, Money, Goals, Settings)",
+      "Firebase authentication + Google sign-in",
+      "Emergency contacts with call buttons",
+      "Morning brief + intelligence report",
+      "Compliance monitoring alerts"
+    ]
+  }
+]
