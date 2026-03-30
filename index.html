@@ -1711,6 +1711,45 @@ h1, h2, h3, h4, h5, h6, .panel-title, .report-title, .chart-title {
 .tl-empty-icon { font-size: 32px; }
 
 /* Desktop alternating layout (≥769px) */
+
+/* ── Timeline Year Groups (Phase 1.1) ────────────────────────────── */
+.tl-year-group { margin-bottom: 8px; }
+.tl-year-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0; cursor: pointer; user-select: none;
+    position: sticky; top: 0; z-index: 2;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.tl-year-header:hover { opacity: 0.8; }
+.tl-year-label {
+    font-size: 22px; font-weight: 800; color: var(--ink);
+    letter-spacing: -0.02em;
+}
+.tl-year-count {
+    font-size: 12px; color: var(--ink-secondary);
+    background: var(--surface-2); padding: 2px 8px;
+    border-radius: 10px; font-weight: 500;
+}
+.tl-year-chevron {
+    margin-left: auto; font-size: 16px; color: var(--ink-secondary);
+    transition: transform 0.2s ease;
+}
+.tl-year-group.collapsed .tl-year-chevron { transform: rotate(-90deg); }
+.tl-year-group.collapsed .tl-year-events { display: none; }
+
+/* Condensed event descriptions */
+.tl-event-desc {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    font-size: 12px; color: var(--ink-secondary); line-height: 1.5;
+}
+.tl-event.expanded .tl-event-desc { max-height: 300px; }
+.tl-event-card { cursor: pointer; }
+.tl-expand-hint {
+    font-size: 11px; color: var(--accent); margin-top: 4px;
+    opacity: 0.7; transition: opacity 0.15s;
+}
+.tl-event.expanded .tl-expand-hint { display: none; }
+
 @media (min-width: 769px) {
     .tl-spine-wrap {
         padding-left: 0;
@@ -6105,6 +6144,315 @@ canvas { max-width: 100%; }
         max-width: 100%;
     }
 }
+
+/* ═══ DASHBOARD REDESIGN — Phases 1-3 ═══════════════════════════════ */
+
+/* ── Timeline Year Groups (Phase 1.1) ────────────────────────────── */
+.tl-year-group { margin-bottom: 8px; }
+.tl-year-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 0; cursor: pointer; user-select: none;
+    position: sticky; top: 0; z-index: 2;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.tl-year-header:hover { opacity: 0.8; }
+.tl-year-label {
+    font-size: 22px; font-weight: 800; color: var(--ink);
+    letter-spacing: -0.02em;
+}
+.tl-year-count {
+    font-size: 12px; color: var(--ink-secondary);
+    background: var(--surface-2); padding: 2px 8px;
+    border-radius: 10px; font-weight: 500;
+}
+.tl-year-chevron {
+    margin-left: auto; font-size: 16px; color: var(--ink-secondary);
+    transition: transform 0.2s ease;
+}
+.tl-year-group.collapsed .tl-year-chevron { transform: rotate(-90deg); }
+.tl-year-group.collapsed .tl-year-events { display: none; }
+
+/* Condensed event descriptions */
+.tl-event-desc {
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    font-size: 12px; color: var(--ink-secondary); line-height: 1.5;
+}
+.tl-event.expanded .tl-event-desc { max-height: 300px; }
+.tl-event-card { cursor: pointer; }
+.tl-expand-hint {
+    font-size: 11px; color: var(--accent); margin-top: 4px;
+    opacity: 0.7; transition: opacity 0.15s;
+}
+.tl-event.expanded .tl-expand-hint { display: none; }
+
+/* ── Money Charts (Phase 1.2) ──────────────────────────────────── */
+.money-charts {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px; margin-bottom: 24px;
+}
+@media (max-width: 640px) { .money-charts { grid-template-columns: 1fr; } }
+.money-chart-card {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 12px; padding: 20px;
+    box-shadow: var(--shadow-card);
+}
+.money-chart-title {
+    font-size: 13px; font-weight: 600; color: var(--ink-secondary);
+    text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 16px;
+}
+.donut-container { display: flex; align-items: center; gap: 20px; }
+.donut-legend { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.donut-legend-item {
+    display: flex; align-items: center; gap: 8px; font-size: 12px;
+}
+.donut-legend-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.donut-legend-label { color: var(--ink-secondary); flex: 1; }
+.donut-legend-value { font-weight: 600; color: var(--ink); }
+.bar-row {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.bar-label { font-size: 12px; color: var(--ink-secondary); width: 100px; text-align: right; flex-shrink: 0; }
+.bar-track {
+    flex: 1; height: 20px; background: var(--surface-2);
+    border-radius: 10px; overflow: hidden; position: relative;
+}
+.bar-fill {
+    height: 100%; border-radius: 10px;
+    transition: width 0.5s ease;
+}
+.bar-value {
+    font-size: 11px; font-weight: 600; color: var(--ink);
+    width: 60px; text-align: right; flex-shrink: 0;
+}
+
+/* ── Goals Progress Rings (Phase 1.3) ────────────────────────────── */
+.goal-progress-ring {
+    position: relative; width: 52px; height: 52px; flex-shrink: 0;
+}
+.goal-progress-ring svg { transform: rotate(-90deg); }
+.goal-progress-ring .ring-bg {
+    fill: none; stroke: var(--surface-2); stroke-width: 5;
+}
+.goal-progress-ring .ring-fill {
+    fill: none; stroke: var(--accent); stroke-width: 5;
+    stroke-linecap: round; transition: stroke-dashoffset 0.6s ease;
+}
+.goal-progress-pct {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 12px; font-weight: 700; color: var(--ink);
+}
+.goal-card-enhanced {
+    display: flex !important; align-items: center; gap: 14px;
+}
+.goal-card-enhanced .goal-info { flex: 1; min-width: 0; }
+.goal-status-chip {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 2px 8px; border-radius: 6px;
+}
+.goal-status-chip.active { background: #dcfce7; color: #166534; }
+.goal-status-chip.planning { background: #fef3c7; color: #92400e; }
+.goal-status-chip.research { background: #dbeafe; color: #1e40af; }
+.goal-status-chip.monitoring { background: #f3e8ff; color: #6b21a8; }
+
+/* ── Micro-interactions & Transitions (Phase 2.1) ──────────────── */
+.panel { transition: opacity 0.2s ease; }
+.bento-tile, .fp-card, .money-chart-card, .goal-card, [class*=card] {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.bento-tile:hover, .fp-card:hover, .money-chart-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.bento-tile:active, .fp-card:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+}
+button, .nav-tab, .sidebar-item, .tl-filter-btn, .tl-filter-chip, .merged-tab {
+    transition: all 0.15s ease;
+}
+.nav-tab:active, .sidebar-item:active {
+    transform: scale(0.95);
+}
+/* Smooth panel content fade */
+.panel.active { animation: panelFadeIn 0.2s ease; }
+@keyframes panelFadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Design System Tokens (Phase 2.2) ──────────────────────────── */
+:root {
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.06);
+    --type-hero: 32px;
+    --type-title: 20px;
+    --type-subtitle: 14px;
+    --type-body: 14px;
+    --type-caption: 12px;
+    --weight-hero: 800;
+    --weight-title: 600;
+    --weight-subtitle: 500;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+}
+/* Typography hierarchy */
+.panel-title { font-size: var(--type-title); font-weight: var(--weight-title); }
+.panel-subtitle { font-size: var(--type-subtitle); font-weight: var(--weight-subtitle); color: var(--ink-secondary); }
+
+/* ── Person-Specific Avatars (Phase 2.3) ──────────────────────── */
+.fp-avatar[data-person="Dan"]    { background: #5a7c5e !important; }
+.fp-avatar[data-person="Minako"] { background: #D4A843 !important; }
+.fp-avatar[data-person="Koko"]   { background: #5B8FB9 !important; }
+.fp-avatar[data-person="Issa"]   { background: #4AADAD !important; }
+.fp-avatar[data-person="Mother"] { background: #C07070 !important; }
+
+/* ── Progressive Disclosure (Phase 2.4) ────────────────────────── */
+.fp-card .fp-event-row:nth-child(n+3) {
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+    margin: 0; padding: 0;
+}
+.fp-card.expanded .fp-event-row:nth-child(n+3) {
+    max-height: 100px; opacity: 1;
+    margin-top: 0; padding: 0;
+}
+.fp-expand-indicator {
+    font-size: 11px; color: var(--accent); cursor: pointer;
+    padding: 4px 0; opacity: 0.7;
+}
+.fp-card.expanded .fp-expand-indicator .fp-expand-text { display: none; }
+.fp-card.expanded .fp-expand-indicator::after { content: 'show less'; }
+
+/* ── Empty States (Phase 3.1) ──────────────────────────────────── */
+.phoebe-empty-state {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; padding: 48px 24px; text-align: center;
+    min-height: 200px;
+}
+.phoebe-empty-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(122,158,126,0.12); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 16px;
+}
+.phoebe-empty-title {
+    font-size: 16px; font-weight: 600; color: var(--ink);
+    margin-bottom: 6px;
+}
+.phoebe-empty-desc {
+    font-size: 13px; color: var(--ink-secondary);
+    max-width: 280px; line-height: 1.5;
+}
+
+/* ── Warm Dark Mode (Phase 3.2) ──────────────────────────────── */
+[data-theme="dark"] {
+    --bg: #1a1f1b;
+    --paper: #222823;
+    --surface-2: #2a302b;
+    --line: #353b36;
+    --ink: #e8e5e0;
+    --ink-secondary: #9a9890;
+    --accent: #8fb893;
+    --accent-soft: rgba(143,184,147,0.15);
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+}
+[data-theme="dark"] .sidebar {
+    background: #151a16;
+}
+[data-theme="dark"] .bento-tile,
+[data-theme="dark"] .fp-card,
+[data-theme="dark"] .money-chart-card,
+[data-theme="dark"] .tl-event-card {
+    background: var(--paper);
+    border-color: var(--line);
+}
+[data-theme="dark"] .money-hero-card,
+[data-theme="dark"] [class*=surplus] {
+    background: rgba(143,184,147,0.1);
+}
+[data-theme="dark"] .tl-year-header {
+    background: var(--bg);
+    border-color: var(--line);
+}
+[data-theme="dark"] .nav-tab.active {
+    color: var(--accent);
+}
+[data-theme="dark"] input,
+[data-theme="dark"] textarea {
+    background: var(--surface-2);
+    color: var(--ink);
+    border-color: var(--line);
+}
+[data-theme="dark"] .login-card {
+    background: var(--paper);
+}
+
+/* ── Ask Phoebe Persistent Bar (Phase 1.4) ──────────────────────── */
+.ask-phoebe-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; margin: 0 0 16px 0;
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 12px; cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.15s ease;
+}
+.ask-phoebe-bar:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(122,158,126,0.12);
+}
+.ask-phoebe-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.ask-phoebe-text {
+    flex: 1; font-size: 14px; color: var(--ink-secondary);
+    font-weight: 400;
+}
+.ask-phoebe-shortcut {
+    font-size: 11px; color: var(--ink-secondary);
+    background: var(--surface-2); padding: 2px 8px;
+    border-radius: 4px; font-family: monospace;
+    opacity: 0.7;
+}
+@media (max-width: 640px) {
+    .ask-phoebe-bar { margin: 0 16px 12px 16px; }
+    .ask-phoebe-shortcut { display: none; }
+}
+[data-theme="dark"] .ask-phoebe-bar {
+    background: var(--paper); border-color: var(--line);
+}
+/* ── Navigation Polish (Phase 3.3) ──────────────────────────────── */
+.sidebar {
+    opacity: 0.92;
+    transition: opacity 0.2s ease;
+}
+.sidebar:hover { opacity: 1; }
+.sidebar-item {
+    border-radius: 8px;
+    margin: 1px 8px;
+    padding: 8px 12px;
+}
+.sidebar-item:hover {
+    background: rgba(255,255,255,0.08);
+}
+.sidebar-item.active {
+    background: rgba(255,255,255,0.12);
+}
+
 </style>
 </head>
 <body>
@@ -6237,6 +6585,13 @@ canvas { max-width: 100%; }
             <span class="mobile-header-avatar" id="mobile-avatar"></span>
         </div>
     </header>
+
+    <!-- ═══ ASK PHOEBE — Persistent Search/Chat Bar (Phase 1.4) ═══ -->
+    <div class="ask-phoebe-bar" onclick="toggleChatOverlay()">
+        <span class="ask-phoebe-icon">P</span>
+        <span class="ask-phoebe-text">Ask Phoebe anything...</span>
+        <span class="ask-phoebe-shortcut">Ctrl+K</span>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!--  PANEL: HOME                                                       -->
@@ -14561,6 +14916,310 @@ function _applyUpdate() {
         }
     });
 }
+
+/* ═══ DASHBOARD REDESIGN — Phases 1-3 ═══════════════════════════════ */
+
+/* ── Timeline Year Grouping + Collapse (Phase 1.1) ──────────────── */
+function tlInitYearGroups() {
+    var container = document.getElementById('tl-events');
+    if (!container) return;
+    var events = Array.from(container.querySelectorAll('.tl-event'));
+    if (events.length === 0) return;
+    
+    /* Group events by year */
+    var groups = {};
+    events.forEach(function(ev) {
+        var year = ev.getAttribute('data-year') || 'Unknown';
+        if (!groups[year]) groups[year] = [];
+        groups[year].push(ev);
+    });
+    
+    /* Sort years descending */
+    var years = Object.keys(groups).sort(function(a, b) {
+        if (a === 'Unknown') return 1;
+        if (b === 'Unknown') return -1;
+        return parseInt(b) - parseInt(a);
+    });
+    
+    /* Rebuild container with year groups */
+    container.innerHTML = '';
+    years.forEach(function(year, idx) {
+        var group = document.createElement('div');
+        group.className = 'tl-year-group' + (idx > 0 ? ' collapsed' : '');
+        group.setAttribute('data-group-year', year);
+        
+        var header = document.createElement('div');
+        header.className = 'tl-year-header';
+        header.innerHTML = '<span class="tl-year-label">' + year + '</span>' +
+            '<span class="tl-year-count">' + groups[year].length + ' events</span>' +
+            '<span class="tl-year-chevron">▼</span>';
+        header.onclick = function() { group.classList.toggle('collapsed'); };
+        
+        var eventsWrap = document.createElement('div');
+        eventsWrap.className = 'tl-year-events';
+        groups[year].forEach(function(ev) { eventsWrap.appendChild(ev); });
+        
+        group.appendChild(header);
+        group.appendChild(eventsWrap);
+        container.appendChild(group);
+    });
+    
+    /* Make event cards expandable (click to show/hide description) */
+    container.querySelectorAll('.tl-event-card').forEach(function(card) {
+        var ev = card.closest('.tl-event');
+        var desc = card.querySelector('.tl-event-desc');
+        if (desc && desc.textContent.trim().length > 0) {
+            /* Add expand hint */
+            var hint = document.createElement('div');
+            hint.className = 'tl-expand-hint';
+            hint.textContent = 'tap to expand';
+            var body = card.querySelector('.tl-event-body');
+            if (body) body.appendChild(hint);
+            
+            card.addEventListener('click', function(e) {
+                e.stopPropagation();
+                ev.classList.toggle('expanded');
+            });
+        }
+    });
+}
+
+/* Override filter to respect year groups */
+var _origTlApply = _tlApplyFilters;
+_tlApplyFilters = function() {
+    var events = document.querySelectorAll("#tl-events .tl-event");
+    var count = 0;
+    events.forEach(function(ev) {
+        var year   = ev.getAttribute("data-year")   || "";
+        var type   = ev.getAttribute("data-type")   || "";
+        var people = (ev.getAttribute("data-people") || "").toLowerCase().split(",");
+        var matchYear   = (_tlActiveYear   === "all" || year   === _tlActiveYear);
+        var matchType   = (_tlActiveType   === "all" || type   === _tlActiveType);
+        var matchPerson = (_tlActivePerson === "all" ||
+            people.some(function(p) { return p.trim().toLowerCase() === _tlActivePerson.toLowerCase(); }));
+        if (matchYear && matchType && matchPerson) {
+            ev.style.display = "";
+            count++;
+        } else {
+            ev.style.display = "none";
+        }
+    });
+    /* Show/hide year groups based on visible events */
+    document.querySelectorAll('.tl-year-group').forEach(function(g) {
+        var visible = g.querySelectorAll('.tl-event:not([style*="display: none"])').length;
+        g.style.display = visible > 0 ? '' : 'none';
+        var countBadge = g.querySelector('.tl-year-count');
+        if (countBadge) countBadge.textContent = visible + ' events';
+    });
+    var sub = document.querySelector("#panel-timeline .panel-subtitle");
+    if (sub) {
+        sub.textContent = count + " of " + events.length + " events";
+    }
+    /* Expand all groups when filtering */
+    if (_tlActiveYear !== 'all' || _tlActivePerson !== 'all' || _tlActiveType !== 'all') {
+        document.querySelectorAll('.tl-year-group').forEach(function(g) { g.classList.remove('collapsed'); });
+    }
+};
+
+/* Init on panel switch to timeline */
+var _origShowPanel = showPanel;
+showPanel = function(panelId, sidebarBtn, bottomBtn) {
+    _origShowPanel(panelId, sidebarBtn, bottomBtn);
+    if (panelId === 'panel-timeline' && !document.querySelector('.tl-year-group')) {
+        setTimeout(tlInitYearGroups, 50);
+    }
+};
+/* Also init if already on timeline */
+if (document.querySelector('#panel-timeline.active')) {
+    setTimeout(tlInitYearGroups, 100);
+}
+
+
+/* ── Money Charts (Phase 1.2) ──────────────────────────────────── */
+function moneyInitCharts() {
+    var panel = document.getElementById('panel-money');
+    if (!panel || panel.querySelector('.money-charts')) return;
+    
+    /* Parse income/expense data from money-list-card divs */
+    var incomeItems = [], expenseItems = [];
+    panel.querySelectorAll('.money-list-card').forEach(function(card) {
+        var titleEl = card.querySelector('.money-list-title');
+        var headerText = titleEl ? titleEl.textContent.trim().toUpperCase() : '';
+        card.querySelectorAll('.money-list-row').forEach(function(row) {
+            var nameEl = row.querySelector('.money-list-name');
+            var amtEl = row.querySelector('.money-list-amount');
+            if (!nameEl || !amtEl) return;
+            var label = nameEl.textContent.trim();
+            var valText = amtEl.textContent.trim().replace(/[^0-9.]/g, '');
+            var val = parseFloat(valText) || 0;
+            if (val === 0) return;
+            if (headerText.indexOf('INCOME') >= 0) incomeItems.push({label: label, value: val});
+            else if (headerText.indexOf('EXPENSE') >= 0) expenseItems.push({label: label, value: val});
+        });
+    });
+
+    if (incomeItems.length === 0 && expenseItems.length === 0) return;
+    
+    /* Donut SVG for income */
+    var colors = ['#7A9E7E','#D4A843','#5B8FB9','#C75450','#9B7EC8','#E8915A','#6CB4A0'];
+    var total = incomeItems.reduce(function(s,i){return s+i.value;}, 0);
+    var cx = 60, cy = 60, r = 50, circumference = 2 * Math.PI * r;
+    var donutPaths = '', offset = 0;
+    incomeItems.forEach(function(item, idx) {
+        var pct = item.value / total;
+        var dashLen = pct * circumference;
+        var color = colors[idx % colors.length];
+        item.color = color;
+        donutPaths += '<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="16" ' +
+            'stroke-dasharray="'+dashLen+' '+(circumference - dashLen)+'" stroke-dashoffset="'+(-offset)+'" ' +
+            'style="transition:all 0.5s ease;"/>';
+        offset += dashLen;
+    });
+    
+    var donutSVG = '<svg width="120" height="120" viewBox="0 0 120 120" style="transform:rotate(-90deg)">' +
+        donutPaths + '</svg>';
+    var legend = incomeItems.map(function(item) {
+        return '<div class="donut-legend-item">' +
+            '<span class="donut-legend-dot" style="background:'+item.color+'"></span>' +
+            '<span class="donut-legend-label">'+item.label+'</span>' +
+            '<span class="donut-legend-value">$'+item.value.toLocaleString()+'</span></div>';
+    }).join('');
+    
+    /* Bar chart for expenses */
+    var maxExp = Math.max.apply(null, expenseItems.map(function(e){return e.value;}));
+    var bars = expenseItems.map(function(item, idx) {
+        var pct = Math.round((item.value / maxExp) * 100);
+        var color = colors[(idx + 3) % colors.length];
+        return '<div class="bar-row">' +
+            '<span class="bar-label">'+item.label.replace(/\(.+?\)/g,'').trim().substring(0,15)+'</span>' +
+            '<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div>' +
+            '<span class="bar-value">$'+item.value.toLocaleString()+'</span></div>';
+    }).join('');
+    
+    /* Insert charts before the tables */
+    var chartsDiv = document.createElement('div');
+    chartsDiv.className = 'money-charts';
+    chartsDiv.innerHTML =
+        '<div class="money-chart-card"><div class="money-chart-title">Income Breakdown</div>' +
+        '<div class="donut-container">' + donutSVG + '<div class="donut-legend">' + legend + '</div></div></div>' +
+        '<div class="money-chart-card"><div class="money-chart-title">Expense Breakdown</div>' + bars + '</div>';
+    
+    /* Insert charts between snapshot and income/expense lists */
+    var moneyLists = panel.querySelector('.money-lists');
+    if (moneyLists) {
+        moneyLists.parentNode.insertBefore(chartsDiv, moneyLists);
+    } else {
+        var snapshot = panel.querySelector('.money-snapshot');
+        if (snapshot) snapshot.after(chartsDiv);
+        else panel.querySelector('.panel-header').after(chartsDiv);
+    }
+}
+
+
+/* ── Goals Progress Rings (Phase 1.3) ──────────────────────────── */
+function goalsInitRings() {
+    var panel = document.getElementById('panel-goals');
+    if (!panel || panel.querySelector('.goal-progress-ring')) return;
+    
+    /* Goal definitions with estimated progress */
+    var goalDefs = {
+        'tkd black belt': {pct: 75, color: '#7A9E7E'},
+        'weight loss': {pct: 30, color: '#D4A843'},
+        'retire at 55': {pct: 15, color: '#5B8FB9'},
+        'multi-country': {pct: 10, color: '#9B7EC8'},
+        'mother': {pct: 60, color: '#C75450'},
+        'agapay': {pct: 20, color: '#E8915A'},
+        'faith': {pct: 20, color: '#E8915A'},
+        'bypass': {pct: 20, color: '#6CB4A0'}
+    };
+    
+    /* Find goal cards */
+    var cards = panel.querySelectorAll('.goal-card, [class*=goal-card], .bento-tile');
+    cards.forEach(function(card) {
+        var text = card.textContent.toLowerCase();
+        var pct = 0, color = '#7A9E7E';
+        Object.keys(goalDefs).forEach(function(key) {
+            if (text.indexOf(key) >= 0) {
+                pct = goalDefs[key].pct;
+                color = goalDefs[key].color;
+            }
+        });
+        
+        if (card.querySelector('.goal-progress-ring')) return;
+        
+        var circumference = 2 * Math.PI * 22;
+        var dashOffset = circumference * (1 - pct / 100);
+        
+        var ring = document.createElement('div');
+        ring.className = 'goal-progress-ring';
+        ring.innerHTML = '<svg width="52" height="52" viewBox="0 0 52 52">' +
+            '<circle class="ring-bg" cx="26" cy="26" r="22"/>' +
+            '<circle class="ring-fill" cx="26" cy="26" r="22" ' +
+            'stroke-dasharray="'+circumference+'" stroke-dashoffset="'+dashOffset+'" ' +
+            'style="stroke:'+color+'"/></svg>' +
+            '<span class="goal-progress-pct">'+pct+'%</span>';
+        
+        card.classList.add('goal-card-enhanced');
+        card.insertBefore(ring, card.firstChild);
+    });
+}
+
+
+/* ── Assign Avatar Data Attributes (Phase 2.3) ──────────────── */
+function avatarInit() {
+    var names = {'D':'Dan','M':'Minako','K':'Koko','I':'Issa'};
+    document.querySelectorAll('.fp-avatar').forEach(function(av) {
+        var letter = av.textContent.trim();
+        var card = av.closest('.fp-card');
+        if (!card) return;
+        var nameEl = card.querySelector('.fp-name');
+        if (nameEl) {
+            var name = nameEl.textContent.trim().split(' ')[0];
+            av.setAttribute('data-person', name);
+        } else if (names[letter]) {
+            av.setAttribute('data-person', names[letter]);
+        }
+        /* Check for "Mother" in nearby text */
+        if (card.textContent.indexOf('Mother') >= 0 || card.textContent.indexOf('Alzheimer') >= 0) {
+            av.setAttribute('data-person', 'Mother');
+        }
+    });
+}
+setTimeout(avatarInit, 100);
+
+
+/* ── Progressive Disclosure Init (Phase 2.4) ─────────────────── */
+function progressiveInit() {
+    document.querySelectorAll('.fp-card').forEach(function(card) {
+        var rows = card.querySelectorAll('.fp-event-row');
+        if (rows.length > 2 && !card.querySelector('.fp-expand-indicator')) {
+            var ind = document.createElement('div');
+            ind.className = 'fp-expand-indicator';
+            ind.innerHTML = '<span class="fp-expand-text">' + (rows.length - 2) + ' more items</span>';
+            ind.onclick = function(e) { e.stopPropagation(); card.classList.toggle('expanded'); };
+            var container = rows[rows.length-1].parentNode;
+            container.appendChild(ind);
+        }
+    });
+}
+setTimeout(progressiveInit, 200);
+
+
+/* ── Init all enhancements when panels load (Phase master init) ── */
+var _redesignOrigShow = showPanel;
+showPanel = function(pid, sb, bb) {
+    _redesignOrigShow(pid, sb, bb);
+    if (pid === 'panel-money') setTimeout(moneyInitCharts, 50);
+    if (pid === 'panel-goals') setTimeout(goalsInitRings, 50);
+};
+/* Init on page load for active panel */
+setTimeout(function() {
+    moneyInitCharts();
+    goalsInitRings();
+    avatarInit();
+    progressiveInit();
+}, 500);
+
 </script>
 </body>
 </html>
