@@ -6147,25 +6147,86 @@ canvas { max-width: 100%; }
 
 /* ═══ DASHBOARD REDESIGN — Phases 1-3 (injected into render source) ═══ */
 
-/* Timeline Year Groups */
-.tl-year-group { margin-bottom: 8px; }
-.tl-year-header {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 0; cursor: pointer; user-select: none;
-    position: sticky; top: 0; z-index: 2;
-    background: var(--bg); border-bottom: 1px solid var(--line);
+/* ── Horizontal Timeline Journey ─────────────────────────────────── */
+.htl-year-strip { margin-bottom: 20px; }
+.htl-year-scroll {
+    display: flex; gap: 12px; overflow-x: auto; padding: 4px 0 12px;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 }
-.tl-year-header:hover { opacity: 0.8; }
-.tl-year-label { font-size: 22px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
-.tl-year-count { font-size: 12px; color: var(--ink-secondary); background: var(--surface-2); padding: 2px 8px; border-radius: 10px; font-weight: 500; }
-.tl-year-chevron { margin-left: auto; font-size: 16px; color: var(--ink-secondary); transition: transform 0.2s ease; }
-.tl-year-group.collapsed .tl-year-chevron { transform: rotate(-90deg); }
-.tl-year-group.collapsed .tl-year-events { display: none; }
-.tl-event-desc { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-.tl-event.expanded .tl-event-desc { max-height: 300px; }
-.tl-event-card { cursor: pointer; }
-.tl-expand-hint { font-size: 11px; color: var(--accent); margin-top: 4px; opacity: 0.7; }
-.tl-event.expanded .tl-expand-hint { display: none; }
+.htl-year-scroll::-webkit-scrollbar { display: none; }
+.htl-year-card {
+    flex-shrink: 0; width: 160px; padding: 20px 16px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 16px;
+    cursor: pointer; scroll-snap-align: start;
+    transition: all 0.2s ease; box-shadow: var(--shadow-card);
+}
+.htl-year-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-color: var(--accent); }
+.htl-year-card.active { border-color: var(--accent); background: var(--accent-soft, rgba(122,158,126,0.08)); }
+.htl-year-num { font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+.htl-year-count { font-size: 12px; color: var(--ink-secondary); margin: 4px 0 8px; }
+.htl-year-types { display: flex; flex-wrap: wrap; gap: 4px; }
+.htl-type-chip { font-size: 9px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+
+/* Month strip */
+.htl-month-strip { animation: panelFadeIn 0.2s ease; }
+.htl-month-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.htl-back-btn {
+    border: none; background: var(--surface-2); padding: 6px 14px;
+    border-radius: 8px; cursor: pointer; font-family: var(--font);
+    font-size: 13px; font-weight: 500; color: var(--ink-secondary);
+    transition: all 0.15s ease;
+}
+.htl-back-btn:hover { background: var(--accent); color: #fff; }
+.htl-month-year-label { font-size: 20px; font-weight: 700; color: var(--ink); }
+.htl-month-scroll {
+    display: flex; gap: 12px; overflow-x: auto; padding: 4px 0 12px;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.htl-month-scroll::-webkit-scrollbar { display: none; }
+.htl-month-card {
+    flex-shrink: 0; width: 140px; padding: 16px 14px;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    cursor: pointer; scroll-snap-align: start;
+    transition: all 0.2s ease; text-align: center;
+}
+.htl-month-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.htl-month-icon { font-size: 24px; margin-bottom: 6px; width: 44px; height: 44px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+.htl-month-name { font-size: 16px; font-weight: 700; color: var(--ink); }
+.htl-month-count { font-size: 11px; color: var(--ink-secondary); margin: 2px 0 6px; }
+.htl-month-preview { font-size: 11px; color: var(--ink-secondary); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Event list */
+.htl-event-list { animation: panelFadeIn 0.2s ease; }
+.htl-event-count { font-size: 13px; color: var(--ink-secondary); margin-left: auto; }
+.htl-event-scroll { display: flex; flex-direction: column; gap: 8px; }
+.htl-event-card {
+    display: flex; gap: 12px; align-items: flex-start;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px 14px; cursor: pointer; transition: all 0.15s ease;
+}
+.htl-event-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.htl-event-dot {
+    width: 32px; height: 32px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+}
+.htl-event-info { flex: 1; min-width: 0; }
+.htl-event-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+.htl-event-date { font-size: 11px; color: var(--ink-secondary); margin-left: auto; }
+.htl-event-title { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.htl-event-desc {
+    font-size: 12px; color: var(--ink-secondary); line-height: 1.4;
+    max-height: 0; overflow: hidden; transition: max-height 0.3s ease; margin-top: 0;
+}
+.htl-event-card.expanded .htl-event-desc { max-height: 200px; margin-top: 6px; }
+
+@media (max-width: 640px) {
+    .htl-year-card { width: 130px; padding: 14px 12px; }
+    .htl-year-num { font-size: 22px; }
+    .htl-month-card { width: 110px; padding: 12px 10px; }
+}
 
 /* Money Charts */
 .money-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
@@ -6295,53 +6356,24 @@ canvas { max-width: 100%; }
             <span class="sidebar-item-label">Home</span>
         </button>
 
-        <div class="sidebar-group">
-            <button class="sidebar-group-header" onclick="toggleSidebarGroup(this)">
-                <span class="sidebar-group-label">Family</span>
-                <span class="sidebar-group-chevron">&#9660;</span>
-            </button>
-            <div class="sidebar-group-items">
-                <button class="sidebar-item sidebar-sub" data-panel="panel-family" data-label="People" onclick="showPanel('panel-family', this)">
-                    <span class="sidebar-item-icon">&#128106;</span>
-                    <span class="sidebar-item-label">People</span>
-                </button>
-                <button class="sidebar-item sidebar-sub" data-panel="panel-family" data-label="Calendar" onclick="showPanel('panel-family', this); setTimeout(function(){ switchMergedTab(null,'family-tab-calendar') }, 50)">
-                    <span class="sidebar-item-icon">&#128197;</span>
-                    <span class="sidebar-item-label">Calendar</span>
-                </button>
-                <button class="sidebar-item sidebar-sub" data-panel="panel-timeline" data-label="Timeline" onclick="showPanel('panel-timeline', this)">
-                    <span class="sidebar-item-icon">&#128336;</span>
-                    <span class="sidebar-item-label">Timeline</span>
-                </button>
-            </div>
-        </div>
+        <button class="sidebar-item" data-panel="panel-family" data-label="Family" onclick="showPanel('panel-family', this)">
+            <span class="sidebar-item-icon">&#128106;</span>
+            <span class="sidebar-item-label">Family</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-timeline" data-label="Timeline" onclick="showPanel('panel-timeline', this)">
+            <span class="sidebar-item-icon">&#128336;</span>
+            <span class="sidebar-item-label">Timeline</span>
+        </button>
 
-        <div class="sidebar-group">
-            <button class="sidebar-group-header" onclick="toggleSidebarGroup(this)">
-                <span class="sidebar-group-label">Finances</span>
-                <span class="sidebar-group-chevron">&#9660;</span>
-            </button>
-            <div class="sidebar-group-items">
-                <button class="sidebar-item sidebar-sub" data-panel="panel-money" data-label="Overview" onclick="showPanel('panel-money', this)">
-                    <span class="sidebar-item-icon">&#128176;</span>
-                    <span class="sidebar-item-label">Overview</span>
-                </button>
-            </div>
-        </div>
-
-        <div class="sidebar-group">
-            <button class="sidebar-group-header" onclick="toggleSidebarGroup(this)">
-                <span class="sidebar-group-label">Planning</span>
-                <span class="sidebar-group-chevron">&#9660;</span>
-            </button>
-            <div class="sidebar-group-items">
-                <button class="sidebar-item sidebar-sub" data-panel="panel-goals" data-label="Goals" onclick="showPanel('panel-goals', this)">
-                    <span class="sidebar-item-icon">&#127919;</span>
-                    <span class="sidebar-item-label">Goals</span>
-                    <span class="sidebar-item-badge">12</span>
-                </button>
-            </div>
-        </div>
+        <button class="sidebar-item" data-panel="panel-money" data-label="Money" onclick="showPanel('panel-money', this)">
+            <span class="sidebar-item-icon">&#128176;</span>
+            <span class="sidebar-item-label">Money</span>
+        </button>
+        <button class="sidebar-item" data-panel="panel-goals" data-label="Goals" onclick="showPanel('panel-goals', this)">
+            <span class="sidebar-item-icon">&#127919;</span>
+            <span class="sidebar-item-label">Goals</span>
+            <span class="sidebar-item-badge">12</span>
+        </button>
 
         <div class="sidebar-divider"></div>
 
@@ -6358,7 +6390,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-30 10:07</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-03-30 10:16</span>
     </div>
 </aside>
 
@@ -6521,8 +6553,8 @@ canvas { max-width: 100%; }
     
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated March 30, 2026 at 10:07 AM &middot;
-            Phoebe Life Intelligence <span class="app-version-footer">v17</span> &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
+            Generated March 30, 2026 at 10:16 AM &middot;
+            Phoebe Life Intelligence <span class="app-version-footer">v18</span> &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
 
@@ -6889,30 +6921,2010 @@ canvas { max-width: 100%; }
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <div class="panel" id="panel-timeline">
   <div class="panel-header">
-    <div class="panel-title">Family Timeline</div>
-    <div class="panel-subtitle">150 events</div>
+    <div class="panel-title">Family Journey</div>
+    <div class="panel-subtitle">150 events across 4 years</div>
   </div>
 
-  
+  <div class="tl-filters" style="margin-bottom:16px">
+        <div class="tl-filter-row">
+            <span class="tl-filter-label">Person</span>
+            <div class="tl-filter-scroll"><button class="tl-filter-chip tl-filter-person active" data-person="all" onclick="tlFilterPerson(this,'all')">All</button><button class="tl-filter-chip tl-filter-person" data-person="Dan" onclick="tlFilterPerson(this,'Dan')">Dan</button><button class="tl-filter-chip tl-filter-person" data-person="Minako" onclick="tlFilterPerson(this,'Minako')">Minako</button><button class="tl-filter-chip tl-filter-person" data-person="Koko" onclick="tlFilterPerson(this,'Koko')">Koko</button><button class="tl-filter-chip tl-filter-person" data-person="Issa" onclick="tlFilterPerson(this,'Issa')">Issa</button><button class="tl-filter-chip tl-filter-person" data-person="Mother" onclick="tlFilterPerson(this,'Mother')">Mother</button></div>
+        </div>
+        <div class="tl-filter-row">
+            <span class="tl-filter-label">Type</span>
+            <div class="tl-filter-scroll"><button class="tl-filter-chip tl-filter-type active" data-type="all" onclick="tlFilterType(this,'all')">All</button><button class="tl-filter-chip tl-filter-type" data-type="trip" onclick="tlFilterType(this,'trip')">Trips</button><button class="tl-filter-chip tl-filter-type" data-type="medical" onclick="tlFilterType(this,'medical')">Medical</button><button class="tl-filter-chip tl-filter-type" data-type="legal" onclick="tlFilterType(this,'legal')">Legal</button><button class="tl-filter-chip tl-filter-type" data-type="milestone" onclick="tlFilterType(this,'milestone')">Milestones</button><button class="tl-filter-chip tl-filter-type" data-type="faith" onclick="tlFilterType(this,'faith')">Faith</button><button class="tl-filter-chip tl-filter-type" data-type="birth" onclick="tlFilterType(this,'birth')">Births</button><button class="tl-filter-chip tl-filter-type" data-type="school" onclick="tlFilterType(this,'school')">School</button><button class="tl-filter-chip tl-filter-type" data-type="career" onclick="tlFilterType(this,'career')">Career</button></div>
+        </div>
+    </div>
 
-  <div class="tl-filters">
-    <div class="tl-filter-row">
-      <span class="tl-filter-label">Year</span>
-      <div class="tl-filter-scroll"><button class="tl-filter-btn tl-filter-year active" data-year="all" onclick="tlFilterYear(this,'all')">All</button><button class="tl-filter-btn tl-filter-year" data-year="2026" onclick="tlFilterYear(this,'2026')">2026</button><button class="tl-filter-btn tl-filter-year" data-year="2025" onclick="tlFilterYear(this,'2025')">2025</button><button class="tl-filter-btn tl-filter-year" data-year="2024" onclick="tlFilterYear(this,'2024')">2024</button><button class="tl-filter-btn tl-filter-year" data-year="2023" onclick="tlFilterYear(this,'2023')">2023</button></div>
-    </div>
-    <div class="tl-filter-row">
-      <span class="tl-filter-label">Person</span>
-      <div class="tl-filter-scroll"><button class="tl-filter-chip tl-filter-person active" data-person="all" onclick="tlFilterPerson(this,'all')">All</button><button class="tl-filter-chip tl-filter-person" data-person="Dan" onclick="tlFilterPerson(this,'Dan')">Dan</button><button class="tl-filter-chip tl-filter-person" data-person="Minako" onclick="tlFilterPerson(this,'Minako')">Minako</button><button class="tl-filter-chip tl-filter-person" data-person="Koko" onclick="tlFilterPerson(this,'Koko')">Koko</button><button class="tl-filter-chip tl-filter-person" data-person="Issa" onclick="tlFilterPerson(this,'Issa')">Issa</button><button class="tl-filter-chip tl-filter-person" data-person="Mother" onclick="tlFilterPerson(this,'Mother')">Mother</button></div>
-    </div>
-    <div class="tl-filter-row">
-      <span class="tl-filter-label">Type</span>
-      <div class="tl-filter-scroll"><button class="tl-filter-chip tl-filter-type active" data-type="all" onclick="tlFilterType(this,'all')">All</button><button class="tl-filter-chip tl-filter-type" data-type="trip" onclick="tlFilterType(this,'trip')">Trips</button><button class="tl-filter-chip tl-filter-type" data-type="medical" onclick="tlFilterType(this,'medical')">Medical</button><button class="tl-filter-chip tl-filter-type" data-type="legal" onclick="tlFilterType(this,'legal')">Legal</button><button class="tl-filter-chip tl-filter-type" data-type="milestone" onclick="tlFilterType(this,'milestone')">Milestones</button><button class="tl-filter-chip tl-filter-type" data-type="faith" onclick="tlFilterType(this,'faith')">Faith</button><button class="tl-filter-chip tl-filter-type" data-type="birth" onclick="tlFilterType(this,'birth')">Births</button><button class="tl-filter-chip tl-filter-type" data-type="school" onclick="tlFilterType(this,'school')">School</button><button class="tl-filter-chip tl-filter-type" data-type="career" onclick="tlFilterType(this,'career')">Career</button></div>
-    </div>
+  <!-- Horizontal year strip -->
+  <div class="htl-year-strip" id="htl-year-strip">
+    <div class="htl-year-scroll"><div class="htl-year-card" data-year="2026" onclick="htlExpandYear('2026')">
+            <div class="htl-year-num">2026</div>
+            <div class="htl-year-count">82 events</div>
+            <div class="htl-year-types"><span class="htl-type-chip" style="background:#fee2e2;color:#C75450">Medical (80)</span><span class="htl-type-chip" style="background:#dbeafe;color:#5B8DB8">Trip (1)</span><span class="htl-type-chip" style="background:#fef3c7;color:#D4A843">Milestone (1)</span></div>
+        </div><div class="htl-year-card" data-year="2025" onclick="htlExpandYear('2025')">
+            <div class="htl-year-num">2025</div>
+            <div class="htl-year-count">42 events</div>
+            <div class="htl-year-types"><span class="htl-type-chip" style="background:#fee2e2;color:#C75450">Medical (41)</span><span class="htl-type-chip" style="background:#fce7f3;color:#E879A0">Birth (1)</span></div>
+        </div><div class="htl-year-card" data-year="2024" onclick="htlExpandYear('2024')">
+            <div class="htl-year-num">2024</div>
+            <div class="htl-year-count">22 events</div>
+            <div class="htl-year-types"><span class="htl-type-chip" style="background:#fee2e2;color:#C75450">Medical (20)</span><span class="htl-type-chip" style="background:#fce7f3;color:#E879A0">Birth (2)</span></div>
+        </div><div class="htl-year-card" data-year="2023" onclick="htlExpandYear('2023')">
+            <div class="htl-year-num">2023</div>
+            <div class="htl-year-count">4 events</div>
+            <div class="htl-year-types"><span class="htl-type-chip" style="background:#fee2e2;color:#C75450">Medical (3)</span><span class="htl-type-chip" style="background:#fce7f3;color:#E879A0">Birth (1)</span></div>
+        </div></div>
   </div>
 
-  <div class="tl-spine-wrap">
-    <div class="tl-spine"></div>
-    <div class="tl-events" id="tl-events"><div class="tl-event" data-year="2026" data-type="medical" data-people="">
+  <!-- Month strips (one per year, hidden until year clicked) -->
+  <div class="htl-month-strip" id="htl-months-2026" style="display:none">
+            <div class="htl-month-header">
+                <button class="htl-back-btn" onclick="htlCollapseYear()">&#8592; Back</button>
+                <span class="htl-month-year-label">2026</span>
+            </div>
+            <div class="htl-month-scroll"><div class="htl-month-card" onclick="htlExpandMonth('2026','01')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Jan</div>
+                <div class="htl-month-count">26 events</div>
+                <div class="htl-month-preview">January 2026: A1c: 5.1% (no diabetes). AST: 23 (normal). ALT</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2026','02')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Feb</div>
+                <div class="htl-month-count">7 events</div>
+                <div class="htl-month-preview">August 2023: Bilateral piriformis syndrome progressing over </div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2026','03')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Mar</div>
+                <div class="htl-month-count">49 events</div>
+                <div class="htl-month-preview">March 2026: Solvang &amp; Santa Barbara family road trip. Friend</div>
+            </div></div>
+        </div><div class="htl-month-strip" id="htl-months-2025" style="display:none">
+            <div class="htl-month-header">
+                <button class="htl-back-btn" onclick="htlCollapseYear()">&#8592; Back</button>
+                <span class="htl-month-year-label">2025</span>
+            </div>
+            <div class="htl-month-scroll"><div class="htl-month-card" onclick="htlExpandMonth('2025','02')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Feb</div>
+                <div class="htl-month-count">3 events</div>
+                <div class="htl-month-preview">March 2026: ~~**Marriage to Minako Horimura:** Date of marri</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','03')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Mar</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">March 2026: **OC Access paratransit setup:** Door-to-door se</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','04')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Apr</div>
+                <div class="htl-month-count">16 events</div>
+                <div class="htl-month-preview">March 2026: Chronic GI symptoms documented: food sensitiviti</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','05')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">May</div>
+                <div class="htl-month-count">2 events</div>
+                <div class="htl-month-preview">March 2026: Home gym documented: adjustable dumbbells up to </div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','06')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Jun</div>
+                <div class="htl-month-count">3 events</div>
+                <div class="htl-month-preview">March 2026: Researched STEP enrollment, proof-of-ties packet</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','07')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Jul</div>
+                <div class="htl-month-count">3 events</div>
+                <div class="htl-month-preview">~December 2024: Mother begins paying Dan $2,000/mo for housi</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','08')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Aug</div>
+                <div class="htl-month-count">3 events</div>
+                <div class="htl-month-preview">March 2026: Regular trail running at Peter's Canyon, Tustin </div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','09')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Sep</div>
+                <div class="htl-month-count">3 events</div>
+                <div class="htl-month-preview">March 2026: Applied to Anaheim Villa (Korean-speaking, CalOp</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','10')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Oct</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">March 2026: Security Benefit IRA annuity balance: ~$121,118 </div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','11')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Nov</div>
+                <div class="htl-month-count">3 events</div>
+                <div class="htl-month-preview">March 2026: Detailed care needs documented: diapers (double </div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2025','12')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Dec</div>
+                <div class="htl-month-count">4 events</div>
+                <div class="htl-month-preview">~January 2026: Mother kicked out of Healthy Aging Center / a</div>
+            </div></div>
+        </div><div class="htl-month-strip" id="htl-months-2024" style="display:none">
+            <div class="htl-month-header">
+                <button class="htl-back-btn" onclick="htlCollapseYear()">&#8592; Back</button>
+                <span class="htl-month-year-label">2024</span>
+            </div>
+            <div class="htl-month-scroll"><div class="htl-month-card" onclick="htlExpandMonth('2024','01')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Jan</div>
+                <div class="htl-month-count">3 events</div>
+                <div class="htl-month-preview">August 2024: Weighed 158 lbs. [UNVERIFIED: ChatGPT archive] </div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','03')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Mar</div>
+                <div class="htl-month-count">2 events</div>
+                <div class="htl-month-preview">April 2023: Organized and executed Easter feast for church c</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','06')">
+                <div class="htl-month-icon" style="background:#fce7f3;color:#E879A0">&#128118;</div>
+                <div class="htl-month-name">Jun</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">June 2024: Chuck E. Cheese birthday party for Koko, Grave Di</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','07')">
+                <div class="htl-month-icon" style="background:#fce7f3;color:#E879A0">&#128118;</div>
+                <div class="htl-month-name">Jul</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">July 2024: Created custom songs for Koko and Issa using Suno</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','08')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Aug</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">May 2024: Traveled with friend Eddie to Austin, TX — visited</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','09')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Sep</div>
+                <div class="htl-month-count">9 events</div>
+                <div class="htl-month-preview">September 2024: Stressors compounding: father's cancer, moth</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','10')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Oct</div>
+                <div class="htl-month-count">2 events</div>
+                <div class="htl-month-preview">November 2024: Set up Unraid server for home network. JDownl</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','11')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Nov</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">October 2024: Active retro gaming hobby: owns Odin 2, Anbern</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2024','12')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Dec</div>
+                <div class="htl-month-count">2 events</div>
+                <div class="htl-month-preview">December 2024: Wrote final letter to father reflecting on ch</div>
+            </div></div>
+        </div><div class="htl-month-strip" id="htl-months-2023" style="display:none">
+            <div class="htl-month-header">
+                <button class="htl-back-btn" onclick="htlCollapseYear()">&#8592; Back</button>
+                <span class="htl-month-year-label">2023</span>
+            </div>
+            <div class="htl-month-scroll"><div class="htl-month-card" onclick="htlExpandMonth('2023','01')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Jan</div>
+                <div class="htl-month-count">2 events</div>
+                <div class="htl-month-preview">April 2023: Translated Easter/Resurrection sermon: &quot;Meaning </div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2023','08')">
+                <div class="htl-month-icon" style="background:#fce7f3;color:#E879A0">&#128118;</div>
+                <div class="htl-month-name">Aug</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">August 2023: Attended friend Johnny Lee's son Leon's (~1.5 y</div>
+            </div><div class="htl-month-card" onclick="htlExpandMonth('2023','09')">
+                <div class="htl-month-icon" style="background:#fee2e2;color:#C75450">&#129657;</div>
+                <div class="htl-month-name">Sep</div>
+                <div class="htl-month-count">1 events</div>
+                <div class="htl-month-preview">March 2026: **Daniel citizenship recommendation letter:** Da</div>
+            </div></div>
+        </div>
+
+  <!-- Event lists (one per month, hidden until month clicked) -->
+  <div class="htl-event-list" id="htl-events-2026-01" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2026')">&#8592; Jan 2026</button>
+                    <span class="htl-event-count">26 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">January 2026: A1c: 5.1% (no diabetes). AST: 23 (normal). ALT: 26 (normal). eGFR:</div>
+                        <div class="htl-event-desc">January 2026: A1c: 5.1% (no diabetes). AST: 23 (normal). ALT: 26 (normal). eGFR: 110 (excellent kidney function). Ferritin: 227. Weight: ~163 lbs. BMI: ~26.76. [UNVERIFIED: ChatGPT output] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">February 2026: Dr. Johnny Moreno Orozco DO confirmed bilateral piriformis syndro</div>
+                        <div class="htl-event-desc">February 2026: Dr. Johnny Moreno Orozco DO confirmed bilateral piriformis syndrome (R&gt;L) at urgent care (2/16/2026). Normal strength, neurovascular intact. [UNVERIFIED: ChatGPT output] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Best friend Daniel's father diagnosed with Stage 4 lung cancer (foun</div>
+                        <div class="htl-event-desc">March 2026: Best friend Daniel's father diagnosed with Stage 4 lung cancer (found via ER visit). Dan provided burial research (tree burial options) and emotional support, relating to his own father's </div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Mother's Bank of Hope checking at ~$126K before deposits caught up.</div>
+                        <div class="htl-event-desc">March 2026: Mother's Bank of Hope checking at ~$126K before deposits caught up. [UNVERIFIED: ChatGPT output] [FINANCE]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: $30K transferred from mother's account to aunt Mi Young in Korea — f</div>
+                        <div class="htl-event-desc">March 2026: $30K transferred from mother's account to aunt Mi Young in Korea — fulfilling father's dying wish. Brother Thomas is witness. Limited written documentation. [UNVERIFIED: ChatGPT output] [F</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: 36-month probation from 2013 DUI conviction completed. [UNVERIFIED:</div>
+                        <div class="htl-event-desc">March 2026: 36-month probation from 2013 DUI conviction completed. [UNVERIFIED: ChatGPT output] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: 5 tax years (2018-2024) synthesized from Drive. AGI peak $78K (2018)</div>
+                        <div class="htl-event-desc">March 2026: 5 tax years (2018-2024) synthesized from Drive. AGI peak $78K (2018), current $63K. CPA Osamu Hashizu confirmed. [VERIFIED: Google Drive tax returns] [FINANCE]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **CCW permit:** Concealed carry weapon permit obtained and renewed.</div>
+                        <div class="htl-event-desc">March 2026: **CCW permit:** Concealed carry weapon permit obtained and renewed. Date unknown. [UNVERIFIED: ChatGPT output] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Peter Kim released from jail after ~7 years.** Release date unknow</div>
+                        <div class="htl-event-desc">March 2026: **Peter Kim released from jail after ~7 years.** Release date unknown. Now settled, works for father's business, husband and father. [UNVERIFIED: ChatGPT archive various] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Anthony and Winnie:** Friends who live in Sacramento with a son. D</div>
+                        <div class="htl-event-desc">March 2026: **Anthony and Winnie:** Friends who live in Sacramento with a son. Dates of friendship unknown. [UNVERIFIED: ChatGPT archive various] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Eric Chang:** Friend with daughter Selah. Dates of friendship unkn</div>
+                        <div class="htl-event-desc">March 2026: **Eric Chang:** Friend with daughter Selah. Dates of friendship unknown. [UNVERIFIED: ChatGPT archive various] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **YouTube channel &quot;TechQuest Academy&quot;:** Full business plan, 12-mont</div>
+                        <div class="htl-event-desc">March 2026: **YouTube channel &quot;TechQuest Academy&quot;:** Full business plan, 12-month financial projections, pilot concept/script, marketing model. Partner is a &quot;creative director.&quot; Status and date unknow</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Suno AI business use:** Created custom song for prospect Drew Smit</div>
+                        <div class="htl-event-desc">March 2026: **Suno AI business use:** Created custom song for prospect Drew Smith at Evolv — &quot;Lead the Way with Evolv&quot; as outreach tool. Date unknown. [UNVERIFIED: ChatGPT output] [CAREER]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Daniel and Yejin fertility/pregnancy challenges:** Ongoing. Dates</div>
+                        <div class="htl-event-desc">March 2026: **Daniel and Yejin fertility/pregnancy challenges:** Ongoing. Dates unknown. [UNVERIFIED: ChatGPT output] [PERSONAL]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Johnny Lee marriage struggles with wife Ly:** Ongoing. Dates unkno</div>
+                        <div class="htl-event-desc">March 2026: **Johnny Lee marriage struggles with wife Ly:** Ongoing. Dates unknown. [UNVERIFIED: ChatGPT archive various] [PERSONAL]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Calvin Seo works at Yokly (sales):** Start date unknown. [UNVERIFI</div>
+                        <div class="htl-event-desc">March 2026: **Calvin Seo works at Yokly (sales):** Start date unknown. [UNVERIFIED: Eve context] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Father's van transferred to aunt Mi Young.** Insurance: Connect (A</div>
+                        <div class="htl-event-desc">March 2026: **Father's van transferred to aunt Mi Young.** Insurance: Connect (American Family / Costco). Transfer date unknown. [UNVERIFIED: ChatGPT output] [FAMILY]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **AI YouTube channel &quot;TechQuest Academy&quot; with creative director frie</div>
+                        <div class="htl-event-desc">March 2026: **AI YouTube channel &quot;TechQuest Academy&quot; with creative director friend.** Status unknown. [UNVERIFIED: ChatGPT output] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#5B8DB8">&#9992;&#65039;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#dbeafe;color:#5B8DB8">Trip</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **LIFE-HISTORY.md** — biographical narrative behind timeline events</div>
+                        <div class="htl-event-desc">March 2026: **LIFE-HISTORY.md** — biographical narrative behind timeline events (Korea → Baldwin Park → faith → entrepreneur)</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#D4A843">&#127881;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fef3c7;color:#D4A843">Milestone</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **DEADLINES.md** — actionable time-sensitive items extracted from th</div>
+                        <div class="htl-event-desc">March 2026: **DEADLINES.md** — actionable time-sensitive items extracted from this timeline</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jan 14</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: Found Soviet-era pilotka cap with USSR pins (Lenin badges, Red Sta</div>
+                        <div class="htl-event-desc">January 2026: Found Soviet-era pilotka cap with USSR pins (Lenin badges, Red Star insignia, dated 1979) among father's possessions — souvenir from grandfather's Moscow visit as Korean ambassador. [UNV</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jan 14</span>
+                        </div>
+                        <div class="htl-event-title">~January 2026: SSA COLA pushed mother's Social Security from $1,985/mo to $2,040</div>
+                        <div class="htl-event-desc">~January 2026: SSA COLA pushed mother's Social Security from $1,985/mo to $2,040/mo — even further over Medi-Cal income limit for full coverage. [UNVERIFIED: ChatGPT archive 2026-01-14] [FINANCE]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jan 12</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: CT scan: Hepatic steatosis (fatty liver), 2mm left renal stone, sc</div>
+                        <div class="htl-event-desc">January 2026: CT scan: Hepatic steatosis (fatty liver), 2mm left renal stone, scattered colonic diverticula (no diverticulitis), small calcified plaque near aortic bifurcation (early atherosclerosis m</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jan 12</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: SIBO test: NEGATIVE. [UNVERIFIED: ChatGPT archive 2026-01-12] [HEA</div>
+                        <div class="htl-event-desc">January 2026: SIBO test: NEGATIVE. [UNVERIFIED: ChatGPT archive 2026-01-12] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jan 12</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: Colonoscopy: Clear — minor hemorrhoids + diverticulosis from strai</div>
+                        <div class="htl-event-desc">January 2026: Colonoscopy: Clear — minor hemorrhoids + diverticulosis from straining. [UNVERIFIED: ChatGPT archive 2026-01-12] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jan 07</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: Court-appointed attorney Merlyn N. Hernandez Invoice #00722: $3,40</div>
+                        <div class="htl-event-desc">January 2026: Court-appointed attorney Merlyn N. Hernandez Invoice #00722: $3,405.61. [VERIFIED: Gmail invoice 2026-01-07] [FINANCE]</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2026-02" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2026')">&#8592; Feb 2026</button>
+                    <span class="htl-event-count">7 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 16</span>
+                        </div>
+                        <div class="htl-event-title">August 2023: Bilateral piriformis syndrome progressing over ~10 years from inter</div>
+                        <div class="htl-event-desc">August 2023: Bilateral piriformis syndrome progressing over ~10 years from intermittent (triggered by long flights) to daily and constant. Sleep severely affected. [UNVERIFIED: ChatGPT archive 2026-02</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 16</span>
+                        </div>
+                        <div class="htl-event-title">February 2026: Treatment tried: Prednisone 20mg (5-day course — resolved symptom</div>
+                        <div class="htl-event-desc">February 2026: Treatment tried: Prednisone 20mg (5-day course — resolved symptoms but returned 2 days after stopping), Voltaren gel, PT (1.5 months, limited relief), pull-up bar stretching, naproxen (</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 16</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Bilateral piriformis tingling began intermittently (~10 years before</div>
+                        <div class="htl-event-desc">March 2026: Bilateral piriformis tingling began intermittently (~10 years before 2024), initially triggered by long flights, progressing to daily and constant. [UNVERIFIED: ChatGPT archive 2026-02-16]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 16</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Exercise-induced asthma:** Diagnosed at unknown date. Currently st</div>
+                        <div class="htl-event-desc">March 2026: **Exercise-induced asthma:** Diagnosed at unknown date. Currently stable. [UNVERIFIED: ChatGPT archive 2026-02-16] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 12</span>
+                        </div>
+                        <div class="htl-event-title">February 2026: Neal Quon added as authorized third-party financial representativ</div>
+                        <div class="htl-event-desc">February 2026: Neal Quon added as authorized third-party financial representative on mother's Security Benefit IRA. Dan working to pause $973.48/mo distributions. [UNVERIFIED: ChatGPT output 2026-02-1</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 08</span>
+                        </div>
+                        <div class="htl-event-title">February 2026: Began translating weekly Sunday messages to Korean for friends in</div>
+                        <div class="htl-event-desc">February 2026: Began translating weekly Sunday messages to Korean for friends in Korea. [UNVERIFIED: ChatGPT archive 2026-02-08] [FAITH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 08</span>
+                        </div>
+                        <div class="htl-event-title">February 2026: When AI-generated caricature was created without cross/Jesus, Dan</div>
+                        <div class="htl-event-desc">February 2026: When AI-generated caricature was created without cross/Jesus, Dan immediately corrected — faith is core identity, not peripheral. [UNVERIFIED: ChatGPT archive 2026-02-08] [FAITH]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2026-03" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2026')">&#8592; Mar 2026</button>
+                    <span class="htl-event-count">49 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 21</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Solvang &amp; Santa Barbara family road trip. Friend Anthony + Winnie in</div>
+                        <div class="htl-event-desc">March 2026: Solvang &amp; Santa Barbara family road trip. Friend Anthony + Winnie in Sacramento. Paso Robles wineries, Solvang, Hearst Castle interests. Wife gets carsick — multiple stops needed. Dan's pi</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 21</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Hadsten hotel booked for Solvang trip (Mar 30-Apr 1, 2 nights). [VER</div>
+                        <div class="htl-event-desc">March 2026: Hadsten hotel booked for Solvang trip (Mar 30-Apr 1, 2 nights). [VERIFIED: Dan's statement 2026-03-21] [PERSONAL] [FAMILY]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 21</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Masei interactive travel itinerary product built and deployed. GitHu</div>
+                        <div class="htl-event-desc">March 2026: Masei interactive travel itinerary product built and deployed. GitHub Pages live at suntzu131.github.io/trips/. Brand name 'Masei' selected (Numbers 33:1). [VERIFIED: Dan's statement 2026-</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 21</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Google Chat selected over Slack for Phoebe communications. [VERIFIED</div>
+                        <div class="htl-event-desc">March 2026: Google Chat selected over Slack for Phoebe communications. [VERIFIED: Dan's statement 2026-03-21] [SYSTEM]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 20</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: IHSS income was $1,900/mo estimated from check stubs. Correct: 283 h</div>
+                        <div class="htl-event-desc">March 2026: IHSS income was $1,900/mo estimated from check stubs. Correct: 283 hrs × $18.90/hr (OC rate) = $5,349/mo. Household cash flow changed from -$1,756 deficit to +$5,649 surplus. Financial str</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 20</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: All reasoning agents wired to daily systemd timers. Morning dashboar</div>
+                        <div class="htl-event-desc">March 2026: All reasoning agents wired to daily systemd timers. Morning dashboard with delta detection. ntfy conditional alerts. Financial/Care/Compliance run at 4am/4:30am/5am daily. [VERIFIED: syste</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 20</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Full data audit + 27,386 new links. Verification tagging (96% → 14%</div>
+                        <div class="htl-event-desc">March 2026: Full data audit + 27,386 new links. Verification tagging (96% → 14% untagged). 16 new structured nodes. Domain cleanup. [VERIFIED: Neo4j stats 2026-03-20] [SYSTEM]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 20</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Brother Thomas ordered geri chair. Eddie installing today. Mother's</div>
+                        <div class="htl-event-desc">March 2026: Brother Thomas ordered geri chair. Eddie installing today. Mother's mobility declining — stairs dangerous. Ramp still needed. [VERIFIED: Dan's statement 2026-03-20] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 19</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Financial State Machine, Care State Machine, Compliance Reasoning En</div>
+                        <div class="htl-event-desc">March 2026: Financial State Machine, Care State Machine, Compliance Reasoning Engine built and verified. 18/18 tests pass. Financial stress index created (64.4 HIGH at that time — later corrected). [V</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 17</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Conservatorship in progress (not yet complete). Co-conservators: Dan</div>
+                        <div class="htl-event-desc">March 2026: Conservatorship in progress (not yet complete). Co-conservators: Dan + Thomas. Attorney: Han &amp; Park Law Firm. Total legal fees paid so far: ~$11,406 (Han &amp; Park $8,000 retainer + Hernandez</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 17</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: 1,771 of 1,787 extractable Drive files processed. 16 unrecoverable (</div>
+                        <div class="htl-event-desc">March 2026: 1,771 of 1,787 extractable Drive files processed. 16 unrecoverable (photos/handwriting). marker-pdf recovered 57 tesseract failures. [VERIFIED: extraction logs 2026-03-17] [SYSTEM]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 16</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Han &amp; Park Law received Dan's mailed copy of the conservatorship bon</div>
+                        <div class="htl-event-desc">March 2026: Han &amp; Park Law received Dan's mailed copy of the conservatorship bond (signed Mar 10-11). Awaiting Thomas's mailed copy. [VERIFIED: Gmail 2026-03-16] [LEGAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 14</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Phoebe (personal AI) moved from Eve's Linux machine to Dan's Windows</div>
+                        <div class="htl-event-desc">March 2026: Phoebe (personal AI) moved from Eve's Linux machine to Dan's Windows gaming rig (WSL2). Full isolation from Eve. Neo4j + Ollama running locally. [VERIFIED: session records 2026-03-14] [SYS</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 13</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: ~~Mother attends Healthy Aging Center in Laguna Woods (M/W/F).~~ **C</div>
+                        <div class="htl-event-desc">March 2026: ~~Mother attends Healthy Aging Center in Laguna Woods (M/W/F).~~ **CORRECTED 2026-03-13:** Mother kicked out of day care ~Jan 2026 due to worsening condition. Full-time home care only. [UN</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 13</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Mother's mobility declining — can no longer walk on her own, legs gi</div>
+                        <div class="htl-event-desc">March 2026: Mother's mobility declining — can no longer walk on her own, legs give out, falls off sofa. Front entrance stairs now dangerous. Needs wheelchair and ramp. [VERIFIED: Dan's statement 2026-</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 13</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Dan moved permanently to WFH — gave office to Calvin. Primary reason</div>
+                        <div class="htl-event-desc">March 2026: Dan moved permanently to WFH — gave office to Calvin. Primary reason: supervise mother and Hannah. [VERIFIED: Dan's statement 2026-03-13] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: Hernandez invoice $3,405.61 paid. [VERIFIED: Gmail invoice + Dan's</div>
+                        <div class="htl-event-desc">January 2026: Hernandez invoice $3,405.61 paid. [VERIFIED: Gmail invoice + Dan's statement 2026-03-10] [FINANCE]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: TKD: Currently red/black belt. Next test ~late Mar 2026 → red/black</div>
+                        <div class="htl-event-desc">March 2026: TKD: Currently red/black belt. Next test ~late Mar 2026 → red/black w/ stripe. Training with both sons (yellow belts). [VERIFIED: Dan's statement 2026-03-10] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Income: Dan salary $4,800/mo ($1,900 Agapay + $2,900 Yokly). Combine</div>
+                        <div class="htl-event-desc">March 2026: Income: Dan salary $4,800/mo ($1,900 Agapay + $2,900 Yokly). Combined household ~$9,610/mo. [VERIFIED: Dan's statement 2026-03-10] [FINANCE]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Zero personal debt confirmed. ~$500K business PG (Dan + Minako co-si</div>
+                        <div class="htl-event-desc">March 2026: Zero personal debt confirmed. ~$500K business PG (Dan + Minako co-signed). [VERIFIED: Dan's statement 2026-03-10] [FINANCE]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Mother's caregiver: Hannah fulltime ($25/hr, 5 days/wk, 10 hrs/day).</div>
+                        <div class="htl-event-desc">March 2026: Mother's caregiver: Hannah fulltime ($25/hr, 5 days/wk, 10 hrs/day). Angela quit. [VERIFIED: Dan's statement 2026-03-10] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Next TKD test: red/black → red/black w/ stripe (~2 weeks from 2026-0</div>
+                        <div class="htl-event-desc">March 2026: Next TKD test: red/black → red/black w/ stripe (~2 weeks from 2026-03-10). [VERIFIED: Dan's statement 2026-03-10] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Black belt testing expected Sep or Nov 2026. [VERIFIED: Dan's statem</div>
+                        <div class="htl-event-desc">March 2026: Black belt testing expected Sep or Nov 2026. [VERIFIED: Dan's statement 2026-03-10] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Goal: Financial independence to pursue mission/faith/family full-tim</div>
+                        <div class="htl-event-desc">March 2026: Goal: Financial independence to pursue mission/faith/family full-time. ~11-12 years away. [VERIFIED: Dan's statement 2026-03-10] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Primary wealth event target. If achieved, unlocks Irvine house purch</div>
+                        <div class="htl-event-desc">March 2026: Primary wealth event target. If achieved, unlocks Irvine house purchase, larger budgets, earlier retirement timeline. [VERIFIED: Dan's statement 2026-03-10] [GOALS] [FINANCE]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Budget: $150K-$250K (buy free and clear). Near Minako's parents in I</div>
+                        <div class="htl-event-desc">March 2026: Budget: $150K-$250K (buy free and clear). Near Minako's parents in Izumi-chuo/Shogen area, or near sister Kanako in Sendai city center. 3-4 bedroom modern house, near international school,</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Kids are half Korean — need Korean language/culture immersion. [VERI</div>
+                        <div class="htl-event-desc">March 2026: Kids are half Korean — need Korean language/culture immersion. [VERIFIED: Dan's statement 2026-03-10] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Irvine only if 15M exit happens. Fallback: Beaverton, OR (more affor</div>
+                        <div class="htl-event-desc">March 2026: Irvine only if 15M exit happens. Fallback: Beaverton, OR (more affordable, Korean + Japanese community). [VERIFIED: Dan's statement 2026-03-10] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Condo (not house). Near potential/future Agapay office in Davao. [VE</div>
+                        <div class="htl-event-desc">March 2026: Condo (not house). Near potential/future Agapay office in Davao. [VERIFIED: Dan's statement 2026-03-10] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Family of 4 needs long-stay visas for Japan, Korea, Philippines. Dan</div>
+                        <div class="htl-event-desc">March 2026: Family of 4 needs long-stay visas for Japan, Korea, Philippines. Dan considering business entities in each country. Minako has Japanese citizenship. Dan may have F-4 visa eligibility throu</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Does not want to work. Wants music education/performance at her own</div>
+                        <div class="htl-event-desc">March 2026: Does not want to work. Wants music education/performance at her own leisure. [VERIFIED: Dan's statement 2026-03-10] [FAMILY] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Nonprofit in Sogod, Philippines. Grow and support if assets allow. [</div>
+                        <div class="htl-event-desc">March 2026: Nonprofit in Sogod, Philippines. Grow and support if assets allow. [VERIFIED: Dan's statement 2026-03-10] [FAITH] [GOALS]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Permanent conservatorship for mother still in progress. Co-conservat</div>
+                        <div class="htl-event-desc">March 2026: Permanent conservatorship for mother still in progress. Co-conservators: Dan + Thomas. EIN obtained. Bond submitted Mar 10-11. Letters pending bond completion. [VERIFIED: Dan's statement 2</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Caregiver Angela quit:** Former PM shift caregiver. Date of depart</div>
+                        <div class="htl-event-desc">March 2026: **Caregiver Angela quit:** Former PM shift caregiver. Date of departure unknown. Hannah took over fulltime. [VERIFIED: Dan's statement 2026-03-10] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">December 2024: Father Mike Han passed from liver cancer (spread to lungs). Age 6</div>
+                        <div class="htl-event-desc">December 2024: Father Mike Han passed from liver cancer (spread to lungs). Age 69. Cancer had spread from liver to lungs, nodules grew &gt;2x, liver failed. Final hospitalization at Hoag Newport Beach. C</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">~Early January 2025: Started Guanfacine 1mg for ADHD/anxiety/irritability. Taken</div>
+                        <div class="htl-event-desc">~Early January 2025: Started Guanfacine 1mg for ADHD/anxiety/irritability. Taken at 8-9 PM daily. [VERIFIED: Dan's statement 2026-03-09] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: Doctor advised weight loss due to fatty liver. Father had liver ca</div>
+                        <div class="htl-event-desc">January 2026: Doctor advised weight loss due to fatty liver. Father had liver cancer — noted in clinical history. [VERIFIED: Dan's statement 2026-03-09] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">February 2026: Breakthrough discovery: piriformis syndrome caused by incline sle</div>
+                        <div class="htl-event-desc">February 2026: Breakthrough discovery: piriformis syndrome caused by incline sleeping (for acid reflux). Now sleeping flat. Beginning to heal. [VERIFIED: Dan's statement 2026-03-09] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Weight: ~165 lbs (up from 158 in Aug 2024, 163 in Jan 2026). Goal: 1</div>
+                        <div class="htl-event-desc">March 2026: Weight: ~165 lbs (up from 158 in Aug 2024, 163 in Jan 2026). Goal: 145 lbs. [VERIFIED: Dan's statement 2026-03-09] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Building Eve + Phoebe AI systems. [VERIFIED: Dan's statement 2026-03</div>
+                        <div class="htl-event-desc">March 2026: Building Eve + Phoebe AI systems. [VERIFIED: Dan's statement 2026-03-09] [CAREER]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Rent: $5,745/mo. Caregiver: ~$5,413/mo. Structural household gap: -$</div>
+                        <div class="htl-event-desc">March 2026: Rent: $5,745/mo. Caregiver: ~$5,413/mo. Structural household gap: -$1,548/mo before groceries/utilities/etc. [VERIFIED: Dan's statement 2026-03-09, 2026-03-10] [FINANCE]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Current: ~165 lbs. Target: 145 lbs (maintain steady). [VERIFIED: Dan</div>
+                        <div class="htl-event-desc">March 2026: Current: ~165 lbs. Target: 145 lbs (maintain steady). [VERIFIED: Dan's statement 2026-03-09] [GOALS] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Minako's education:** Eastman School of Music, piano masters. Year</div>
+                        <div class="htl-event-desc">March 2026: **Minako's education:** Eastman School of Music, piano masters. Year of graduation unknown. [VERIFIED: Dan's statement 2026-03-09] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Business founding:** Built 4 (now 6) businesses without a college</div>
+                        <div class="htl-event-desc">March 2026: **Business founding:** Built 4 (now 6) businesses without a college degree. Timeline of each business founding unknown. [VERIFIED: Dan's statement 2026-03-09] [CAREER]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Friendship with Eddie since 1999.** Context of meeting unknown. [V</div>
+                        <div class="htl-event-desc">March 2026: **Friendship with Eddie since 1999.** Context of meeting unknown. [VERIFIED: Dan's statement 2026-03-09] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Minako PG co-signer:** Co-signed ~$500K business personal guarante</div>
+                        <div class="htl-event-desc">March 2026: **Minako PG co-signer:** Co-signed ~$500K business personal guarantee. Date unknown. [VERIFIED: Dan's statement 2026-03-09] [FINANCE]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 09</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Thomas engaged to Jessica:** Date of engagement unknown. [VERIFIED</div>
+                        <div class="htl-event-desc">March 2026: **Thomas engaged to Jessica:** Date of engagement unknown. [VERIFIED: Dan's statement 2026-03-09] [FAMILY]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 08</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: SXSW 2026 trip planned with Eddie, Calvin Seo, and Johnny Lee. [UNVE</div>
+                        <div class="htl-event-desc">March 2026: SXSW 2026 trip planned with Eddie, Calvin Seo, and Johnny Lee. [UNVERIFIED: Eve context 2026-03-08] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 08</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: SXSW 2026 with Eddie, Calvin Seo, and Johnny Lee. [UNVERIFIED: Eve c</div>
+                        <div class="htl-event-desc">March 2026: SXSW 2026 with Eddie, Calvin Seo, and Johnny Lee. [UNVERIFIED: Eve context 2026-03-08] [PERSONAL]</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-02" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Feb 2025</button>
+                    <span class="htl-event-count">3 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 11</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: ~~**Marriage to Minako Horimura:** Date of marriage unknown.~~ → RES</div>
+                        <div class="htl-event-desc">March 2026: ~~**Marriage to Minako Horimura:** Date of marriage unknown.~~ → RESOLVED: Paper marriage 3/28/2013 (Fullerton records office). Wedding 4/26/2018 (Hotel Halekulani, Hawaii). [UNVERIFIED: C</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 01</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: Guanfacine effects described: &quot;Leveled out mood, anxiety, and almo</div>
+                        <div class="htl-event-desc">January 2026: Guanfacine effects described: &quot;Leveled out mood, anxiety, and almost no irritation.&quot; Side effects: &quot;less passion and less excitement,&quot; emotional &quot;flattening,&quot; waking multiple times per n</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Feb 01</span>
+                        </div>
+                        <div class="htl-event-title">January 2026: Anxiety patterns documented: &quot;Always worrying about the future,&quot; m</div>
+                        <div class="htl-event-desc">January 2026: Anxiety patterns documented: &quot;Always worrying about the future,&quot; morning heart racing, &quot;some days energized, some days don't want to get out of bed.&quot; Acknowledged possibly BPD or control</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-03" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Mar 2025</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 21</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **OC Access paratransit setup:** Door-to-door service for mother. Ab</div>
+                        <div class="htl-event-desc">March 2026: **OC Access paratransit setup:** Door-to-door service for mother. Abrazar application filed. Dates unknown. [UNVERIFIED: ChatGPT output 2025-03-21] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-04" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Apr 2025</button>
+                    <span class="htl-event-count">16 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 27</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Chronic GI symptoms documented: food sensitivities (onions, pineappl</div>
+                        <div class="htl-event-desc">March 2026: Chronic GI symptoms documented: food sensitivities (onions, pineapple, Korean pear, apple, dairy, wheat/gluten, fermented foods including kimchi, fructose/fructan). Chronic bloating, gas, </div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 27</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Full supplement regimen documented (morning + evening stacks). [UNVE</div>
+                        <div class="htl-event-desc">March 2026: Full supplement regimen documented (morning + evening stacks). [UNVERIFIED: ChatGPT archive 2025-04-27] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 27</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Gastritis episode: Drank makgeolli, soju, 12% cider without food — s</div>
+                        <div class="htl-event-desc">March 2026: Gastritis episode: Drank makgeolli, soju, 12% cider without food — severe stomach pain, bedridden. Had stopped drinking &quot;many years&quot; then started again. [UNVERIFIED: ChatGPT archive 2025-0</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 27</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: THC vaping: Asked about vaping THC before SIBO test. [UNVERIFIED: Ch</div>
+                        <div class="htl-event-desc">March 2026: THC vaping: Asked about vaping THC before SIBO test. [UNVERIFIED: ChatGPT archive 2025-04-27] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 27</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Cholesterol: 198 (borderline), Triglycerides: 138 (normal), HDL: 43</div>
+                        <div class="htl-event-desc">March 2026: Cholesterol: 198 (borderline), Triglycerides: 138 (normal), HDL: 43 (borderline low), LDL: 130 (elevated, target &lt;99). [UNVERIFIED: ChatGPT archive 2025-04-27, ChatGPT output] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 27</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **GI issues — lifelong constipation:** &quot;Hard ball poop&quot; described as</div>
+                        <div class="htl-event-desc">March 2026: **GI issues — lifelong constipation:** &quot;Hard ball poop&quot; described as lifelong. [UNVERIFIED: ChatGPT archive 2025-04-27] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 24</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Multiple tympanoplasty + mastoidectomy surgeries since childhood. Ch</div>
+                        <div class="htl-event-desc">March 2026: Multiple tympanoplasty + mastoidectomy surgeries since childhood. Chronically displaced eardrum graft with hearing stint. Eustachian tube dysfunction, retains fluid. [UNVERIFIED: ChatGPT a</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 24</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Dr. George Yi Liu confirmed chronic serous otitis media, no choleste</div>
+                        <div class="htl-event-desc">March 2026: Dr. George Yi Liu confirmed chronic serous otitis media, no cholesteatoma. Dr. David Brian Keschner (ENT) planned Eustachian tube balloon dilation. Tonsillectomy discussed but not combined</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 24</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Planned with Dr. David Brian Keschner (ENT). [UNVERIFIED: ChatGPT ar</div>
+                        <div class="htl-event-desc">March 2026: Planned with Dr. David Brian Keschner (ENT). [UNVERIFIED: ChatGPT archive 2025-04-24] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 24</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Right ear surgeries:** Multiple tympanoplasty + mastoidectomy sinc</div>
+                        <div class="htl-event-desc">March 2026: **Right ear surgeries:** Multiple tympanoplasty + mastoidectomy since childhood. Specific surgery dates unknown. [UNVERIFIED: ChatGPT archive 2025-04-24] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 24</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Chronic sinusitis / allergic rhinitis / dust mite allergy / nasal</div>
+                        <div class="htl-event-desc">March 2026: **Chronic sinusitis / allergic rhinitis / dust mite allergy / nasal turbinate hypertrophy:** Onset dates unknown. [UNVERIFIED: ChatGPT archive 2025-04-24] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 24</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Halitosis:** Contributing factors: tonsil stones/cavernous tonsils</div>
+                        <div class="htl-event-desc">March 2026: **Halitosis:** Contributing factors: tonsil stones/cavernous tonsils + GI issues. Onset unknown. [UNVERIFIED: ChatGPT archive 2025-04-24] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 19</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Dan took brother Thomas to tour Bethany/Beaverton/Hillsboro area in</div>
+                        <div class="htl-event-desc">March 2026: Dan took brother Thomas to tour Bethany/Beaverton/Hillsboro area in Oregon for potential relocation (more affordable, Korean community, Kaiser transfer). Cousins may be in Portland/Oregon </div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 19</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Researched TCL Q7 QLED 65&quot; for master bedroom via rtings.com, slickd</div>
+                        <div class="htl-event-desc">March 2026: Researched TCL Q7 QLED 65&quot; for master bedroom via rtings.com, slickdeals.net, Reddit. [UNVERIFIED: ChatGPT archive 2025-04-19] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 17</span>
+                        </div>
+                        <div class="htl-event-title">September 2024: Marriage tension — wife and father in shared household, Dan medi</div>
+                        <div class="htl-event-desc">September 2024: Marriage tension — wife and father in shared household, Dan mediating, causing stress/anxiety. [UNVERIFIED: ChatGPT archive 2025-04-17, 2024-09-29] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Apr 04</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Active Suno AI music creation: 7 personas built (Soul Remedy, Radian</div>
+                        <div class="htl-event-desc">March 2026: Active Suno AI music creation: 7 personas built (Soul Remedy, Radiant Heart, Seoul Serenade, Korean female pop, children's music, Japanese female R&amp;B, Korean Gangster Rapper &quot;AMA/131&quot;). Fu</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-05" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; May 2025</button>
+                    <span class="htl-event-count">2 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">May 27</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Home gym documented: adjustable dumbbells up to 50lbs, pull-up bar,</div>
+                        <div class="htl-event-desc">March 2026: Home gym documented: adjustable dumbbells up to 50lbs, pull-up bar, push-up aids, bench. [UNVERIFIED: ChatGPT archive 2025-05-27] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#E879A0">&#128118;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fce7f3;color:#E879A0">Birth</span>
+                            <span class="htl-event-date">May 20</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Wrote birthday letter to friend Peter Kim encouraging church attenda</div>
+                        <div class="htl-event-desc">March 2026: Wrote birthday letter to friend Peter Kim encouraging church attendance and faith. Built custom RG35XX retro gaming handheld with Knulli OS and curated ROMs as birthday gift. [UNVERIFIED: </div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-06" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Jun 2025</button>
+                    <span class="htl-event-count">3 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jun 15</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Researched STEP enrollment, proof-of-ties packet, Global Entry/Mobil</div>
+                        <div class="htl-event-desc">March 2026: Researched STEP enrollment, proof-of-ties packet, Global Entry/Mobile Passport for Minako and kids' Japan travel and re-entry. Concerned about ICE/immigration for wife (Japanese citizen + </div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jun 15</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Minako and kids traveled to Japan for a month-long trip. Dan stayed</div>
+                        <div class="htl-event-desc">March 2026: Minako and kids traveled to Japan for a month-long trip. Dan stayed behind for work. [UNVERIFIED: ChatGPT archive 2025-06-15] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jun 15</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Kids' dual Japanese citizenship.** Both hold Japanese citizenship</div>
+                        <div class="htl-event-desc">March 2026: **Kids' dual Japanese citizenship.** Both hold Japanese citizenship through Minako. [UNVERIFIED: ChatGPT archive 2025-06-15] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-07" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Jul 2025</button>
+                    <span class="htl-event-count">3 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jul 29</span>
+                        </div>
+                        <div class="htl-event-title">~December 2024: Mother begins paying Dan $2,000/mo for housing. Ongoing arrangem</div>
+                        <div class="htl-event-desc">~December 2024: Mother begins paying Dan $2,000/mo for housing. Ongoing arrangement. [UNVERIFIED: ChatGPT output 2025-07-29] [FINANCE]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jul 29</span>
+                        </div>
+                        <div class="htl-event-title">December 2024: Father's dying wishes: $30K to his sister (aunt) in Korea; Sienna</div>
+                        <div class="htl-event-desc">December 2024: Father's dying wishes: $30K to his sister (aunt) in Korea; Sienna minivan to aunt. Both later fulfilled by Dan. [UNVERIFIED: ChatGPT archive 2025-07-29] [FAMILY]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Jul 29</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: $14K accumulated rent paid to Dan in single wire transfer. Covers ~D</div>
+                        <div class="htl-event-desc">March 2026: $14K accumulated rent paid to Dan in single wire transfer. Covers ~Dec 2024 – Jun 2025 at $2,000/mo (7 months back-rent). [UNVERIFIED: ChatGPT output 2025-07-29] [FINANCE]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-08" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Aug 2025</button>
+                    <span class="htl-event-count">3 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Aug 21</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Regular trail running at Peter's Canyon, Tustin (5-7 miles), Tue/Thu</div>
+                        <div class="htl-event-desc">March 2026: Regular trail running at Peter's Canyon, Tustin (5-7 miles), Tue/Thu after work ~4pm. All black gear. [UNVERIFIED: ChatGPT archive 2025-08-21] [HEALTH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Aug 19</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Helped friend Johnny Lee build Google Sheets script for Lego brick c</div>
+                        <div class="htl-event-desc">March 2026: Helped friend Johnny Lee build Google Sheets script for Lego brick collection (BrickEconomy values, eBay sold prices). Had PH dev team implement. Translated instructions to Tagalog. [UNVER</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Aug 02</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Created Korean drama-style jopok images using 9 friends' photos. Wat</div>
+                        <div class="htl-event-desc">March 2026: Created Korean drama-style jopok images using 9 friends' photos. Watched &quot;New World&quot; (2013) and &quot;Chingoo/Friend&quot; (2001). [UNVERIFIED: ChatGPT archive 2025-08-02] [PERSONAL]</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-09" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Sep 2025</button>
+                    <span class="htl-event-count">3 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 26</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Applied to Anaheim Villa (Korean-speaking, CalOptima accepted, 2-3 m</div>
+                        <div class="htl-event-desc">March 2026: Applied to Anaheim Villa (Korean-speaking, CalOptima accepted, 2-3 month wait). [UNVERIFIED: ChatGPT archive 2025-09-26] [FAMILY]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 12</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Intel Core i7-9700K, Z390 Aorus Pro WiFi, 64GB DDR4 3200MHz, Nvidia</div>
+                        <div class="htl-event-desc">March 2026: Intel Core i7-9700K, Z390 Aorus Pro WiFi, 64GB DDR4 3200MHz, Nvidia 3080 10GB, 1TB SSD, 750W PSU, Windows 11. [UNVERIFIED: ChatGPT archive 2025-09-12] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 07</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Alcoholism history: &quot;quitting for extended periods of time to start</div>
+                        <div class="htl-event-desc">March 2026: Alcoholism history: &quot;quitting for extended periods of time to start again small but over time end up in extreme cases.&quot; References Matthew 5:30 and Mark 9:43 about cutting off what leads t</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-10" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Oct 2025</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Oct 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Security Benefit IRA annuity balance: ~$121,118 (down from ~$150K du</div>
+                        <div class="htl-event-desc">March 2026: Security Benefit IRA annuity balance: ~$121,118 (down from ~$150K due to ongoing $973.48/mo withdrawals). [UNVERIFIED: ChatGPT output 2025-10-10] [FINANCE]</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-11" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Nov 2025</button>
+                    <span class="htl-event-count">3 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Nov 11</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Detailed care needs documented: diapers (double at night, single day</div>
+                        <div class="htl-event-desc">March 2026: Detailed care needs documented: diapers (double at night, single day), assistance walking (balance issues), guided toothbrushing (hand-under-hand), dressing, meals, medication. Showering e</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Nov 10</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Bank of Hope checking: ~$137,138 (up from ~$126K in Jul 2025 after d</div>
+                        <div class="htl-event-desc">March 2026: Bank of Hope checking: ~$137,138 (up from ~$126K in Jul 2025 after deposits caught up post-$30K aunt + $14K rent transfers). [UNVERIFIED: ChatGPT output 2025-11-10] [FINANCE]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Nov 05</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Per attorney advice (Han &amp; Park), mother's liquid assets temporarily</div>
+                        <div class="htl-event-desc">March 2026: Per attorney advice (Han &amp; Park), mother's liquid assets temporarily gifted to joint savings with Thomas. Pursuing irrevocable trust (MAPT) before year-end. Goal: keep assets under $130K f</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2025-12" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2025')">&#8592; Dec 2025</button>
+                    <span class="htl-event-count">4 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Dec 17</span>
+                        </div>
+                        <div class="htl-event-title">~January 2026: Mother kicked out of Healthy Aging Center / adult day care due to</div>
+                        <div class="htl-event-desc">~January 2026: Mother kicked out of Healthy Aging Center / adult day care due to worsening condition (daily diaper soiling, manual feeding required). Caregivers took over fully at home. [UNVERIFIED: C</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Dec 17</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: During peak stress (IHSS conflict, caregivers, wife wanting compensa</div>
+                        <div class="htl-event-desc">March 2026: During peak stress (IHSS conflict, caregivers, wife wanting compensation, managing businesses, children, faith conflicts), Dan expressed &quot;thoughts of harming myself.&quot; Immediately clarified</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Dec 14</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Second caregiver hired for mother at $25/hr, 6 hrs morning shift (8:</div>
+                        <div class="htl-event-desc">March 2026: Second caregiver hired for mother at $25/hr, 6 hrs morning shift (8:30am-2:30pm), 4 days/week + 10 hrs Saturdays. Also 67-70+ years old, retired, prefers cash. By Mar 2026, only Hannah is </div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Dec 14</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: Disagreement over IHSS compensation. Thomas felt all IHSS income sho</div>
+                        <div class="htl-event-desc">March 2026: Disagreement over IHSS compensation. Thomas felt all IHSS income should go to mother's care. Dan and Minako wanted compensation for caregiving work. Resolved: $2,500/mo IHSS covers family </div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span><span class="tl-person-chip">Minako</span><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-01" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Jan 2024</button>
+                    <span class="htl-event-count">3 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">August 2024: Weighed 158 lbs. [UNVERIFIED: ChatGPT archive] [HEALTH]</div>
+                        
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">November 2024: Lumbar X-ray: Normal. [UNVERIFIED: ChatGPT output] [HEALTH]</div>
+                        
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">December 2024: Forethought Life Insurance / Rose Hills funeral insurance purchas</div>
+                        <div class="htl-event-desc">December 2024: Forethought Life Insurance / Rose Hills funeral insurance purchased ($9,045 face / $9,500 paid). 24-month graded benefit period. Purchased the day before father passed. Joint headstone </div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-03" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Mar 2024</button>
+                    <span class="htl-event-count">2 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 29</span>
+                        </div>
+                        <div class="htl-event-title">April 2023: Organized and executed Easter feast for church congregation. Multi-d</div>
+                        <div class="htl-event-desc">April 2023: Organized and executed Easter feast for church congregation. Multi-dish meal timing. [UNVERIFIED: ChatGPT archive 2024-03-29] [FAITH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Mar 20</span>
+                        </div>
+                        <div class="htl-event-title">March 2024: Dan cooked sous vide brisket (24-hour cook starting Saturday at chur</div>
+                        <div class="htl-event-desc">March 2024: Dan cooked sous vide brisket (24-hour cook starting Saturday at church), prepared mashed potatoes Sunday morning, and picked up salad and dessert from Costco. Full Easter lunch for congreg</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-06" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Jun 2024</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#E879A0">&#128118;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fce7f3;color:#E879A0">Birth</span>
+                            <span class="htl-event-date">Jun 22</span>
+                        </div>
+                        <div class="htl-event-title">June 2024: Chuck E. Cheese birthday party for Koko, Grave Digger theme cake. [UN</div>
+                        <div class="htl-event-desc">June 2024: Chuck E. Cheese birthday party for Koko, Grave Digger theme cake. [UNVERIFIED: ChatGPT archive 2024-06-22] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Koko</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-07" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Jul 2024</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#E879A0">&#128118;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fce7f3;color:#E879A0">Birth</span>
+                            <span class="htl-event-date">Jul 02</span>
+                        </div>
+                        <div class="htl-event-title">July 2024: Created custom songs for Koko and Issa using Suno AI with detailed pe</div>
+                        <div class="htl-event-desc">July 2024: Created custom songs for Koko and Issa using Suno AI with detailed personality descriptions as prompts. Songs include &quot;Koko's Birthday Bash&quot; and &quot;Koko &amp; Issa's Adventure Song.&quot; [UNVERIFIED:</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Koko</span><span class="tl-person-chip">Issa</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-08" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Aug 2024</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Aug 13</span>
+                        </div>
+                        <div class="htl-event-title">May 2024: Traveled with friend Eddie to Austin, TX — visited the Alamo, Salt Lic</div>
+                        <div class="htl-event-desc">May 2024: Traveled with friend Eddie to Austin, TX — visited the Alamo, Salt Lick BBQ, Museum of the Weird, Austin Capitol. Mentoring/bonding trip. [UNVERIFIED: ChatGPT archive 2024-08-13] [PERSONAL]</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-09" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Sep 2024</button>
+                    <span class="htl-event-count">9 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 29</span>
+                        </div>
+                        <div class="htl-event-title">September 2024: Stressors compounding: father's cancer, mother's Alzheimer's, yo</div>
+                        <div class="htl-event-desc">September 2024: Stressors compounding: father's cancer, mother's Alzheimer's, young family, 3 businesses &quot;not doing well,&quot; feeling &quot;trapped.&quot; [UNVERIFIED: ChatGPT archive 2024-09-29] [PERSONAL]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 29</span>
+                        </div>
+                        <div class="htl-event-title">~September 2024: Mother went missing and was found — prompted move-in with Dan.</div>
+                        <div class="htl-event-desc">~September 2024: Mother went missing and was found — prompted move-in with Dan. [UNVERIFIED: ChatGPT archive 2024-09-29] [FAMILY]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 22</span>
+                        </div>
+                        <div class="htl-event-title">July 2023: Sends SMS/MMS devotional messages to friends and family every Sunday</div>
+                        <div class="htl-event-desc">July 2023: Sends SMS/MMS devotional messages to friends and family every Sunday since at least July 2023. For some recipients, this is their only weekly faith content. [UNVERIFIED: ChatGPT archive 202</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 22</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **&quot;One push-up a day&quot; philosophy:** Originates from spiritual practi</div>
+                        <div class="htl-event-desc">March 2026: **&quot;One push-up a day&quot; philosophy:** Originates from spiritual practice. First articulated in weekly messages since at least 2023, but origin date unknown. [UNVERIFIED: ChatGPT archive 2024</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 19</span>
+                        </div>
+                        <div class="htl-event-title">~June 2024: Father Mike Han started pill-based chemo ~June 2024 (lasted ~7 month</div>
+                        <div class="htl-event-desc">~June 2024: Father Mike Han started pill-based chemo ~June 2024 (lasted ~7 months). Had prior surgery to remove half his liver before chemo. [UNVERIFIED: ChatGPT archive 2024-09-19, ChatGPT output 202</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 19</span>
+                        </div>
+                        <div class="htl-event-title">October 2024: Moved to 138 Telstar, Irvine, CA 92618 with parents. 2-story ~2,50</div>
+                        <div class="htl-event-desc">October 2024: Moved to 138 Telstar, Irvine, CA 92618 with parents. 2-story ~2,500 sq ft leased home. Rent initially shared with father ($2,100 contribution from father). [UNVERIFIED: ChatGPT archive 2</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 19</span>
+                        </div>
+                        <div class="htl-event-title">December 2024: Funeral at Hua Yuan center + Rose Hills. [UNVERIFIED: ChatGPT arc</div>
+                        <div class="htl-event-desc">December 2024: Funeral at Hua Yuan center + Rose Hills. [UNVERIFIED: ChatGPT archive 2024-09-19] [FAMILY]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 19</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Medi-Cal battle:** Prolonged fight — spousal impoverishment rules,</div>
+                        <div class="htl-event-desc">March 2026: **Medi-Cal battle:** Prolonged fight — spousal impoverishment rules, county transfer (LA to OC, prior LA case #L49D981 closed), shared cost determinations ($3,098 reduced to $1,350), appea</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 19</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Mother's adult day care transition:** Previously Umma Adult Day He</div>
+                        <div class="htl-event-desc">March 2026: **Mother's adult day care transition:** Previously Umma Adult Day Healthcare in Tustin, now Healthy Aging Center in Laguna Woods. Transition date unknown. [UNVERIFIED: ChatGPT archive 2024</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Mother</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-10" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Oct 2024</button>
+                    <span class="htl-event-count">2 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Oct 31</span>
+                        </div>
+                        <div class="htl-event-title">November 2024: Set up Unraid server for home network. JDownloader2 for ROM downl</div>
+                        <div class="htl-event-desc">November 2024: Set up Unraid server for home network. JDownloader2 for ROM downloads. [UNVERIFIED: ChatGPT archive 2024-10-31] [PERSONAL]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Oct 15</span>
+                        </div>
+                        <div class="htl-event-title">December 2024: MRI Lumbar: Minimal L5-S1 discogenic disease, no significant spin</div>
+                        <div class="htl-event-desc">December 2024: MRI Lumbar: Minimal L5-S1 discogenic disease, no significant spinal stenosis. Mild asymmetric disc protrusion (R&gt;L). Straightening of lumbar lordosis (muscle spasms/postural). L3 hemang</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-11" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Nov 2024</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Nov 02</span>
+                        </div>
+                        <div class="htl-event-title">October 2024: Active retro gaming hobby: owns Odin 2, Anbernic RG Nano, Miyoo A3</div>
+                        <div class="htl-event-desc">October 2024: Active retro gaming hobby: owns Odin 2, Anbernic RG Nano, Miyoo A30, RG35XX H, Retroid Pocket 5. Curated educational ROM collections for kids. [UNVERIFIED: ChatGPT archive 2024-11-02] [P</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2024-12" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2024')">&#8592; Dec 2024</button>
+                    <span class="htl-event-count">2 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Dec 31</span>
+                        </div>
+                        <div class="htl-event-title">December 2024: Wrote final letter to father reflecting on childhood memories — h</div>
+                        <div class="htl-event-desc">December 2024: Wrote final letter to father reflecting on childhood memories — hot pot in Korea, moving to America, first Nintendo in Rowland Heights, KFC near mountain springs, karaoke nights, quitti</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Dec 29</span>
+                        </div>
+                        <div class="htl-event-title">December 2024: Designed web app concept using v0/Vercel for family milestones, p</div>
+                        <div class="htl-event-desc">December 2024: Designed web app concept using v0/Vercel for family milestones, photos, comments, Korean naming convention. [UNVERIFIED: ChatGPT archive 2024-12-29] [PERSONAL]</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2023-01" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2023')">&#8592; Jan 2023</button>
+                    <span class="htl-event-count">2 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">April 2023: Translated Easter/Resurrection sermon: &quot;Meaning of Resurrection Fait</div>
+                        <div class="htl-event-desc">April 2023: Translated Easter/Resurrection sermon: &quot;Meaning of Resurrection Faith&quot; (Thomas's doubt). [UNVERIFIED: ChatGPT archive] [FAITH]</div>
+                        
+                    </div>
+                </div><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date"></span>
+                        </div>
+                        <div class="htl-event-title">August 2023: Completed expository translation through 1 Samuel (chapters 1-18).</div>
+                        <div class="htl-event-desc">August 2023: Completed expository translation through 1 Samuel (chapters 1-18). [UNVERIFIED: ChatGPT archive] [FAITH]</div>
+                        
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2023-08" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2023')">&#8592; Aug 2023</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#E879A0">&#128118;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fce7f3;color:#E879A0">Birth</span>
+                            <span class="htl-event-date">Aug 13</span>
+                        </div>
+                        <div class="htl-event-title">August 2023: Attended friend Johnny Lee's son Leon's (~1.5 yo) 1st birthday part</div>
+                        <div class="htl-event-desc">August 2023: Attended friend Johnny Lee's son Leon's (~1.5 yo) 1st birthday party at Ritz Carlton hotel. Johnny was 33, wife Ly was 25. [UNVERIFIED: ChatGPT archive 2023-08-13] [PERSONAL]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
+                    </div>
+                </div></div>
+            </div><div class="htl-event-list" id="htl-events-2023-09" style="display:none">
+                <div class="htl-month-header">
+                    <button class="htl-back-btn" onclick="htlBackToMonths('2023')">&#8592; Sep 2023</button>
+                    <span class="htl-event-count">1 events</span>
+                </div>
+                <div class="htl-event-scroll"><div class="htl-event-card" onclick="this.classList.toggle('expanded')">
+                    <div class="htl-event-dot" style="background:#C75450">&#129657;</div>
+                    <div class="htl-event-info">
+                        <div class="htl-event-header">
+                            <span class="tl-event-type-badge" style="background:#fee2e2;color:#C75450">Medical</span>
+                            <span class="htl-event-date">Sep 01</span>
+                        </div>
+                        <div class="htl-event-title">March 2026: **Daniel citizenship recommendation letter:** Dan wrote for best fri</div>
+                        <div class="htl-event-desc">March 2026: **Daniel citizenship recommendation letter:** Dan wrote for best friend Daniel (green card holder). Date unknown. [UNVERIFIED: ChatGPT archive 2023-09-01] [PERSONAL]</div>
+                        <div class="tl-event-people"><span class="tl-person-chip">Dan</span></div>
+                    </div>
+                </div></div>
+            </div>
+
+  <!-- Legacy event data for filter compatibility -->
+  <div id="tl-events" style="display:none"><div class="tl-events" id="tl-events"><div class="tl-event" data-year="2026" data-type="medical" data-people="">
   <div class="tl-event-dot" style="background:#C75450;">&#129657;</div>
   <div class="tl-event-card">
     
@@ -9012,8 +11024,7 @@ canvas { max-width: 100%; }
       <div class="tl-event-people"><span class="tl-person-chip">Minako</span></div>
     </div>
   </div>
-</div></div>
-  </div>
+</div></div></div>
 </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -9096,7 +11107,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated March 30, 2026 at 10:07 AM</div>
+            <div class="report-meta">Generated March 30, 2026 at 10:16 AM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$100/mo (MODERATE stress at 54.8)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -9108,7 +11119,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: March 30, 2026 at 10:07 AM</div>
+            <div class="report-meta">Last updated: March 30, 2026 at 10:16 AM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -9394,19 +11405,23 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">101</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">52</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-30 10:07</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-03-30 10:16</span><span class="sysstat-lbl">Last render</span></div>
     </div>
         </div>
 
         
-        <div class="section-title" id="sec-version" onclick="toggleSectionCollapse(this)">Version <span class="count-badge">v17</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-title" id="sec-version" onclick="toggleSectionCollapse(this)">Version <span class="count-badge">v18</span> <span class="section-chevron">&#9660;</span></div>
         <div class="section-content" data-section="sec-version">
             <div class="version-card">
                 <div class="version-current">
-                    <span class="version-number">v17</span>
+                    <span class="version-number">v18</span>
                     <span class="version-date">March 30, 2026</span>
                 </div>
                 <div class="changelog"><div class="changelog-entry">
+            <span class="changelog-version">v18</span>
+            <span class="changelog-date">2026-03-30</span>
+            <div class="changelog-items"><div>Auto-render 2026-03-30 10:07</div></div>
+        </div><div class="changelog-entry">
             <span class="changelog-version">v17</span>
             <span class="changelog-date">2026-03-30</span>
             <div class="changelog-items"><div>Auto-render 2026-03-30 09:53</div></div>
@@ -14652,7 +16667,32 @@ function _applyUpdate() {
 
 /* ═══ DASHBOARD REDESIGN JS — Phases 1-3 (injected into render source) ═══ */
 
-/* Timeline Year Grouping */
+/* ── Horizontal Timeline Navigation ─────────────────────────── */
+function htlExpandYear(year) {
+    /* Hide year strip, show month strip for this year */
+    document.getElementById('htl-year-strip').style.display = 'none';
+    document.querySelectorAll('.htl-month-strip').forEach(function(s) { s.style.display = 'none'; });
+    document.querySelectorAll('.htl-event-list').forEach(function(s) { s.style.display = 'none'; });
+    var strip = document.getElementById('htl-months-' + year);
+    if (strip) strip.style.display = 'block';
+}
+function htlCollapseYear() {
+    document.querySelectorAll('.htl-month-strip').forEach(function(s) { s.style.display = 'none'; });
+    document.getElementById('htl-year-strip').style.display = 'block';
+}
+function htlExpandMonth(year, month) {
+    document.querySelectorAll('.htl-month-strip').forEach(function(s) { s.style.display = 'none'; });
+    document.querySelectorAll('.htl-event-list').forEach(function(s) { s.style.display = 'none'; });
+    var list = document.getElementById('htl-events-' + year + '-' + month);
+    if (list) list.style.display = 'block';
+}
+function htlBackToMonths(year) {
+    document.querySelectorAll('.htl-event-list').forEach(function(s) { s.style.display = 'none'; });
+    var strip = document.getElementById('htl-months-' + year);
+    if (strip) strip.style.display = 'block';
+}
+
+/* Timeline Year Grouping (legacy fallback) */
 function tlInitYearGroups() {
     var container = document.getElementById('tl-events');
     if (!container) return;
