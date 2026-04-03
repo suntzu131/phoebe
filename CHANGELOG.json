@@ -1,5 +1,12 @@
 [
   {
+    "version": 34,
+    "date": "2026-04-03",
+    "items": [
+      "Auto-render 2026-04-03 12:08"
+    ]
+  },
+  {
     "version": 33,
     "date": "2026-04-03",
     "items": [
@@ -151,18 +158,6 @@
       "Command palette (Ctrl+K)",
       "Keyboard shortcuts (1-5 for panels)",
       "Financial stress score + risk clusters"
-    ]
-  },
-  {
-    "version": 14,
-    "date": "2026-03-24",
-    "items": [
-      "Initial dashboard launch",
-      "5-panel layout (Home, Family, Money, Goals, Settings)",
-      "Firebase authentication + Google sign-in",
-      "Emergency contacts with call buttons",
-      "Morning brief + intelligence report",
-      "Compliance monitoring alerts"
     ]
   }
 ]
