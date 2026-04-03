@@ -1,5 +1,12 @@
 [
   {
+    "version": 35,
+    "date": "2026-04-03",
+    "items": [
+      "Auto-render 2026-04-03 12:16"
+    ]
+  },
+  {
     "version": 34,
     "date": "2026-04-03",
     "items": [
@@ -143,21 +150,6 @@
       "Fix: FAB hidden on mobile (was overlapping chat send button)",
       "Version display + changelog in Settings panel",
       "click-path-testing.md \u2014 21st critical rule"
-    ]
-  },
-  {
-    "version": 15,
-    "date": "2026-03-26",
-    "items": [
-      "Chat panel + FAB overlay",
-      "Bento grid home layout with 10 card types",
-      "Persona-aware access control (admin/partner/housemate/guest)",
-      "PWA + push notifications + service worker",
-      "Google Chat-style message bubbles",
-      "Multi-thread chat (phoebe-family, Kids, custom)",
-      "Command palette (Ctrl+K)",
-      "Keyboard shortcuts (1-5 for panels)",
-      "Financial stress score + risk clusters"
     ]
   }
 ]
