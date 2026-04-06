@@ -1,5 +1,12 @@
 [
   {
+    "version": 40,
+    "date": "2026-04-06",
+    "items": [
+      "Auto-render 2026-04-06 06:30"
+    ]
+  },
+  {
     "version": 39,
     "date": "2026-04-05",
     "items": [
@@ -127,13 +134,6 @@
   },
   {
     "version": 21,
-    "date": "2026-03-30",
-    "items": [
-      "Auto-render 2026-03-30 10:30"
-    ]
-  },
-  {
-    "version": 20,
     "date": "2026-03-30",
     "items": [
       "Auto-render 2026-03-30 10:30"
