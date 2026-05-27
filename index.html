@@ -6599,7 +6599,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-item" data-panel="panel-email" data-label="Email" onclick="showPanel('panel-email', this)">
             <span class="sidebar-item-icon">&#9993;</span>
             <span class="sidebar-item-label">Email</span>
-            
+            <span class="sidebar-item-badge">1</span>
         </button>
 
         <div class="sidebar-divider"></div>
@@ -6617,7 +6617,7 @@ canvas { max-width: 100%; }
         <button class="sidebar-theme-btn" onclick="toggleTheme()" title="Toggle dark mode" aria-label="Toggle dark mode">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-05-26 06:30</span>
+        <span class="sidebar-footer-text">Phoebe v2026.3 &middot; 2026-05-26 23:30</span>
     </div>
 </aside>
 
@@ -6780,8 +6780,8 @@ canvas { max-width: 100%; }
     
 
         <div style="text-align:center;padding:24px 0;font-size:11px;color:var(--ink-secondary)">
-            Generated May 26, 2026 at 06:30 AM &middot;
-            Phoebe Life Intelligence <span class="app-version-footer">v86</span> &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
+            Generated May 26, 2026 at 11:30 PM &middot;
+            Phoebe Life Intelligence <span class="app-version-footer">v87</span> &middot; <a href="../" style="color:var(--accent);text-decoration:none">Trip Planner</a>
         </div>
     </div>
 
@@ -16025,7 +16025,7 @@ canvas { max-width: 100%; }
             <div class="reports-list">
         <div class="report-card">
             <div class="report-title">Morning Brief</div>
-            <div class="report-meta">Generated May 26, 2026 at 06:30 AM</div>
+            <div class="report-meta">Generated May 26, 2026 at 11:30 PM</div>
             <div class="report-content" id="morning-brief-content">
                 <div class="report-item" data-persona-min="admin" data-generalize="brief-cashflow"><span class="report-item-bullet good"></span><span class="report-item-text">Cash flow: +$370/mo (MODERATE stress at 54.9)</span></div>
 <div class="report-item" data-persona-min="partner"><span class="report-item-bullet warning"></span><span class="report-item-text">Mother: FAST 6e | RCFE application in progress</span></div>
@@ -16037,7 +16037,7 @@ canvas { max-width: 100%; }
         </div>
         <div class="report-card">
             <div class="report-title">Intelligence Report</div>
-            <div class="report-meta">Last updated: May 26, 2026 at 06:30 AM</div>
+            <div class="report-meta">Last updated: May 26, 2026 at 11:30 PM</div>
             <div class="report-content" id="intel-report-content">
                 <div class="report-section-title">Priority Actions</div>
 <div class="report-item"><span class="report-item-bullet critical"></span><span class="report-item-text">Call Osamu Hashizu (714) 258-2819</span></div>
@@ -16248,35 +16248,293 @@ canvas { max-width: 100%; }
     <div class="panel" id="panel-email">
         <div class="panel-header">
             <div class="panel-title">Email Inbox</div>
-            <div class="panel-subtitle">13 threads &middot; scanned 28m ago</div>
+            <div class="panel-subtitle">33 threads &middot; scanned 29m ago</div>
         </div>
 
         <div class="email-tabs">
             <button class="email-tab-btn active" onclick="switchEmailTab('respond', this)">
-                Respond <span class="email-tab-badge muted">0</span>
+                Respond <span class="email-tab-badge red">1</span>
             </button>
             <button class="email-tab-btn" onclick="switchEmailTab('review', this)">
                 Review <span class="email-tab-badge muted">0</span>
             </button>
             <button class="email-tab-btn" onclick="switchEmailTab('update', this)">
-                Updates <span class="email-tab-badge muted">0</span>
+                Updates <span class="email-tab-badge muted">3</span>
             </button>
             <button class="email-tab-btn" onclick="switchEmailTab('read', this)">
-                Read Later <span class="email-tab-badge muted">13</span>
+                Read Later <span class="email-tab-badge muted">29</span>
             </button>
         </div>
 
         <div class="email-tab-content active" id="email-tab-respond">
-            <div class="section-empty"><span class="section-empty-icon">&#9993;</span>No replies needed</div>
+            <a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e650d769fa5a52" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:#F39C12"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Kaiser Permanente</span>
+                    <span class="email-domain-chip" style="color:var(--green);background:var(--green-bg)">health</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">KP - Pharmacy Order Ready for Pick up</div>
+                <div class="email-action">Review health notification from Kaiser Permanente</div>
+            </div>
+        </a>
         </div>
         <div class="email-tab-content" id="email-tab-review">
             <div class="section-empty"><span class="section-empty-icon">&#9993;</span>Nothing to review</div>
         </div>
         <div class="email-tab-content" id="email-tab-update">
-            <div class="section-empty"><span class="section-empty-icon">&#9993;</span>No updates</div>
+            <a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e64f6e732cd798" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:#F39C12"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Kaiser Permanente</span>
+                    <span class="email-domain-chip" style="color:var(--green);background:var(--green-bg)">health</span>
+                    <span class="email-msg-count">2</span>
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">KP Pharmacy – Refill Request Approved</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e67bba9ac03006" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Nexus Mods</span>
+                    <span class="email-domain-chip" style="color:var(--amber);background:var(--amber-bg)">finances</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Your receipt from Nexus Mods</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e65c5e986a734f" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Regional Center of Orange County</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Garden Grove Emergency Evacuation Update</div>
+                
+            </div>
+        </a>
         </div>
         <div class="email-tab-content" id="email-tab-read">
-            <a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e641735b70feeb" target="_blank" rel="noopener">
+            <a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e671c15a489fbf" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Pavilion Park Trending Posts</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Hi!</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e671692070b87d" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Kim Mckee</span>
+                    <span class="email-domain-chip" style="color:var(--accent);background:var(--accent-light)">family</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Calvary Preschool Summer Information</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e66f09a53e10dd" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">History Facts</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Why are men's and women's buttons on opposite sides?</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e66cf1142d5147" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">USCCA Store</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">🔪 Today's Daily Deal</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e667fb54b1f85e" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Eureka</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">🔴 [STARTING] LIVE NOW: Livestream Starts in 5 minutes.</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e666cade59d209" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Calvary Christian Preschool</span>
+                    <span class="email-domain-chip" style="color:var(--accent);background:var(--accent-light)">family</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Tuesday Tales</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e6647d49271eb7" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Men's Wearhouse</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Your wardrobe update is on sale.</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e660cc153af0b4" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Hotels.com</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Join to save up to 20% on select stays​</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e65f23169f4429" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Dun &amp; Bradstreet</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">SMB Month Celebration:  Final Offers and Insights</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e65ac09fa81c52" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Acura</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">An important update on the Acura EV app for Acura ZDX</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e6543073e8cc55" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Lucille's Smokehouse Bar-B-Que</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">End BBQ Month Right: Half Rack of Ribs for $24.99 🔥</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e653f3c1d7f904" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">TikTok Shop</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">danh07957, claim your coupon before it expires!</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e65166e09c5fb6" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Fanatical Newsletter</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">JUST ADDED: Prestige Collection XL Edition has just gotte...</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e64ce9f5785ee2" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Lindsay at Zoho</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Join Us in California this June to See Zoho in Action</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e64bbfae8053c8" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Great Wolf Lodge - Southern California, CA</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">Looking forward to your stay, Han family!</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e649c8d8f44549" target="_blank" rel="noopener">
+            <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
+            <div class="email-thread-body">
+                <div class="email-thread-top">
+                    <span class="email-sender">Men's Wearhouse</span>
+                    <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
+                    
+                    <span class="email-time">new</span>
+                </div>
+                <div class="email-subject">You’ve put in the work. Celebrate in style.</div>
+                
+            </div>
+        </a>
+<a class="email-thread-row" href="https://mail.google.com/mail/u/0/#inbox/19e641735b70feeb" target="_blank" rel="noopener">
             <span class="email-prio-dot" style="background:var(--ink-secondary)"></span>
             <div class="email-thread-body">
                 <div class="email-thread-top">
@@ -16309,7 +16567,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Fanatical Newsletter</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">Top games for less than a coffee!</div>
                 
@@ -16322,7 +16580,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Grammarly Insights</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">🏆 Weekly progress + 50% off Pro!</div>
                 
@@ -16335,7 +16593,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Shake Shack</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">FREE SHACKBURGER INSIDE!</div>
                 
@@ -16348,7 +16606,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Lucille's Smokehouse Bar-B-Que</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">Last Chance! Get $25 Off 🍖</div>
                 
@@ -16361,7 +16619,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Eureka</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">✨ Don't Miss Our Livestream Tomorrow!</div>
                 
@@ -16374,7 +16632,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Regional Center of Orange County</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">Garden Grove Emergency Evacuation Update</div>
                 
@@ -16387,7 +16645,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">USCCA</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">🇺🇸 Most people miss this about Memorial Day</div>
                 
@@ -16400,7 +16658,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">American Senior Home Finders</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">A pretty lobby is not all that matters</div>
                 
@@ -16413,7 +16671,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Men's Wearhouse</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">Dan, unlock this offer while you still can 🚨</div>
                 
@@ -16426,7 +16684,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Grammarly</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">new</span>
+                    <span class="email-time">1d</span>
                 </div>
                 <div class="email-subject">Step into sharper writing for $72/year 🪄</div>
                 
@@ -16439,7 +16697,7 @@ canvas { max-width: 100%; }
                     <span class="email-sender">Google Cloud</span>
                     <span class="email-domain-chip" style="color:var(--ink-secondary);background:var(--surface-1)">general</span>
                     
-                    <span class="email-time">1d</span>
+                    <span class="email-time">2d</span>
                 </div>
                 <div class="email-subject">Important: 30 days left in your Google Cloud Free Trial</div>
                 
@@ -16521,19 +16779,23 @@ canvas { max-width: 100%; }
         <div class="sysstat-item"><span class="sysstat-val">120</span><span class="sysstat-lbl">Tools</span></div>
         <div class="sysstat-item"><span class="sysstat-val">62</span><span class="sysstat-lbl">Timers</span></div>
         <div class="sysstat-item sysstat-wide"><span class="sysstat-val">45,000 / 363,000</span><span class="sysstat-lbl">Graph nodes / rels</span></div>
-        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-05-26 06:30</span><span class="sysstat-lbl">Last render</span></div>
+        <div class="sysstat-item sysstat-wide"><span class="sysstat-val">2026-05-26 23:30</span><span class="sysstat-lbl">Last render</span></div>
     </div>
         </div>
 
         
-        <div class="section-title" id="sec-version" onclick="toggleSectionCollapse(this)">Version <span class="count-badge">v86</span> <span class="section-chevron">&#9660;</span></div>
+        <div class="section-title" id="sec-version" onclick="toggleSectionCollapse(this)">Version <span class="count-badge">v87</span> <span class="section-chevron">&#9660;</span></div>
         <div class="section-content" data-section="sec-version">
             <div class="version-card">
                 <div class="version-current">
-                    <span class="version-number">v86</span>
+                    <span class="version-number">v87</span>
                     <span class="version-date">May 26, 2026</span>
                 </div>
                 <div class="changelog"><div class="changelog-entry">
+            <span class="changelog-version">v87</span>
+            <span class="changelog-date">2026-05-26</span>
+            <div class="changelog-items"><div>Auto-render 2026-05-26 06:30</div></div>
+        </div><div class="changelog-entry">
             <span class="changelog-version">v86</span>
             <span class="changelog-date">2026-05-25</span>
             <div class="changelog-items"><div>Auto-render 2026-05-25 06:30</div></div>
@@ -16549,10 +16811,6 @@ canvas { max-width: 100%; }
             <span class="changelog-version">v83</span>
             <span class="changelog-date">2026-05-22</span>
             <div class="changelog-items"><div>Auto-render 2026-05-22 06:30</div></div>
-        </div><div class="changelog-entry">
-            <span class="changelog-version">v82</span>
-            <span class="changelog-date">2026-05-21</span>
-            <div class="changelog-items"><div>Auto-render 2026-05-21 06:30</div></div>
         </div></div>
             </div>
         </div>
