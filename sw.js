@@ -1,5 +1,5 @@
-// Phoebe Dashboard Service Worker — v90
-const CACHE_NAME = "phoebe-dashboard-v90";
+// Phoebe Dashboard Service Worker — v91
+const CACHE_NAME = "phoebe-dashboard-v91";
 
 // Static assets: cache-first (rarely change)
 const STATIC_ASSETS = [
